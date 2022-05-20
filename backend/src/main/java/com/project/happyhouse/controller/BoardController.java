@@ -26,6 +26,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/board")
 public class BoardController {
+	// 수정본
 
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	private static final String SUCCESS = "success";
