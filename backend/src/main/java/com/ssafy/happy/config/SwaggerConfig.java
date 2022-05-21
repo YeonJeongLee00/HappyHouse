@@ -2,7 +2,6 @@ package com.ssafy.happy.config;
 
 import static springfox.documentation.builders.PathSelectors.regex;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,21 +12,20 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-//http://localhost:8080/swagger-ui/index.html
+//http://localhost:9999/swagger-ui/index.html
 	
 @Configuration
 @EnableSwagger2
-//@MapperScan(basePackages = {"com.**.mapper"})
 public class SwaggerConfig {
 
 	@Bean
 	public Docket postsApi() {
 		return new Docket(DocumentationType.SWAGGER_2)
-				.groupName("HappyHouse")
+				.groupName("happyhouse")
 				.apiInfo(apiInfo())
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.project.happyhouse.controller"))
-				.paths(regex("/happyhouse/.*"))
+				.apis(RequestHandlerSelectors.basePackage("com.ssafy.happy.controller"))
+				.paths(regex("/happy/.*"))
 				.build();
 	}
 
