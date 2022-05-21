@@ -8,12 +8,12 @@
 		<version>2.6.7</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.ssafy.happy</groupId>
-	<artifactId>happyhouse</artifactId>
+	<groupId>com.ssafy</groupId>
+	<artifactId>vue</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>happyhouse</name>
-	<description>happyhouse</description>
-<properties>
+	<name>VueAPI</name>
+	<description>Vue REST-API</description>
+	<properties>
 		<java.version>1.8</java.version>
 	</properties>
 	<dependencies>
@@ -83,11 +83,11 @@
 		
 		<!-- JWT를 위한 의존성 추가 -->
 		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
-	 <dependency>
+		<dependency>
 		    <groupId>io.jsonwebtoken</groupId>
 		    <artifactId>jjwt</artifactId>
 		    <version>0.9.1</version>
-		</dependency> 
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -98,6 +98,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
 
 </project>
