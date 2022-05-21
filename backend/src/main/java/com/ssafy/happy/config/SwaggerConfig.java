@@ -30,7 +30,7 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder().title("SSAFY HappyHouse REST API")
+		return new ApiInfoBuilder().title("SSAFY HappyHouse REST API V1")
 				.description("SSAFY API Reference for Developers")
 				.termsOfServiceUrl("https://edu.ssafy.com")
 				.license("SSAFY License")

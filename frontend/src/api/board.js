@@ -1,6 +1,4 @@
-import { apiInstance } from "./index.js";
-
-const api = apiInstance();
+import api from "./http.js";
 
 // Read ( List )
 function listBoard(param, success, fail) {
