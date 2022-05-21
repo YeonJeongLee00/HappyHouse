@@ -7,6 +7,7 @@
 
 <script>
 import BoardInputItem from "@/components/board/item/BoardInputItem.vue";
+
 export default {
   name: "BoardModify",
   components: { BoardInputItem },
