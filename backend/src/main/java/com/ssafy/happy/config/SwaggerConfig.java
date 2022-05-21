@@ -2,7 +2,6 @@ package com.ssafy.happy.config;
 
 import static springfox.documentation.builders.PathSelectors.regex;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,7 +21,7 @@ public class SwaggerConfig {
 	@Bean
 	public Docket postsApi() {
 		return new Docket(DocumentationType.SWAGGER_2)
-				.groupName("HappyHouse")
+				.groupName("happyhouse")
 				.apiInfo(apiInfo())
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.ssafy.happy.controller"))
