@@ -41,6 +41,11 @@
             >
           </li>
           <li class="nav-item">
+            <router-link class="nav-link text-white" to="/admin"
+              >회원정보</router-link
+            >
+          </li>
+          <li class="nav-item">
             <router-link class="nav-link text-white" to="/user/login"
               >로그인</router-link
             >

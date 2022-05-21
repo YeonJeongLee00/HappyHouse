@@ -1,7 +1,5 @@
 package com.ssafy.happy.dto;
 
-
-
 public class BoardDto {
 	
 	private int no;

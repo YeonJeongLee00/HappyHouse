@@ -13,11 +13,10 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-//http://localhost:8080/swagger-ui/index.html
+//http://localhost:9999/swagger-ui/index.html
 	
 @Configuration
 @EnableSwagger2
-//@MapperScan(basePackages = {"com.**.mapper"})
 public class SwaggerConfig {
 
 	@Bean
@@ -26,13 +25,13 @@ public class SwaggerConfig {
 				.groupName("HappyHouse")
 				.apiInfo(apiInfo())
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.project.happyhouse.controller"))
-				.paths(regex("/happyhouse/.*"))
+				.apis(RequestHandlerSelectors.basePackage("com.ssafy.happy.controller"))
+				.paths(regex("/happy/.*"))
 				.build();
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder().title("SSAFY HappyHouse REST API")
+		return new ApiInfoBuilder().title("SSAFY HappyHouse REST API V1")
 				.description("SSAFY API Reference for Developers")
 				.termsOfServiceUrl("https://edu.ssafy.com")
 				.license("SSAFY License")
