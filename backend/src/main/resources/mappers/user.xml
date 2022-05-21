@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happy.mapper.UserMapper">
+	<select id="insertUser" resultType="userDto">
+		insert into user
+		values(#{id}, #{password}, #{name}, #{email}, now())
+	</select>
+	
+	<select id="login" parameterType="userDto" resultType="userDto">
+		select id, email, name
+		from user
+		where id = #{id} and password = #{password}
+	</select>
+	
+	<select id="userInfo" parameterType="String" resultType="userDto">
+		select name, id, email, registDate
+		from user
+		where id = #{id}
+	</select>
+	
+</mapper>
+
