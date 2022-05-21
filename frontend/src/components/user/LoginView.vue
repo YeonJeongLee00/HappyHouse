@@ -1,12 +1,21 @@
 <template>
   <div class="mb-5">
     <h3 class="green-color">로그인</h3>
+    <b-alert show variant="danger" v-if="isLoginError"
+      >아이디 또는 비밀번호를 확인하세요.</b-alert
+    >
     <b-form-group
       label="아이디"
       label-for="id"
       class="text-left ml-5 mr-5 green-color"
     >
-      <b-form-input id="id" placeholder="아이디를 입력해주세요."></b-form-input>
+      <b-form-input
+        id="id"
+        placeholder="아이디를 입력해주세요."
+        v-model="user.id"
+        required
+        @keyup.enter="confirm"
+      ></b-form-input>
     </b-form-group>
     <b-form-group
       label="비밀번호"
@@ -16,16 +25,23 @@
       <b-form-input
         id="password"
         placeholder="비밀번호를 입력해주세요."
+        v-model="user.password"
+        required
+        @keyup.enter="confirm"
       ></b-form-input>
     </b-form-group>
 
     <div class="button-setting">
-      <b-button id="login-btn" type="submit" class="mr-5 ml-5 mb-3"
+      <b-button
+        id="login-btn"
+        type="button"
+        class="mr-5 ml-5 mb-3"
+        @click="confirm"
         >로그인</b-button
       >
       <b-button
         id="join-btn"
-        type="submit"
+        type="button"
         class="mr-5 ml-5 mb-3"
         @click="moveJoin"
         >회원가입</b-button
@@ -35,16 +51,41 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+
+const userStore = "userStore";
+
 export default {
+  name: "UserLogin",
   data() {
-    return {};
+    return {
+      user: {
+        id: null,
+        password: null,
+      },
+    };
+  },
+  computed: {
+    // state 가져오기
+    ...mapState(userStore, ["isLogin, isLoginError"]),
   },
   methods: {
-    login() {
-      console.log("로그인 처리");
+    // action 가져오기
+    ...mapActions(userStore, ["userConfirm", "getUserInfo"]),
+    async confirm() {
+      console.log("confirm in!!");
+      // userConfim Action에 user 데이터 전송
+      await this.userConfirm(this.user);
+      // 접근 토큰 저장
+      let token = sessionStorage.getItem("access-token");
+      if (this.isLogin) {
+        // 로그인 성공 했으면,
+        await this.getUserInfo(token); // token을 사용해서 userInfo를 얻어온다
+        this.$router.push({ name: "main" }); // main으로 이동
+      }
     },
     moveJoin() {
-      this.$router.push({ name: "join" });
+      this.$router.push("/user/join");
     },
   },
 };

@@ -1,9 +1,12 @@
 package com.ssafy.happy.dto;
 
+<<<<<<< HEAD
+=======
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(value = "Board (게시글정보)", description = "글번호, 제목, 내용, 작성아이디, 작성일, 조회수, 태그번호 가진   Domain Class")
+>>>>>>> master
 public class BoardDto {
 	@ApiModelProperty(value = "글번호")
 	private int no;
