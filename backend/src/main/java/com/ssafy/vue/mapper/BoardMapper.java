@@ -13,4 +13,6 @@ public interface BoardMapper {
 	public int insertBoard(BoardDto boardDto);
 	public int updateBoard(BoardDto boardDto);
 	public int deleteBoard(int articleno);
+	public String selectTag(int no);
+	public int updateView(int no);
 }

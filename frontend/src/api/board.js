@@ -28,4 +28,22 @@ function deleteBoard(no, success, fail) {
   api.delete(`/board/${no}`).then(success).catch(fail);
 }
 
-export { listBoard, selectBoard, insertBoard, updateBoard, deleteBoard };
+// Read ( Tag )
+function selectTag(no, success, fail) {
+  api.get(`/board/tag/${no}`).then(success).catch(fail);
+}
+
+// 조회수 update
+function updateView(no, success, fail) {
+  api.put(`/board/view/${no}`).then(success).catch(fail);
+}
+
+export {
+  listBoard,
+  selectBoard,
+  insertBoard,
+  updateBoard,
+  deleteBoard,
+  selectTag,
+  updateView,
+};
