@@ -35,21 +35,29 @@
         class="collapse navbar-collapse collapsibleNavbar justify-content-end"
       >
         <ul class="navbar-nav">
-          <li class="nav-item">
-            <router-link class="nav-link text-white" to="/user/detail"
-              >이연정</router-link
+          <!-- 로그인 사용자 이름 출력 -> 누르면 회원정보 수정으로 이동 -->
+          <li class="nav-item" v-if="isLogin">
+            <router-link
+              class="nav-link text-white"
+              :to="{ name: 'detail', params: { id: userInfo.id } }"
+              >{{ userInfo.name }}</router-link
             >
           </li>
-          <li class="nav-item">
+          <!-- 관리자 로그인 시 회원 정보 관리 창 표시 -->
+          <li class="nav-item" v-if="isAdmin">
             <router-link class="nav-link text-white" to="/admin"
               >회원정보</router-link
             >
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="!isLogin">
             <router-link class="nav-link text-white" to="/user/login"
               >로그인</router-link
             >
-            <!-- <router-link class="nav-link" href="#" @click="/login">회원가입</router-link> -->
+          </li>
+          <li class="nav-item text-white" v-if="isLogin" @click="logout">
+            <router-link class="nav-link text-white" to="/"
+              >로그아웃</router-link
+            >
           </li>
         </ul>
       </div>
@@ -58,7 +66,23 @@
 </template>
 
 <script>
-export default {};
+import { mapState, mapMutations } from "vuex";
+
+const userStore = "userStore";
+
+export default {
+  computed: {
+    ...mapState(userStore, ["isAdmin", "isLogin", "isLoginError", "userInfo"]),
+  },
+  methods: {
+    ...mapMutations(userStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
+    logout() {
+      this.SET_USER_INFO(null);
+      this.SET_IS_LOGIN(false);
+      sessionStorage.removeItem("access-token");
+    },
+  },
+};
 </script>
 
 <style>

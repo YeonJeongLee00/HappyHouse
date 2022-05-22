@@ -4,12 +4,10 @@ import { login, findById } from "@/api/user.js";
 const userStore = {
   namespaced: true,
   state: {
-    //   로그인 여부
     isLogin: false,
-    // 로그인 에러
     isLoginError: false,
-    // user 정보 저장
     userInfo: null,
+    isAdmin: false,
   },
   getters: {
     // userInfo 접근
@@ -23,6 +21,9 @@ const userStore = {
     SET_IS_LOGIN: (state, isLogin) => {
       state.isLogin = isLogin;
     },
+    SET_IS_ADMIN: (state, isAdmin) => {
+      state.isAdmin = isAdmin;
+    },
     SET_IS_LOGIN_ERROR: (state, isLoginError) => {
       state.isLoginError = isLoginError;
     },
@@ -35,16 +36,15 @@ const userStore = {
   //   비동기
   actions: {
     // { commit } state.commit 의미
+    // 로그인 확인
     async userConfirm({ commit }, user) {
-      console.log("userStore - userConfirm");
-      console.log(user);
       await login(
         // json형태의 user 전송
         user,
         (response) => {
-          console.log(response.data.message);
           if (response.data.message === "success") {
             // 성공
+            console.log("성공안!");
             let token = response.data["access-token"];
             commit("SET_IS_LOGIN", true);
             commit("SET_IS_LOGIN_ERROR", false);
@@ -60,15 +60,18 @@ const userStore = {
         }
       );
     },
-    // login 후
+
+    // login 후 사용자 정보 가져옴
     getUserInfo({ commit }, token) {
       let decode_token = jwt_decode(token);
       findById(
         decode_token.id,
-        (response) => {
-          if (response.data.message === "success") {
-            console.log(response.data);
-            commit("SET_USER_INFO", response.data.userInfo);
+        ({ data }) => {
+          if (data.message === "success") {
+            if (data.userInfo.id == "admin") {
+              commit("SET_IS_ADMIN", true);
+            }
+            commit("SET_USER_INFO", data.userInfo);
           } else {
             console.log("유저 정보 없음!!");
           }
