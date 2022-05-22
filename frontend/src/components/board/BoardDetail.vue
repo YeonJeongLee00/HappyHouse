@@ -56,7 +56,11 @@
     </b-col>
     <b-row>
       <b-col class="mt-2" style="text-align: left">
-        <b-form-group id="subject-group" label="제목" label-for="subject">
+        <b-form-group
+          id="subject-group"
+          :label="`${board.no}` + `번 글 제목`"
+          label-for="subject"
+        >
           <b-form-input
             id="subject"
             type="text"
@@ -79,7 +83,7 @@
 </template>
 
 <script>
-import { selectBoard, deleteBoard } from "@/api/board";
+import { selectBoard, deleteBoard, selectTag, updateView } from "@/api/board";
 import moment from "moment";
 
 export default {
@@ -92,11 +96,28 @@ export default {
   },
   // 생성되자마자 데이터가져오기
   created() {
-    console.log(this.$route.params.no);
     selectBoard(
       this.$route.params.no,
       ({ data }) => {
         this.board = data;
+      },
+      (error) => {
+        console.log("데이터 에러발생!!", error);
+      }
+    );
+    selectTag(
+      this.$route.params.no,
+      (response) => {
+        this.board.tag_no = response.data;
+      },
+      (error) => {
+        console.log("데이터 에러발생!!", error);
+      }
+    );
+    updateView(
+      this.$route.params.no,
+      () => {
+        console.log("조회수 추가");
       },
       (error) => {
         console.log("데이터 에러발생!!", error);
@@ -117,13 +138,17 @@ export default {
     },
     // 글 삭제하기
     deleteBoard() {
-      deleteBoard(
-        this.$route.params.no,
-        this.$router.replace({ name: "boardList" }),
-        (error) => {
-          console.log("삭제시 에러발생!!", error);
-        }
-      );
+      if (confirm("정말로 삭제하시겠습니까?")) {
+        deleteBoard(
+          this.board.no,
+          () => {
+            this.$router.replace({ name: "boardList" });
+          },
+          (error) => {
+            console.log("삭제시 에러발생!!", error);
+          }
+        );
+      }
     },
   },
 
@@ -150,5 +175,10 @@ h3 {
   background-color: #6d9773;
   border-color: white;
   border-radius: 12px;
+}
+
+label {
+  font-size: 15px;
+  font-weight: bold;
 }
 </style>
