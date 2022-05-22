@@ -10,8 +10,10 @@
         id="id"
         placeholder="아이디를 입력해주세요."
         :value="user.id"
-        v-model="user.id"
+        v-model.trim="user.id"
+        @keyup="isAvailableId"
       ></b-form-input>
+      <b-form-text v-if="isId">{{ isIdText }} </b-form-text>
     </b-form-group>
     <b-form-group
       label="비밀번호"
@@ -62,30 +64,58 @@
 </template>
 
 <script>
-import { insertUser } from "@/api/user.js";
+import { joinUser, isUsedId } from "@/api/user.js";
 
 export default {
   data() {
     return {
+      isId: false,
+      isIdText: null,
       user: {
-        id: "",
-        password: "",
-        name: "",
-        email: "",
+        id: null,
+        password: null,
+        name: null,
+        email: null,
       },
     };
   },
   methods: {
     registUser() {
-      insertUser(
+      joinUser(
         this.user,
         ({ data }) => {
-          console.log(data);
+          if (data) {
+            alert("회원가입을 완료했습니다.");
+            this.$router.push({ name: "login" });
+          } else {
+            alert("회원가입을 실패했습니다.");
+          }
         },
         (error) => {
           console.log(error);
         }
       );
+    },
+    isAvailableId() {
+      if (this.user.id.length > 0) {
+        isUsedId(
+          this.user.id,
+          ({ data }) => {
+            if (data) {
+              this.isId = true;
+              this.isIdText = "사용 가능한 아이디입니다.";
+            } else {
+              this.isId = true;
+              this.isIdText = "사용 불가능한 아이디입니다.";
+            }
+          },
+          (error) => {
+            console.error(error);
+          }
+        );
+      } else {
+        this.isId = false;
+      }
     },
   },
 };
