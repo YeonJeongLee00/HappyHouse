@@ -18,9 +18,6 @@
             :options="options"
             class="mt-1"
           ></b-form-select>
-          <div class="mt-1">
-            Selected: <strong>{{ board.tag_no }}</strong>
-          </div>
         </b-form-group>
 
         <!-- 글 수정 - 태그 -->
@@ -30,9 +27,6 @@
             :options="options"
             class="mt-1"
           ></b-form-select>
-          <div class="mt-1">
-            Selected: <strong>{{ board.tag_no }}</strong>
-          </div>
         </b-form-group>
 
         <!-- 글 수정 - 태그 -->
@@ -135,7 +129,7 @@
 </template>
 
 <script>
-import { /*selectBoard,*/ insertBoard, modifyBoard } from "@/api/board";
+import { selectBoard, insertBoard, updateBoard } from "@/api/board";
 
 export default {
   name: "BoardInputItem",
@@ -166,17 +160,18 @@ export default {
   },
   // 생성되자마자 데이터가져오기
   created() {
-    //if (this.type === "modify"){
-    // selectBoard(
-    //   this.$route.params.no,
-    //   ({ data }) => {
-    //     this.board = data;
-    //   },
-    //   (error) => {
-    //     console.log("데이터 에러발생!!", error);
-    //   }
-    // );
-    //}else{} 사용자 정보 있는지 없는지 체크해서 해결
+    if (this.type === "modify") {
+      selectBoard(
+        this.$route.params.no,
+        ({ data }) => {
+          this.board = data;
+        },
+        (error) => {
+          console.log("데이터 에러발생!!", error);
+        }
+      );
+      //}else{} 사용자 정보 있는지 없는지 체크해서 해결
+    }
   },
   methods: {
     // 버튼 눌렀을 때 작성하지 않은 부분에 커서
@@ -201,7 +196,7 @@ export default {
       if (!error) alert(msg);
       // 에러가 없을 경우 입력 상태면 입력 함수를 수정 상태면 수정 함수를 호출
       else {
-        this.type === "register" ? this.insertBoard() : this.modifyBoard();
+        this.type === "register" ? this.insertBoard() : this.updateBoard();
       }
     },
     onReset(event) {
@@ -237,20 +232,20 @@ export default {
         }
       );
     },
-    modifyBoard() {
-      modifyBoard(
+    updateBoard() {
+      console.log(this.board);
+      console.log(typeof this.board.tag_no);
+      updateBoard(
         {
-          no: 0,
+          no: this.board.no,
           title: this.board.title,
           content: this.board.content,
-          userid: "ssafy",
           date: "",
-          view: 0,
           tag_no: this.board.tag_no,
         },
-        ({ data }) => {
+        (response) => {
           let msg = "등록 처리시 문제가 발생했습니다.";
-          if (data === "success") {
+          if (response.data === "success") {
             msg = "등록이 완료되었습니다.";
           }
           alert(msg);

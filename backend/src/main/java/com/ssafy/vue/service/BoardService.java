@@ -10,5 +10,6 @@ public interface BoardService {
 	public boolean insertBoard(BoardDto boardDto);
 	public boolean updateBoard(BoardDto boardDto);
 	public boolean deleteBoard(int articleno);
-	
+	public String selectTag(int no);
+	public boolean updateView(int no);
 }
