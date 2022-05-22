@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.vue.dto.BoardDto;
@@ -48,13 +49,6 @@ public class BoardController {
 	}
 
 	
-		// 글 번호에 해당하는 게시글 반환
-		@ApiOperation(value = "글 번호에 해당하는 게시글 반환", response = BoardDto.class)
-		@GetMapping("{no}")
-		public ResponseEntity<BoardDto> selectBoard(@PathVariable int no) throws Exception {
-			logger.debug("selectBoard 호출");
-			return new ResponseEntity<BoardDto>(boardService.selectBoard(no), HttpStatus.OK);
-		}
 
 		// 게시 글 작성
 		@ApiOperation(value = "게시 글 작성, 작성을 성공하면 'success'를  실패하면 'fail'을 반환", response = String.class)
@@ -68,11 +62,19 @@ public class BoardController {
 			}
 		}
 		
+		// 글 번호에 해당하는 게시글 반환
+		@ApiOperation(value = "글 번호에 해당하는 게시글 반환", response = BoardDto.class)
+		@GetMapping("{no}")
+		public ResponseEntity<BoardDto> selectBoard(@PathVariable int no) throws Exception {
+			logger.debug("selectBoard 호출");
+			return new ResponseEntity<BoardDto>(boardService.selectBoard(no), HttpStatus.OK);
+		}
+		
 		// 게시 글 수정
 		@ApiOperation(value = "게시 글 수정, 수정 성공하면 'success' 를 실패하면 'fail'을 반환", response = String.class)
 		@PutMapping("{no}")
 		public ResponseEntity<String> updateBoard(@RequestBody BoardDto boardDto) throws Exception{
-			logger.debug("updateBoard 호출, board : " + boardDto);
+			logger.debug("updateBoard 호출, board : " + boardDto.getTitle() + " " + boardDto.getContent() + " " + boardDto.getTag_no() + " " + boardDto.getNo());
 			if(boardService.updateBoard(boardDto)) {
 				return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 			}else {
@@ -86,6 +88,26 @@ public class BoardController {
 		public ResponseEntity<String> deleteBoard(@PathVariable int no) throws Exception{
 			logger.debug("deleteBoard 호출, no : " + no);
 			if(boardService.deleteBoard(no)) {
+				return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			}else {
+				return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+			}
+		}
+		
+		// 태그 이름 가져오기
+		@ApiOperation(value="태그 이름 가져오기", response = String.class)
+		@GetMapping("tag/{no}")
+		public ResponseEntity<String> selectTag(@PathVariable("no") int no) throws Exception{
+			logger.debug("selectTag 호출 " + no);
+			return new ResponseEntity<String>(boardService.selectTag(no), HttpStatus.OK);
+		}
+		
+		// 조회수 업데이트
+		@ApiOperation(value="조회수 업데이트 하기, 업데이트 성공하면 'success' 를 실패하면 'fail' 을 반환", response = String.class)
+		@PutMapping("view/{no}")
+		public ResponseEntity<String> updateView(@PathVariable("no") int no) throws Exception{
+			logger.debug("updateView 호출 " + no);
+			if(boardService.updateView(no)) {
 				return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 			}else {
 				return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
