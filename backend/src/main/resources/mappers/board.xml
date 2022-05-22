@@ -22,13 +22,23 @@
 	<!-- 게시글 수정 -->
 	<update id="updateBoard" parameterType="boardDto">
 	update board
-	set title = #{title}, content = #{content} where no = #{no}
+	set title = #{title}, content = #{content}, tag_no = #{tag_no}, registDate = now() where no = #{no}
 	</update>
 
 	<!-- 게시글 삭제 -->
 	<delete id="deleteBoard" parameterType="int">
 	delete from board where no = #{no}
 	</delete>
+	
+	<!-- TagName 반환  -->
+	<select id="selectTag" parameterType="int" resultType="String">
+		select tagName from tag where tag.no = (select tag_no from board where no = #{no});
+	</select>
+
+	<!-- 조회수 증가 -->
+	<update id="updateView" parameterType="int">
+	update board set view = view +1 where no = #{no};
+	</update>
 
 </mapper>
 

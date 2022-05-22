@@ -40,4 +40,15 @@ public class BoardServiceImpl implements BoardService {
 	public boolean deleteBoard(int articleno) {
 		return boardMapper.deleteBoard(articleno) == 1;
 	}
+
+	@Override
+	public String selectTag(int no) {
+		return boardMapper.selectTag(no);
+	}
+
+	@Override
+	public boolean updateView(int no) {
+		return boardMapper.updateView(no) == 1;
+	}
+	
 }
