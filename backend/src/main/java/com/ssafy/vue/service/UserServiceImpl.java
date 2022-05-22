@@ -30,14 +30,16 @@ public class UserServiceImpl implements UserService {
 	private UserMapper userMapper;
 	
 	@Override
-	public boolean insertUser(UserDto user) throws Exception{	
+	public boolean insertUser(UserDto user) throws Exception{
+		if(user.getId() == null || user.getPassword() == null || user.getEmail() == null || user.getName() == null)
+			return false;
 		return userMapper.insertUser(user) == 1;
 	}
 
 	@Override
 	public UserDto login(UserDto UserDto) throws Exception {
-//		if(UserDto.getId() == null || UserDto.getPassword() == null)
-//			return null;
+		if(UserDto.getId() == null || UserDto.getPassword() == null)
+			return null;
 		return userMapper.login(UserDto);
 	}
 
@@ -47,9 +49,25 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<UserDto> getInfo() throws Exception {
+	public List<UserDto> getUserList() throws Exception {
+		return userMapper.getUserList();
+	}
+
+	@Override
+	public boolean isUsedId(String id) throws Exception {
+		return userMapper.isUsedId(id) == 0;
+	}
+
+	@Override
+	public boolean updateUser(UserDto user) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return  userMapper.updateUser(user) == 1;
+	}
+
+	@Override
+	public boolean deleteUser(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return userMapper.deleteUser(id) == 1;
 	}
 
 

@@ -1,7 +1,7 @@
 <template>
   <div class="mb-5">
     <h3 class="green-color">로그인</h3>
-    <b-alert show variant="danger" v-if="isLoginError"
+    <b-alert show v-if="isLoginError" class="mr-5 mt-3 mb-3 ml-5 alert-style"
       >아이디 또는 비밀번호를 확인하세요.</b-alert
     >
     <b-form-group
@@ -23,6 +23,7 @@
       class="text-left ml-5 mr-5 green-color"
     >
       <b-form-input
+        type="password"
         id="password"
         placeholder="비밀번호를 입력해주세요."
         v-model="user.password"
@@ -56,7 +57,6 @@ import { mapState, mapActions } from "vuex";
 const userStore = "userStore";
 
 export default {
-  name: "UserLogin",
   data() {
     return {
       user: {
@@ -67,19 +67,17 @@ export default {
   },
   computed: {
     // state 가져오기
-    ...mapState(userStore, ["isLogin, isLoginError"]),
+    ...mapState(userStore, ["isLogin", "isLoginError"]),
   },
   methods: {
     // action 가져오기
     ...mapActions(userStore, ["userConfirm", "getUserInfo"]),
     async confirm() {
-      console.log("confirm in!!");
       // userConfim Action에 user 데이터 전송
       await this.userConfirm(this.user);
       // 접근 토큰 저장
       let token = sessionStorage.getItem("access-token");
       if (this.isLogin) {
-        // 로그인 성공 했으면,
         await this.getUserInfo(token); // token을 사용해서 userInfo를 얻어온다
         this.$router.push({ name: "main" }); // main으로 이동
       }
@@ -116,5 +114,10 @@ export default {
   background-color: #6d9773;
   color: white;
   border: 1px solid #6d9773;
+}
+
+.alert-style {
+  background-color: #6d9773;
+  color: white;
 }
 </style>

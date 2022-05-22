@@ -65,25 +65,63 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
+import { findById, updateUser, deleteUser } from "@/api/user.js";
+const userStore = "userStore";
+
 export default {
   data() {
     return {
-      user: {
-        id: "yeon",
-        password: 1234,
-        name: "이연정",
-        email: "yeon@naver.com",
-      },
+      user: null,
     };
   },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+    userDataBind: {
+      get() {
+        return true;
+      },
+      set() {
+        this.user = this.userInfo;
+      },
+    },
+  },
+  created() {
+    // 데이터 초기화
+    this.user = this.userInfo;
+  },
+  mounted() {},
   methods: {
+    ...mapMutations(userStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
     updateUser() {
-      alert("업데이트 완료");
-      this.$router.push({ name: "detail" });
+      updateUser(
+        this.user,
+        () => {
+          findById(
+            this.user.id,
+            ({ data }) => {
+              console.log(data);
+              this.user = data.userInfo;
+              alert("업데이트 완료");
+            },
+            () => {}
+          );
+        },
+        () => {}
+      );
     },
     deleteUser() {
-      alert("삭제 완료");
-      this.$router.push({ name: "detail" });
+      deleteUser(
+        this.user.id,
+        () => {
+          this.SET_USER_INFO(null);
+          this.SET_IS_LOGIN(false);
+          sessionStorage.removeItem("access-token");
+          alert("삭제 완료");
+          this.$router.push({ name: "main" });
+        },
+        () => {}
+      );
     },
   },
 };
