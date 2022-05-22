@@ -50,7 +50,7 @@ const routes = [
         component: () => import("@/components/user/JoinView.vue"),
       },
       {
-        path: "detail",
+        path: "detail/:id",
         name: "detail",
         component: () => import("@/components/user/UserDetailView.vue"),
       },
