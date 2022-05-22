@@ -21,11 +21,19 @@
             <b-tr v-for="(user, index) in userList" :key="index" align="center">
               <b-td>{{ index + 1 }}</b-td>
               <b-td>{{ user.id }}</b-td>
-              <b-td>{{ user.password }}</b-td>
-              <b-td>{{ user.name }}</b-td>
-              <b-td>{{ user.email }}</b-td>
-              <b-td><b-button class="button">수정</b-button></b-td>
-              <b-td><b-button class="button">삭제 </b-button></b-td>
+              <b-td v-model="user.password">{{ user.password }}</b-td>
+              <b-td v-model="user.name">{{ user.name }}</b-td>
+              <b-td v-model="user.email">{{ user.email }}</b-td>
+              <b-td
+                ><b-button class="button" @click="updateUser(user.id)"
+                  >수정</b-button
+                ></b-td
+              >
+              <b-td
+                ><b-button class="button" @click="deleteUser(user.id)"
+                  >삭제
+                </b-button></b-td
+              >
             </b-tr>
           </tbody>
         </b-table-simple>
@@ -35,30 +43,29 @@
 </template>
 
 <script>
+import { getUserList } from "@/api/user.js";
+
 export default {
   data() {
     return {
-      userList: [
-        {
-          id: "yeon",
-          password: "1234",
-          name: "이연정",
-          email: "yeon@eamil.com",
-        },
-        {
-          id: "yeon",
-          password: "1234",
-          name: "이연정",
-          email: "yeon@eamil.com",
-        },
-        {
-          id: "yeon",
-          password: "1234",
-          name: "이연정",
-          email: "yeon@eamil.com",
-        },
-      ],
+      userList: null,
     };
+  },
+  created() {
+    getUserList(
+      ({ data }) => {
+        this.userList = data;
+      },
+      () => {}
+    );
+  },
+  methods: {
+    updateUser(id) {
+      console.log(id);
+    },
+    deleteUser(id) {
+      console.log(id);
+    },
   },
 };
 </script>
