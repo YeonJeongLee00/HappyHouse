@@ -123,7 +123,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .select {
   width: 120px;
   background-color: #6d9773;
