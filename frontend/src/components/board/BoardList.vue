@@ -9,7 +9,14 @@
       ></b-form-select>
       <b-button class="button ml-2" @click="moveWrite()">글 쓰기</b-button>
 
-      <b-table-simple hover responsive>
+      <b-table-simple
+        hover
+        responsive
+        id="my-table"
+        :items="items"
+        :current-page="currentPage"
+        :per-page="perPage"
+      >
         <b-thead>
           <b-tr class="title" align="center">
             <b-th class="col-md-1 head">번호</b-th>
@@ -21,7 +28,7 @@
           </b-tr>
         </b-thead>
         <!-- 모든 리스트 출력 start -->
-        <tbody v-if="tagBoards.length == 0">
+        <tbody v-if="tagBoards.length == 0 && selected == null">
           <board-list-item
             v-for="board in boards"
             :key="board.no"
@@ -41,6 +48,13 @@
         <!-- Tag 리스트 출력 end -->
       </b-table-simple>
     </b-row>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="rows"
+      :per-page="perPage"
+      aria-controls="my-table"
+      align="center"
+    ></b-pagination>
   </b-container>
 </template>
 
@@ -64,6 +78,8 @@ export default {
         { value: 2, text: "잡담" },
         { value: 3, text: "꿀팁" },
       ],
+      currentPage: 1,
+      perPage: 10,
     };
   },
   created() {
@@ -82,6 +98,11 @@ export default {
         console.log(error);
       }
     );
+  },
+  computed: {
+    rows() {
+      return this.boards.length;
+    },
   },
   methods: {
     // 글쓰기 누르면 글 작성 component로 이동
