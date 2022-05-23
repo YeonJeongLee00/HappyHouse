@@ -1,5 +1,5 @@
 <template>
-  <b-container class="bv-example-row mt-3">
+  <b-container class="container bv-example-row mt-3">
     <h3>글 작성</h3>
     <board-input-item type="register" />
   </b-container>
