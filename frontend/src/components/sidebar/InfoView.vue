@@ -23,14 +23,12 @@
       <b-row class="ml-2"><h3>오늘의 뉴스</h3></b-row>
       <b-row>
         <b-list-group class="mt-3">
-          <b-list-group-item
-            :href="news.url"
-            class="outline-light list-item"
-            v-for="(news, index) in todayNews"
-            :key="index"
+          <news-list-item
+            v-for="news in newsList"
+            :key="news.title"
+            v-bind="news"
           >
-            {{ news.title }}
-          </b-list-group-item>
+          </news-list-item>
         </b-list-group>
       </b-row>
     </b-card>
@@ -38,9 +36,17 @@
 </template>
 
 <script>
+import NewsListItem from "@/components/sidebar/news/NewsListItem.vue";
+import { getNewsDatas } from "@/api/news";
+
 export default {
+  name: "InfoView",
+  components: {
+    NewsListItem,
+  },
   data() {
     return {
+      newsList: [],
       popularArea: [
         {
           gugun: "서구",
@@ -73,29 +79,24 @@ export default {
           code: "6",
         },
       ],
-      todayNews: [
-        {
-          url: "#",
-          title: "오늘의 뉴스 전세의 월세화 가속도… 8월 어쩌나",
-        },
-        {
-          url: "#",
-          title: "부동산 규제 완화 강드라이브… 시장은 기대반 우려반",
-        },
-        {
-          url: "#",
-          title: "시행 2년 된 임대차법, 어떻게 손질 될까",
-        },
-        {
-          url: "#",
-          title: "규제 완화 기대감에… 서울 주민 ‘원정투자’ 다시 고개",
-        },
-        {
-          url: "#",
-          title: "서울 아파트 '사자' 심리 다시 주춤…한주만에 매매수급지수 하락",
-        },
-      ],
     };
+  },
+  created() {
+    let param = {
+      pg: 1,
+      spp: 20,
+      key: null,
+      word: null,
+    };
+    getNewsDatas(
+      param,
+      (response) => {
+        this.newsList = response.data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
 };
 </script>
