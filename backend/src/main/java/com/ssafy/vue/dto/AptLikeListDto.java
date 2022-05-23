@@ -2,7 +2,8 @@ package com.ssafy.vue.dto;
 
 import java.math.BigInteger;
 
-public class HouseInfoDto {
+public class AptLikeListDto {
+	private int no;
 	private BigInteger aptCode;
 	private int buildYear;
 	private String roadName;
@@ -23,6 +24,12 @@ public class HouseInfoDto {
 	private String lng;
 	private String lat;
 
+	public int getNo() {
+		return no;
+	}
+	public void setNo(int no) {
+		this.no = no;
+	}
 	public BigInteger getAptCode() {
 		return aptCode;
 	}
@@ -137,14 +144,14 @@ public class HouseInfoDto {
 	public void setLat(String lat) {
 		this.lat = lat;
 	}
-	
 	@Override
 	public String toString() {
-		return "HouseInfoDto [aptCode=" + aptCode + ", buildYear=" + buildYear + ", roadName=" + roadName
-				+ ", roadNameBonbun=" + roadNameBonbun + ", roadNameBubun=" + roadNameBubun + ", roadNameSeq="
-				+ roadNameSeq + ", roadNameBasementCode=" + roadNameBasementCode + ", roadNameCode=" + roadNameCode
-				+ ", dong=" + dong + ", bonbun=" + bonbun + ", bubun=" + bubun + ", sigunguCode=" + sigunguCode
-				+ ", eubmyundongCode=" + eubmyundongCode + ", dongCode=" + dongCode + ", landCode=" + landCode
-				+ ", apartmentName=" + apartmentName + ", jibun=" + jibun + ", lng=" + lng + ", lat=" + lat + "]";
+		return "AptLikeListDto [no=" + no + ", aptCode=" + aptCode + ", buildYear=" + buildYear + ", roadName="
+				+ roadName + ", roadNameBonbun=" + roadNameBonbun + ", roadNameBubun=" + roadNameBubun
+				+ ", roadNameSeq=" + roadNameSeq + ", roadNameBasementCode=" + roadNameBasementCode + ", roadNameCode="
+				+ roadNameCode + ", dong=" + dong + ", bonbun=" + bonbun + ", bubun=" + bubun + ", sigunguCode="
+				+ sigunguCode + ", eubmyundongCode=" + eubmyundongCode + ", dongCode=" + dongCode + ", landCode="
+				+ landCode + ", apartmentName=" + apartmentName + ", jibun=" + jibun + ", lng=" + lng + ", lat=" + lat
+				+ "]";
 	}
 }

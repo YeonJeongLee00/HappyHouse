@@ -55,6 +55,7 @@
 import { mapState, mapActions } from "vuex";
 
 const userStore = "userStore";
+const likeStroe = "likeStore";
 
 export default {
   data() {
@@ -67,11 +68,12 @@ export default {
   },
   computed: {
     // state 가져오기
-    ...mapState(userStore, ["isLogin", "isLoginError"]),
+    ...mapState(userStore, ["isLogin", "isLoginError", "userInfo"]),
   },
   methods: {
     // action 가져오기
     ...mapActions(userStore, ["userConfirm", "getUserInfo"]),
+    ...mapActions(likeStroe, ["getLikeArea", "getLikeApt"]),
     async confirm() {
       // userConfim Action에 user 데이터 전송
       await this.userConfirm(this.user);

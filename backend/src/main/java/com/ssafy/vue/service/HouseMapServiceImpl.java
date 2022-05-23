@@ -48,6 +48,12 @@ public class HouseMapServiceImpl implements HouseMapService {
 		return houseMapMapper.getAreaName(dong);
 	}
 
+	@Override
+	public List<SidoGugunCodeDto> getPopularArea() throws Exception {
+		// TODO Auto-generated method stub
+		return houseMapMapper.getPopularArea();
+	}
+
 
 
 }

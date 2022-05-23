@@ -90,7 +90,12 @@ export default {
   created() {
     this.CLEAR_SIDO_LIST(); // 초기화
     this.getSido(); // sidolist 가져오기
-    this.getLikeArea(this.userInfo.id); // 사용자 getLikeArea 가져오기
+  },
+  mounted() {
+    if (this.isLogin) {
+      this.getLikeArea(this.userInfo.id); // 사용자 getLikeArea 가져오기
+      this.getLikeApt(this.userInfo.id);
+    }
   },
   methods: {
     ...mapActions(aptStore, [
@@ -105,15 +110,19 @@ export default {
       "CLEAR_GUGUN_LIST",
       "CLEAR_DONG_LIST",
     ]),
-    ...mapActions(likeStore, ["getLikeArea"]),
+    ...mapActions(likeStore, ["getLikeArea", "getLikeApt"]),
     //  검색 버튼 눌렀을 때
     aptSearch() {
+      console.log(this.selectedDong);
       if (this.selectedDong) {
         this.getHouseList(this.selectedDong);
         this.areaName(this.selectedDong);
-        this.$router.push({
-          name: "aptView",
-        });
+        console.log(this.$route.path);
+        if (this.$route.path !== "/search") {
+          this.$router.push({
+            name: "aptView",
+          });
+        }
       }
     },
     gugunList() {
@@ -145,10 +154,14 @@ export default {
     // 검색 처리
     //
     likeAptList(dongCode) {
+      console.log(dongCode);
       let sidoCode = dongCode.substr(0, 2);
-      let gugunCode = dongCode.substr(2, 5);
+      let gugunCode = dongCode.substr(0, 5);
       this.selectedSido = sidoCode;
       this.selectedGugun = gugunCode;
+      this.selectedDong = dongCode;
+
+      this.aptSearch();
     },
   },
   components: {},

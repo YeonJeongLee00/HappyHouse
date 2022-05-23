@@ -3,7 +3,7 @@ package com.ssafy.vue.dto;
 public class AptLikeDto {
 	int no;
 	String user_id;
-	String houseinfo_no;
+	String houseinfo_aptCode;
 	String registDate;
 	
 	public int getNo() {
@@ -18,11 +18,12 @@ public class AptLikeDto {
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
-	public String getHouseinfo_no() {
-		return houseinfo_no;
+
+	public String getHouseinfo_aptCode() {
+		return houseinfo_aptCode;
 	}
-	public void setHouseinfo_no(String houseinfo_no) {
-		this.houseinfo_no = houseinfo_no;
+	public void setHouseinfo_aptCode(String houseinfo_aptCode) {
+		this.houseinfo_aptCode = houseinfo_aptCode;
 	}
 	public String getRegistDate() {
 		return registDate;
@@ -33,7 +34,7 @@ public class AptLikeDto {
 	
 	@Override
 	public String toString() {
-		return "AptLikeDto [no=" + no + ", user_id=" + user_id + ", houseinfo_no=" + houseinfo_no + ", registDate="
-				+ registDate + "]";
+		return "AptLikeDto [no=" + no + ", user_id=" + user_id + ", houseinfo_aptCode=" + houseinfo_aptCode
+				+ ", registDate=" + registDate + "]";
 	}
 }

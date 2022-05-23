@@ -45,6 +45,7 @@ public class HouseMapController {
 
 	@GetMapping("/list")
 	public ResponseEntity<List<HouseInfoDto>> getAptList(@RequestParam("dong") String dong) throws Exception {
+		System.out.println(dong);
 		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getAptList(dong), HttpStatus.OK);
 	}
 	
@@ -53,6 +54,10 @@ public class HouseMapController {
 		return new ResponseEntity<SidoGugunCodeDto>(haHouseMapService.getAreaName(dong), HttpStatus.OK);
 	}
 	
+	@GetMapping("/area/popular")
+	public ResponseEntity<List<SidoGugunCodeDto>> getPopularArea() throws Exception {
+		return new ResponseEntity<List<SidoGugunCodeDto>>(haHouseMapService.getPopularArea(),HttpStatus.OK);
+	}
 	
 	@GetMapping("/apt")
 	public ResponseEntity<List<HouseInfoDto>> apt(@RequestParam("dong") String dong) throws Exception {
