@@ -1,5 +1,6 @@
 package com.ssafy.vue.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +27,27 @@ public class HouseMapServiceImpl implements HouseMapService {
 	}
 
 	@Override
-	public List<HouseInfoDto> getDongInGugun(String gugun) throws Exception {
+	public List<SidoGugunCodeDto> getDongInGugun(String gugun) throws Exception {
 		return houseMapMapper.getDongInGugun(gugun);
 	}
 
 	@Override
+	public List<HouseInfoDto> getAptList(String dong) throws SQLException {
+		// TODO Auto-generated method stub
+		return houseMapMapper.getAptList(dong);
+	}
+	
+	@Override
 	public List<HouseInfoDto> getAptInDong(String dong) throws Exception {
 		return houseMapMapper.getAptInDong(dong);
 	}
+
+	@Override
+	public SidoGugunCodeDto getAreaName(String dong) throws SQLException {
+		// TODO Auto-generated method stub
+		return houseMapMapper.getAreaName(dong);
+	}
+
+
 
 }

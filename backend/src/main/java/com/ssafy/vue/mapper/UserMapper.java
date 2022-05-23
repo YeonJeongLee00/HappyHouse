@@ -3,6 +3,8 @@ package com.ssafy.vue.mapper;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.ssafy.vue.dto.AptLikeDto;
+import com.ssafy.vue.dto.LocalLikeDto;
 import com.ssafy.vue.dto.UserDto;
 
 
