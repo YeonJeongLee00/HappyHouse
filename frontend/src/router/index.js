@@ -54,6 +54,13 @@ const routes = [
         name: "detail",
         component: () => import("@/components/user/UserDetailView.vue"),
       },
+      {
+        path: "/admin/detail",
+        name: "adminDetail",
+        props: true,
+        component: () =>
+          import("@/components/user/admin/adminUserDetailView.vue"),
+      },
     ],
   },
   {
