@@ -17,11 +17,23 @@
 		order by gugunCode
 	</select>
 	
-	<select id="getDongInGugun" parameterType="string" resultType="houseInfoDto">
-		select distinct dongName, dongCode
-		from houseinfo
+	<select id="getDongInGugun" parameterType="string" resultType="SidoGugunCodeDto">
+		select dongName, dongCode
+		from dongcode
 		where left(dongCode, 5) = #{gugun}
 		order by dongName
+	</select>
+	
+	<select id="getAptList" parameterType="string" resultType="houseInfoDto">
+	 	select *
+	 	from houseinfo
+	 	where dongCode=#{dong}
+	</select>
+	
+	<select id="getAreaName" parameterType="string" resultType="SidoGugunCodeDto">
+		select *
+		from dongCode
+		where dongCode=#{dong}
 	</select>
 	
 	<select id="getAptInDong" parameterType="string" resultType="houseInfoDto">

@@ -44,10 +44,15 @@ export default {
         { dealAmount: 150000, dealYear: 2019, dealMonth: 3, dealDay: 4 },
         { dealAmount: 104800, dealYear: 2019, dealMonth: 3, dealDay: 8 },
       ],
+      aptNo: null,
     };
   },
   components: {
     LineChartView,
+  },
+  created() {
+    let aptNo = this.$route.params.aptNo;
+    console.log(aptNo);
   },
 };
 </script>

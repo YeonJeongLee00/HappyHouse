@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.vue.dto.BaseaddressDto;
+import com.ssafy.vue.dto.LocalLikeDto;
 import com.ssafy.vue.dto.UserDto;
 import com.ssafy.vue.service.JwtServiceImpl;
 import com.ssafy.vue.service.UserService;
@@ -130,11 +132,31 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	@ApiOperation(value = "사용자 전체 목록 불러오기")
 	@GetMapping("/list")
 	public ResponseEntity<List<UserDto>> getInfo() throws Exception{
 		List<UserDto> userList = userService.getUserList();
-		System.out.println(userList);
 		return new ResponseEntity<List<UserDto>>(userList, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "사용자가 관심있는 지역 ")
+	@PostMapping("/like/area")
+	public ResponseEntity<Boolean> addLikeArea(@RequestBody LocalLikeDto area) throws Exception{
+		System.out.println(area);
+		return new ResponseEntity<Boolean>(userService.addLikeArea(area), HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "사용자가 관심있는 지역 리스트 가져오기")
+	@GetMapping("/like/area/{id}")
+	public ResponseEntity<List<BaseaddressDto>> getLikeArea(@PathVariable("id") String id) throws Exception{
+		return new ResponseEntity<List<BaseaddressDto>>(userService.getLikeArea(id), HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "사용자가 관심있는 지역 ")
+	@DeleteMapping("/like/area/{no}")
+	public ResponseEntity<Boolean> deleteLikeArea(@PathVariable("no") int no) throws Exception{
+		return new ResponseEntity<Boolean>(userService.deleteLikeArea(no), HttpStatus.OK);
 	}
 
 }

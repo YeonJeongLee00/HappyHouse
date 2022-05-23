@@ -5,7 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.vue.dto.AptLikeDto;
+import com.ssafy.vue.dto.BaseaddressDto;
+import com.ssafy.vue.dto.LocalLikeDto;
 import com.ssafy.vue.dto.UserDto;
+import com.ssafy.vue.mapper.UserLikeMapper;
 import com.ssafy.vue.mapper.UserMapper;
 
 @Service
@@ -28,6 +32,8 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private UserMapper userMapper;
+	@Autowired
+	private UserLikeMapper userLikeMapper;
 	
 	@Override
 	public boolean insertUser(UserDto user) throws Exception{
@@ -68,6 +74,38 @@ public class UserServiceImpl implements UserService {
 	public boolean deleteUser(String id) throws Exception {
 		// TODO Auto-generated method stub
 		return userMapper.deleteUser(id) == 1;
+	}
+
+// ------------------	user 좋아요 관련 Service ------------------
+	
+	@Override
+	public boolean addLikeArea(LocalLikeDto area) throws Exception {
+		return userLikeMapper.addLikeArea(area) == 1;
+	}
+
+	@Override
+	public boolean addAptArea(AptLikeDto apt) throws Exception {
+		return userLikeMapper.addAptArea(apt) == 1;
+	}
+
+	@Override
+	public boolean deleteLikeArea(int no) throws Exception {	
+		return userLikeMapper.deleteLikeArea(no) == 1;
+	}
+
+	@Override
+	public boolean deleteAptArea(int no) throws Exception {
+		return userLikeMapper.deleteAptArea(no) == 1;
+	}
+
+	@Override
+	public List<BaseaddressDto> getLikeArea(String id) throws Exception {
+		return userLikeMapper.getLikeArea(id);
+	}
+
+	@Override
+	public List<AptLikeDto> getLikeApt(String id) throws Exception {
+		return userLikeMapper.getLikeApt(id);
 	}
 
 
