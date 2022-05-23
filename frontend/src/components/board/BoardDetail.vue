@@ -85,6 +85,9 @@
 <script>
 import { selectBoard, deleteBoard, selectTag, updateView } from "@/api/board";
 import moment from "moment";
+import { mapState } from "vuex";
+
+const userStore = "userStore";
 
 export default {
   name: "BoardDetail",
@@ -93,6 +96,9 @@ export default {
       // 가져온 데이터 저장할 객체
       board: {},
     };
+  },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
   },
   // 생성되자마자 데이터가져오기
   created() {
@@ -131,23 +137,34 @@ export default {
     },
     // 수정 페이지
     moveModify() {
-      this.$router.replace({
-        name: "boardModify",
-        params: { no: this.board.no },
-      });
+      if (this.board.user_id == this.userInfo.id) {
+        this.$router.replace({
+          name: "boardModify",
+          params: { no: this.board.no },
+        });
+      } else {
+        alert("수정할 수 있는 권한이 없습니다.");
+      }
     },
     // 글 삭제하기
     deleteBoard() {
-      if (confirm("정말로 삭제하시겠습니까?")) {
-        deleteBoard(
-          this.board.no,
-          () => {
-            this.$router.replace({ name: "boardList" });
-          },
-          (error) => {
-            console.log("삭제시 에러발생!!", error);
-          }
-        );
+      if (
+        this.board.user_id == this.userInfo.id ||
+        this.userInfo.id == "admin"
+      ) {
+        if (confirm("정말로 삭제하시겠습니까?")) {
+          deleteBoard(
+            this.board.no,
+            () => {
+              this.$router.replace({ name: "boardList" });
+            },
+            (error) => {
+              console.log("삭제시 에러발생!!", error);
+            }
+          );
+        }
+      } else {
+        alert("삭제할 수 있는 권한이 없습니다.");
       }
     },
   },
