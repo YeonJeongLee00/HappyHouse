@@ -178,7 +178,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 h3 {
   text-align: center;
   margin-top: 30px;
