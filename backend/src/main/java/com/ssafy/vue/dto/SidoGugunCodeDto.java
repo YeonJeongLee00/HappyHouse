@@ -6,6 +6,8 @@ public class SidoGugunCodeDto {
 	private String sidoName;
 	private String gugunCode;
 	private String gugunName;
+	private String dongCode;
+	private String dongName;
 
 	public String getSidoCode() {
 		return sidoCode;
@@ -39,10 +41,25 @@ public class SidoGugunCodeDto {
 		this.gugunName = gugunName;
 	}
 
+	public String getDongCode() {
+		return dongCode;
+	}
+
+	public void setDongCode(String dongCode) {
+		this.dongCode = dongCode;
+	}
+
+	public String getDongName() {
+		return dongName;
+	}
+
+	public void setDongName(String dongName) {
+		this.dongName = dongName;
+	}
+
 	@Override
 	public String toString() {
 		return "SidoGugunCodeDto [sidoCode=" + sidoCode + ", sidoName=" + sidoName + ", gugunCode=" + gugunCode
-				+ ", gugunName=" + gugunName + "]";
+				+ ", gugunName=" + gugunName + ", dongCode=" + dongCode + ", dongName=" + dongName + "]";
 	}
-
 }
