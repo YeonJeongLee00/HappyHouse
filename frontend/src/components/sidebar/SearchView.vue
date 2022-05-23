@@ -1,6 +1,6 @@
 <template>
   <div id="side-bar">
-    <b-container class="make-scroll" right shadow>
+    <b-container class="container make-scroll" right shadow>
       <!-- 시, 구, 동 선택 -->
       <div id="search">
         <!-- 시/도 -->
@@ -105,6 +105,24 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  height: 92vh;
+  overflow: auto;
+}
+.container::-webkit-scrollbar {
+  width: 10px;
+}
+.container::-webkit-scrollbar-thumb {
+  background-color: #ffba00;
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+.container::-webkit-scrollbar-track {
+  background-color: #0c3b2e;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
+}
 #like-area .like-btn {
   background-color: white;
   border-color: #ffba00;

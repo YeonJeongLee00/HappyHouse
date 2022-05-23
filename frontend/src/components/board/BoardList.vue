@@ -12,6 +12,7 @@
       <b-table-simple
         hover
         responsive
+        class="mt-3"
         id="my-table"
         :items="items"
         :current-page="currentPage"
@@ -61,6 +62,9 @@
 <script>
 import { listBoard } from "@/api/board.js";
 import BoardListItem from "@/components/board/item/BoardListItem.vue";
+import { mapState } from "vuex";
+
+const userStore = "userStore";
 
 export default {
   name: "BoardList",
@@ -100,6 +104,7 @@ export default {
     );
   },
   computed: {
+    ...mapState(userStore, ["userInfo"]),
     rows() {
       return this.boards.length;
     },
@@ -107,7 +112,11 @@ export default {
   methods: {
     // 글쓰기 누르면 글 작성 component로 이동
     moveWrite() {
-      this.$router.push({ name: "boardRegister" });
+      if (this.userInfo === null) {
+        alert("로그인을 해주십시오");
+      } else {
+        this.$router.push({ name: "boardRegister" });
+      }
     },
     // 원하는 글 종류만 출력
     onChange(event) {

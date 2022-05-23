@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container class="container">
     <h1>공지사항</h1>
     <router-view></router-view>
   </b-container>
@@ -14,6 +14,6 @@ export default {
 <style scoped>
 h1 {
   text-align: center;
-  margin-top: 60px;
+  margin-top: 40px;
 }
 </style>
