@@ -2,6 +2,9 @@ package com.ssafy.vue.service;
 
 import java.util.List;
 
+import com.ssafy.vue.dto.AptLikeDto;
+import com.ssafy.vue.dto.BaseaddressDto;
+import com.ssafy.vue.dto.LocalLikeDto;
 import com.ssafy.vue.dto.UserDto;
 
 public interface UserService {
@@ -12,4 +15,11 @@ public interface UserService {
 	public UserDto login(UserDto memberDto) throws Exception;
 	public UserDto userInfo(String userid) throws Exception;
 	public List<UserDto> getUserList() throws Exception;
-}
+//	좋아요 관련 service
+	public boolean addLikeArea(LocalLikeDto area) throws Exception;
+	public boolean addAptArea(AptLikeDto apt) throws Exception;
+	public boolean deleteLikeArea(int no) throws Exception;
+	public boolean deleteAptArea(int no) throws Exception;
+	public List<BaseaddressDto> getLikeArea(String id) throws Exception;
+	public List<AptLikeDto> getLikeApt(String id) throws Exception;
+	}

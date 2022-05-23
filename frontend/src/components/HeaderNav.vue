@@ -75,10 +75,15 @@ export default {
     ...mapState(userStore, ["isAdmin", "isLogin", "isLoginError", "userInfo"]),
   },
   methods: {
-    ...mapMutations(userStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
+    ...mapMutations(userStore, [
+      "SET_IS_LOGIN",
+      "SET_USER_INFO",
+      "SET_IS_ADMIN",
+    ]),
     logout() {
       this.SET_USER_INFO(null);
       this.SET_IS_LOGIN(false);
+      this.SET_IS_ADMIN(false);
       sessionStorage.removeItem("access-token");
     },
   },
