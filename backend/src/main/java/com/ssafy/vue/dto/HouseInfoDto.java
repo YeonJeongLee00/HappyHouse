@@ -1,7 +1,7 @@
 package com.ssafy.vue.dto;
 
 public class HouseInfoDto {
-	private int aptCode;
+	private int no;
 	private String aptName;
 	private String dongCode;
 	private String dongName;
@@ -14,12 +14,12 @@ public class HouseInfoDto {
 	private String img;
 	private String recentPrice;
 
-	public int getAptCode() {
-		return aptCode;
+	public int getNo() {
+		return no;
 	}
 
-	public void setAptCode(int aptCode) {
-		this.aptCode = aptCode;
+	public void setNo(int no) {
+		this.no = no;
 	}
 
 	public String getAptName() {
@@ -112,10 +112,8 @@ public class HouseInfoDto {
 
 	@Override
 	public String toString() {
-		return "HouseInfoDto [aptCode=" + aptCode + ", aptName=" + aptName + ", dongCode=" + dongCode + ", dongName="
-				+ dongName + ", sidoName=" + sidoName + ", gugunName=" + gugunName + ", buildYear=" + buildYear
-				+ ", jibun=" + jibun + ", lat=" + lat + ", lng=" + lng + ", img=" + img + ", recentPrice=" + recentPrice
-				+ "]";
+		return "HouseInfoDto [no=" + no + ", aptName=" + aptName + ", dongCode=" + dongCode + ", dongName=" + dongName
+				+ ", sidoName=" + sidoName + ", gugunName=" + gugunName + ", buildYear=" + buildYear + ", jibun="
+				+ jibun + ", lat=" + lat + ", lng=" + lng + ", img=" + img + ", recentPrice=" + recentPrice + "]";
 	}
-
 }
