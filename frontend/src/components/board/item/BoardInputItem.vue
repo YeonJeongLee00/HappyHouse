@@ -41,7 +41,6 @@
             v-model="board.user_id"
             type="text"
             readonly
-            placeholder="ssafy"
           ></b-form-input>
         </b-form-group>
 
@@ -130,6 +129,9 @@
 
 <script>
 import { selectBoard, insertBoard, updateBoard } from "@/api/board";
+import { mapState } from "vuex";
+
+const userStore = "userStore";
 
 export default {
   name: "BoardInputItem",
@@ -140,7 +142,7 @@ export default {
         no: 0,
         title: "",
         content: "",
-        user_id: "ssafy",
+        user_id: "",
         data: "",
         view: "",
         tag_no: "",
@@ -158,8 +160,12 @@ export default {
     // 글 작성인지 수정인지 확인
     type: { type: String },
   },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+  },
   // 생성되자마자 데이터가져오기
   created() {
+    this.board.user_id = this.userInfo.id;
     if (this.type === "modify") {
       selectBoard(
         this.$route.params.no,
@@ -170,7 +176,6 @@ export default {
           console.log("데이터 에러발생!!", error);
         }
       );
-      //}else{} 사용자 정보 있는지 없는지 체크해서 해결
     }
   },
   methods: {
@@ -214,7 +219,7 @@ export default {
           no: 0,
           title: this.board.title,
           content: this.board.content,
-          user_id: "ssafy",
+          user_id: this.board.user_id,
           date: "",
           view: 0,
           tag_no: this.board.tag_no,
