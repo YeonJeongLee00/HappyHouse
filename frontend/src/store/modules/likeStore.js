@@ -1,10 +1,12 @@
-import { getLikeApt, getLikeArea } from "@/api/like.js";
+import { getLikeAptList, getLikeAreaList } from "@/api/like.js";
 
 const likeStore = {
   namespaced: true,
   state: {
     likeArea: null,
     likeApt: null,
+    isSelectedArea: false,
+    isSelectedApt: null,
   },
   getters: {},
   mutations: {
@@ -18,7 +20,7 @@ const likeStore = {
   actions: {
     getLikeArea: ({ commit }, id) => {
       console.log(id);
-      getLikeArea(
+      getLikeAreaList(
         id,
         ({ data }) => {
           console.log(data);
@@ -28,9 +30,10 @@ const likeStore = {
       );
     },
     getLikeApt: ({ commit }, id) => {
-      getLikeApt(
+      getLikeAptList(
         id,
         ({ data }) => {
+          console.log(data);
           commit("SET_LIKE_APT", data);
         },
         () => {}

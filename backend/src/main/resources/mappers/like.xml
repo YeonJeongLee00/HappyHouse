@@ -8,8 +8,9 @@
 		values(#{user_id}, #{dongCode}, now());
 	</insert>
 	
-	<insert id="addAptArea">
-	
+	<insert id="addAptArea" parameterType="AptLikeDto">
+		insert into aptlike(user_id, houseinfo_aptCode, registDate)
+		values(#{user_id},#{houseinfo_aptCode}, now());
 	</insert>
 	
 	<delete id="deleteLikeArea" parameterType="int">
@@ -17,7 +18,9 @@
 		where no=#{no};
 	</delete>
 	
-	<delete id="deleteAptArea">
+	<delete id="deleteAptArea" parameterType="int">
+	 	delete from aptlike
+		where no=#{no};
 	</delete>
 	
 	<select id="getLikeArea" parameterType="String" resultType="BaseaddressDto">
@@ -28,5 +31,11 @@
 		where l.user_id = #{id};
 	</select>
 	
-	<select id="getLikeApt"></select>
+	<select id="getLikeApt" parameterType="String" resultType="AptLikeListDto">
+		select a.no, h.*
+		from aptlike a
+		join houseinfo h
+		on a.houseinfo_aptCode = h.aptCode
+		where user_id=#{id}
+	</select>
 </mapper>
