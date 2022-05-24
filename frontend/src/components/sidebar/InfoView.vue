@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 찜한 아파트 -->
-    <b-card id="popular-area" class="mt-3">
+    <b-card id="popular-area" class="mt-3" v-if="isLogin">
       <b-row class="ml-2 toggle-set" @click="AptToggle">
         <div><h3>관심 아파트</h3></div>
         <div class="mr-3">
@@ -110,6 +110,7 @@ import { getPopularArea } from "@/api/like";
 import { mapState } from "vuex";
 
 const likeStore = "likeStore";
+const userStore = "userStore";
 
 export default {
   name: "InfoView",
@@ -127,6 +128,7 @@ export default {
   },
   computed: {
     ...mapState(likeStore, ["likeApt"]),
+    ...mapState(userStore, ["isLogin"]),
   },
   created() {
     let param = {
