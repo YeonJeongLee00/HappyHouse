@@ -14,5 +14,5 @@ public interface HouseMapService {
 	List<HouseInfoDto> getAptList(String dong) throws SQLException;
 	SidoGugunCodeDto getAreaName(String dong) throws SQLException;
 	List<HouseInfoDto> getAptInDong(String dong) throws Exception;
-	
+	List<SidoGugunCodeDto> getPopularArea() throws Exception;
 }
