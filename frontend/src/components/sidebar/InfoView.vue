@@ -108,10 +108,11 @@
 import NewsListItem from "@/components/sidebar/news/NewsListItem.vue";
 import { getNewsDatas } from "@/api/news";
 import { getPopularArea } from "@/api/like";
-import { mapState } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 
 const likeStore = "likeStore";
 const userStore = "userStore";
+const aptStore = "aptStore";
 
 export default {
   name: "InfoView",
@@ -155,6 +156,12 @@ export default {
     );
   },
   methods: {
+    ...mapActions(aptStore, ["changeSelect", "getDong", "getGugun"]),
+    ...mapMutations(aptStore, [
+      "CLEAR_SIDO_LIST",
+      "CLEAR_GUGUN_LIST",
+      "CLEAR_DONG_LIST",
+    ]),
     AreaToggle() {
       console.log("areaToggle");
       this.pouplarAreaToggle = !this.pouplarAreaToggle;
@@ -167,8 +174,21 @@ export default {
     },
     popularAreaMove(code) {
       console.log(code);
-      // let sido = code.substr(0, 2);
-      // let gugun = code.substr(0, 6);
+      let sido = code.substr(0, 2);
+      let gugun = code.substr(0, 5);
+      let dong = code;
+      let payload = {
+        sido,
+        gugun,
+        dong,
+      };
+      this.$emit("abc-ssafy", payload);
+      // this.changeSelect(payload);
+
+      // this.CLEAR_GUGUN_LIST();
+      // this.CLEAR_DONG_LIST();
+      // this.getGugun(payload.sido);
+      // this.getDong(payload.gugun);
     },
   },
 };

@@ -4,11 +4,12 @@
       <!-- 시, 구, 동 선택 -->
       <div id="search">
         <!-- 시/도 -->
+        <!-- v-model="selectedSido"  -->
         <div class="search-bar">
           <div class="full mr-3">
             <b-form-select
-              :options="sidos"
               v-model="isSelectedSido"
+              :options="sidos"
               size="lg"
               class="sido"
               @change="gugunList"
@@ -60,7 +61,7 @@
         </b-button-group>
       </div>
       <!-- url에 따라서 변경되는 화면  -->
-      <router-view></router-view>
+      <router-view @abc-ssafy="m1"></router-view>
     </b-container>
   </div>
 </template>
@@ -150,8 +151,10 @@ export default {
       }
     },
     gugunList() {
+      // this.isSelectedSido = e.target.value;
       this.CLEAR_GUGUN_LIST();
       this.isSelectedGugun = null;
+      // if (this.isSelectedSido) this.getGugun(e.target.value);
       if (this.isSelectedSido) this.getGugun(this.isSelectedSido);
     },
     dongList() {
@@ -184,6 +187,20 @@ export default {
       this.selectedDong = dongCode;
 
       this.aptSearch();
+    },
+
+    async m1(payload) {
+      console.log("m1");
+      console.log(payload);
+      // this.CLEAR_SIDO_LIST();
+      this.CLEAR_GUGUN_LIST();
+      this.CLEAR_DONG_LIST();
+      this.isSelectedSido = payload.sido;
+      await this.getGugun(payload.sido);
+      console.log(payload.gugun);
+      this.isSelectedGugun = payload.gugun;
+      await this.getDong(payload.gugun);
+      this.isSelectedDong = payload.dong;
     },
   },
   components: {},
