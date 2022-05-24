@@ -22,7 +22,7 @@ const routes = [
       },
       // 상세정보
       {
-        path: "search/:aptNo",
+        path: "search/:aptCode",
         name: "aptDetail",
         component: () => import("@/components/sidebar/AptDetailView.vue"),
       },
