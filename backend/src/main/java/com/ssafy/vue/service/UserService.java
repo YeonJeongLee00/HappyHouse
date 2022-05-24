@@ -3,7 +3,9 @@ package com.ssafy.vue.service;
 import java.util.List;
 
 import com.ssafy.vue.dto.AptLikeDto;
+import com.ssafy.vue.dto.AptLikeListDto;
 import com.ssafy.vue.dto.BaseaddressDto;
+import com.ssafy.vue.dto.HouseInfoDto;
 import com.ssafy.vue.dto.LocalLikeDto;
 import com.ssafy.vue.dto.UserDto;
 
@@ -21,5 +23,5 @@ public interface UserService {
 	public boolean deleteLikeArea(int no) throws Exception;
 	public boolean deleteAptArea(int no) throws Exception;
 	public List<BaseaddressDto> getLikeArea(String id) throws Exception;
-	public List<AptLikeDto> getLikeApt(String id) throws Exception;
+	public List<AptLikeListDto> getLikeApt(String id) throws Exception;
 	}
