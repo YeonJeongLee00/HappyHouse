@@ -62,9 +62,9 @@ const userStore = {
     },
 
     // login 후 사용자 정보 가져옴
-    getUserInfo({ commit }, token) {
+    async getUserInfo({ commit }, token) {
       let decode_token = jwt_decode(token);
-      findById(
+      await findById(
         decode_token.id,
         ({ data }) => {
           if (data.message === "success") {

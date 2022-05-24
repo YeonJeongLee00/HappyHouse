@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.vue.dto.AptLikeDto;
+import com.ssafy.vue.dto.AptLikeListDto;
 import com.ssafy.vue.dto.BaseaddressDto;
+import com.ssafy.vue.dto.HouseInfoDto;
 import com.ssafy.vue.dto.LocalLikeDto;
 import com.ssafy.vue.dto.UserDto;
 import com.ssafy.vue.service.JwtServiceImpl;
@@ -147,10 +150,23 @@ public class UserController {
 		return new ResponseEntity<Boolean>(userService.addLikeArea(area), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "사용자가 관심있는 아파트")
+	@PostMapping("/like/apt")
+	public ResponseEntity<Boolean> addLikeApt(@RequestBody AptLikeDto apt) throws Exception{
+		System.out.println(apt);
+		return new ResponseEntity<Boolean>(userService.addAptArea(apt), HttpStatus.OK);
+	}
+	
 	@ApiOperation(value = "사용자가 관심있는 지역 리스트 가져오기")
 	@GetMapping("/like/area/{id}")
 	public ResponseEntity<List<BaseaddressDto>> getLikeArea(@PathVariable("id") String id) throws Exception{
 		return new ResponseEntity<List<BaseaddressDto>>(userService.getLikeArea(id), HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "사용자가 관심있는 아파트 리스트 가져오기")
+	@GetMapping("/like/apt/{id}")
+	public ResponseEntity<List<AptLikeListDto>> getLikeApt(@PathVariable("id") String id) throws Exception{
+		return new ResponseEntity<List<AptLikeListDto>>(userService.getLikeApt(id), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "사용자가 관심있는 지역 ")
