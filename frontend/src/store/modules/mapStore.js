@@ -1,7 +1,8 @@
 const mapStore = {
+  namespaced: true,
   state: {
-    lng: null,
-    lat: null,
+    lng: 128.413952,
+    lat: 36.1081964,
   },
   getters: {},
   mutations: {

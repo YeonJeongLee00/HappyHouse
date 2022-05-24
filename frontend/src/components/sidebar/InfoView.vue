@@ -26,7 +26,7 @@
             class="outline-light list-item"
             v-for="(apt, index) in likeApt"
             :key="index"
-            @click="moveLikeApt(apt.aptCode, apt.dongCode)"
+            @click="moveLikeApt(apt.aptCode, apt.dongCode, apt.lat, apt.lng)"
           >
             {{ apt.apartmentName }}
             <span>
@@ -114,6 +114,7 @@ import { mapState, mapActions, mapMutations } from "vuex";
 const likeStore = "likeStore";
 const userStore = "userStore";
 const aptStore = "aptStore";
+const mapStore = "mapStore";
 
 export default {
   name: "InfoView",
@@ -163,6 +164,7 @@ export default {
       "CLEAR_GUGUN_LIST",
       "CLEAR_DONG_LIST",
     ]),
+    ...mapMutations(mapStore, ["SET_LNG", "SET_LAT"]),
     AreaToggle() {
       console.log("areaToggle");
       this.pouplarAreaToggle = !this.pouplarAreaToggle;
@@ -188,13 +190,16 @@ export default {
       // 지역코드를 payload로 넘겨준다.
       this.$emit("area-select-box", payload);
     },
-    moveLikeApt(aptCode, dongCode) {
+    // 관심 아파트 누르면 검색 이벤트 발생시키는 메소드
+    moveLikeApt(aptCode, dongCode, lat, lng) {
       let payload = {
         sido: dongCode.substr(0, 2),
         gugun: dongCode.substr(0, 5),
         dong: dongCode,
         aptCode: aptCode,
       };
+      this.SET_LNG(lng);
+      this.SET_LAT(lat);
       this.$emit("apt-select-box", payload);
     },
   },

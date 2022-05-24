@@ -76,6 +76,7 @@ import { deleteLikeArea } from "@/api/like.js";
 const aptStore = "aptStore";
 const userStore = "userStore";
 const likeStore = "likeStore";
+const mapStore = "mapStore";
 
 export default {
   data() {
@@ -92,6 +93,7 @@ export default {
       "guguns",
       "houses",
       "dongs",
+      "dongsPoint",
       "selectedSido",
       "selectedGugun",
       "selectedDong",
@@ -139,13 +141,14 @@ export default {
       "SET_SELECTED_GUGUN",
       "SET_SELECTED_DONG",
     ]),
+    ...mapMutations(mapStore, ["SET_LNG", "SET_LAT"]),
     ...mapActions(likeStore, ["getLikeArea", "getLikeApt"]),
     //  검색 버튼 눌렀을 때
-    aptSearch() {
+    async aptSearch() {
       if (this.isSelectedDong) {
         this.getHouseList(this.isSelectedDong);
         this.areaName(this.isSelectedDong);
-        console.log(this.$route.path);
+        // 현재 컴포넌트가 search 컴포넌트면 이동하지 않는다.
         if (this.$route.path !== "/search") {
           this.$router.push({
             name: "aptView",
@@ -199,7 +202,7 @@ export default {
       await this.getDong(payload.gugun);
       this.isSelectedDong = payload.dong;
       // 검색 버튼 누를때 부르는 메소드 호출
-      this.aptSearch();
+      await this.aptSearch();
     },
     // 관심 아파트 이벤트 들음
     async AptSetInfo(payload) {

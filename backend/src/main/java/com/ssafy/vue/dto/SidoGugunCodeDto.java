@@ -8,6 +8,8 @@ public class SidoGugunCodeDto {
 	private String gugunName;
 	private String dongCode;
 	private String dongName;
+	private String lat;
+	private String lng;
 
 	public String getSidoCode() {
 		return sidoCode;
@@ -57,9 +59,26 @@ public class SidoGugunCodeDto {
 		this.dongName = dongName;
 	}
 
+	public String getLat() {
+		return lat;
+	}
+
+	public void setLat(String lat) {
+		this.lat = lat;
+	}
+
+	public String getLng() {
+		return lng;
+	}
+
+	public void setLng(String lng) {
+		this.lng = lng;
+	}
+
 	@Override
 	public String toString() {
 		return "SidoGugunCodeDto [sidoCode=" + sidoCode + ", sidoName=" + sidoName + ", gugunCode=" + gugunCode
-				+ ", gugunName=" + gugunName + ", dongCode=" + dongCode + ", dongName=" + dongName + "]";
+				+ ", gugunName=" + gugunName + ", dongCode=" + dongCode + ", dongName=" + dongName + ", lat=" + lat
+				+ ", lng=" + lng + "]";
 	}
 }

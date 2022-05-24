@@ -12,6 +12,7 @@ const aptStore = {
     sidos: [{ value: null, text: "시/도" }],
     guguns: [{ value: null, text: "구/군" }],
     dongs: [{ value: null, text: "읍/면/동" }],
+    dongsPoint: [],
     houses: [],
     house: null,
     code: null,
@@ -46,6 +47,11 @@ const aptStore = {
     SET_DONG_LIST: (state, dongs) => {
       dongs.forEach((dong) => {
         state.dongs.push({ value: dong.dongCode, text: dong.dongName });
+        state.dongsPoint.push({
+          name: dong.dongName,
+          lat: dong.lat,
+          lng: dong.lng,
+        });
       });
     },
     CLEAR_SIDO_LIST: (state) => {
@@ -56,6 +62,7 @@ const aptStore = {
     },
     CLEAR_DONG_LIST: (state) => {
       state.dongs = [{ value: null, text: "읍/면/동" }];
+      state.dongsPoint = [];
     },
     SET_CODE: (state, dong) => {
       state.code = dong;
