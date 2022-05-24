@@ -77,21 +77,13 @@ export default {
   data() {
     return {
       chartData: {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-        ],
+        labels: [],
         datasets: [
           {
             label: "가격",
             backgroundColor: "#6d9773",
             borderColor: "#6d9773",
-            data: [40, 39, 10, 40, 39, 80, 40],
+            data: [],
           },
         ],
       },
@@ -101,14 +93,19 @@ export default {
       },
     };
   },
-  created() {
-    this.chartData.labels = this.dealList.map((deal) => {
-      return `${deal.dealYear}/${deal.dealMonth}/${deal.dealDay}`;
-    });
-
-    this.chartData.datasets[0].data = this.dealList.map((deal) => {
-      return deal.dealAmount;
-    });
+  created() {},
+  mounted() {},
+  watch: {
+    dealList() {
+      this.chartData.labels = this.dealList.map((deal) => {
+        return `${deal.dealYear}/${deal.dealMonth}/${deal.dealDay}`;
+      });
+      console.log("label : " + this.chartData.labels);
+      this.chartData.datasets.data = this.dealList.map((deal) => {
+        return `${deal.dealAmount}`;
+      });
+      console.log("data : " + this.chartData.datasets.data);
+    },
   },
 };
 </script>
