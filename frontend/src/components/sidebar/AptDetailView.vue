@@ -67,6 +67,11 @@
         </b-table-simple></b-card
       >
     </b-collapse>
+
+    <!-- 아파트 정보 end -->
+
+    <!-- 거래내역그래프 start -->
+
     <div class="mr-2">
       <b-button
         v-b-toggle
@@ -81,59 +86,67 @@
     <b-collapse id="apartGraph">
       <b-card
         ><div align="center">
-          <b-button class="b-button ml-2 mr-2" @click="allList" :type="five"
-            >5년</b-button
-          >
-          <b-button class="b-button ml-2 mr-2" @click="oneYearList" :type="one"
+          <b-button class="b-button ml-2 mr-2" @click="allList">5년</b-button>
+          <b-button class="b-button ml-2 mr-2" @click="oneYearList"
             >1년</b-button
           >
-          <b-button
-            class="b-button ml-2 mr-2"
-            @click="groupYearList"
-            :type="group"
+          <b-button class="b-button ml-2 mr-2" @click="groupYearList"
             >연도별</b-button
           >
         </div>
-        <line-chart-view class="mt-4" :dealList="dealList"> </line-chart-view>
 
         <!-- 그룹 출력 -->
-
-        <table class="table-style mt-4" v-if="type === 'group'">
-          <thead>
-            <th>거래가격</th>
-            <th>년</th>
-            <th>월</th>
-            <th>일</th>
-          </thead>
-          <tbody>
-            <tr v-for="(deal, index) in dealList" :key="index">
-              <td>{{ deal.dealAmount }}</td>
-              <td>{{ deal.dealYear }}</td>
-              <td>{{ deal.dealMonth }}</td>
-              <td>{{ deal.dealDay }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div v-if="this.type === 'group'">
+          <line-chart-view class="mt-4" :dealList="dealList" :type="this.type">
+          </line-chart-view>
+          <table class="table-style mt-4">
+            <thead>
+              <th>평균거래가격 ( 만원 )</th>
+              <th>년</th>
+              <th>거래량</th>
+            </thead>
+            <tbody>
+              <tr v-for="(deal, index) in dealList" :key="index">
+                <td>{{ deal.avgAmount }},000</td>
+                <td>{{ deal.dealYear }}</td>
+                <td>{{ deal.count }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <!-- 기본 출력 -->
-        <table class="table-style mt-4" v-else>
-          <thead>
-            <th>거래가격</th>
-            <th>년</th>
-            <th>월</th>
-            <th>일</th>
-          </thead>
-          <tbody>
-            <tr v-for="(deal, index) in dealList" :key="index">
-              <td>{{ deal.dealAmount }}</td>
-              <td>{{ deal.dealYear }}</td>
-              <td>{{ deal.dealMonth }}</td>
-              <td>{{ deal.dealDay }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div v-else>
+          <line-chart-view class="mt-4" :dealList="dealList" :type="this.type">
+          </line-chart-view>
+          <table class="table-style mt-4">
+            <thead>
+              <th>거래가격<br />( 만원 )</th>
+              <th>층</th>
+              <th>전용면적<br />( m² )</th>
+              <th>년</th>
+              <th>월</th>
+              <th>일</th>
+            </thead>
+            <tbody>
+              <tr v-for="(deal, index) in dealList" :key="index">
+                <td>{{ deal.dealAmount }}</td>
+                <td>{{ deal.floor }}</td>
+                <td>{{ deal.area }}</td>
+                <td>{{ deal.dealYear }}</td>
+                <td>{{ deal.dealMonth }}</td>
+                <td>{{ deal.dealDay }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </b-card>
     </b-collapse>
+
+    <!-- 거래내역그래프 end -->
+
+    <!-- 주변 편의 시설 start -->
+
     <div class="mr-2">
       <b-button
         v-b-toggle
@@ -150,10 +163,10 @@
           편의 시설
           <font-awesome-icon icon="fa-solid fa-map-location-dot" class="icon" />
         </h5>
-        <li>편의점!!!</li>
+        <b-button class="b-button" @click="open">편의점</b-button>
       </b-card>
     </b-collapse>
-    <h3 class="mt-4 green-color">{{ aptName }}</h3>
+    <!-- 주변 편의 시설 end -->
   </div>
 </template>
 
@@ -197,7 +210,6 @@ export default {
     selectHouse(
       this.$route.params.aptCode,
       (response) => {
-        console.log(response.data);
         this.house = response.data[0];
       },
       (error) => {
@@ -230,6 +242,7 @@ export default {
   methods: {
     ...mapActions(likeStore, ["getLikeApt"]),
     allList() {
+      this.type = "all";
       listHouse(
         this.$route.params.aptCode,
         (response) => {
@@ -241,6 +254,7 @@ export default {
       );
     },
     oneYearList() {
+      this.type = "one";
       listHouseOneYear(
         this.$route.params.aptCode,
         (response) => {
@@ -252,7 +266,7 @@ export default {
       );
     },
     groupYearList() {
-      console.log(this.type);
+      this.type = "group";
       listHouseYear(
         this.$route.params.aptCode,
         (response) => {

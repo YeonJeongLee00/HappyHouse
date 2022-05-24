@@ -18,7 +18,7 @@ import com.ssafy.vue.dto.NewsDto;
 public class NewsServiceImpl implements NewsService {
 
 	// 네이버 부동산 뉴스
-	private static String NEWS_DATAS_URL = "https://land.naver.com/news/headline.naver?bss_ymd=20220523";
+	private static String NEWS_DATAS_URL = "https://land.naver.com/news/headline.naver?bss_ymd=now()";
 
 	@Override
 	@PostConstruct // 즉시 실행

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.vue.dto.HouseDealDto;
 import com.ssafy.vue.dto.SelectHouseDto;
+import com.ssafy.vue.dto.YearListHouseDto;
 import com.ssafy.vue.mapper.HouseMapper;
 
 @Service
@@ -32,7 +33,7 @@ public class HouseServiceImpl implements HouseService {
 	}
 
 	@Override
-	public List<HouseDealDto> YearlistHouse(BigInteger aptCode) throws Exception {
+	public List<YearListHouseDto> YearlistHouse(BigInteger aptCode) throws Exception {
 		return houseMapper.YearlistHouse(aptCode);
 	}
 
