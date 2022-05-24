@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 찜한 아파트 -->
-    <b-card id="popular-area" class="mt-3">
+    <b-card id="popular-area" class="mt-3" v-if="isLogin">
       <b-row class="ml-2 toggle-set" @click="AptToggle">
         <div><h3>관심 아파트</h3></div>
         <div class="mr-3">
@@ -64,6 +64,7 @@
             class="outline-light list-item"
             v-for="(area, index) in popularArea"
             :key="index"
+            @click="popularAreaMove(area.dongCode)"
           >
             {{ index + 1 }}. {{ area.gugunName }} {{ area.dongName }}
           </b-list-group-item>
@@ -107,9 +108,11 @@
 import NewsListItem from "@/components/sidebar/news/NewsListItem.vue";
 import { getNewsDatas } from "@/api/news";
 import { getPopularArea } from "@/api/like";
-import { mapState } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 
 const likeStore = "likeStore";
+const userStore = "userStore";
+const aptStore = "aptStore";
 
 export default {
   name: "InfoView",
@@ -127,6 +130,7 @@ export default {
   },
   computed: {
     ...mapState(likeStore, ["likeApt"]),
+    ...mapState(userStore, ["isLogin"]),
   },
   created() {
     let param = {
@@ -152,6 +156,12 @@ export default {
     );
   },
   methods: {
+    ...mapActions(aptStore, ["changeSelect", "getDong", "getGugun"]),
+    ...mapMutations(aptStore, [
+      "CLEAR_SIDO_LIST",
+      "CLEAR_GUGUN_LIST",
+      "CLEAR_DONG_LIST",
+    ]),
     AreaToggle() {
       console.log("areaToggle");
       this.pouplarAreaToggle = !this.pouplarAreaToggle;
@@ -161,6 +171,24 @@ export default {
     },
     AptToggle() {
       this.likeAptToggle = !this.likeAptToggle;
+    },
+    popularAreaMove(code) {
+      console.log(code);
+      let sido = code.substr(0, 2);
+      let gugun = code.substr(0, 5);
+      let dong = code;
+      let payload = {
+        sido,
+        gugun,
+        dong,
+      };
+      this.$emit("abc-ssafy", payload);
+      // this.changeSelect(payload);
+
+      // this.CLEAR_GUGUN_LIST();
+      // this.CLEAR_DONG_LIST();
+      // this.getGugun(payload.sido);
+      // this.getDong(payload.gugun);
     },
   },
 };

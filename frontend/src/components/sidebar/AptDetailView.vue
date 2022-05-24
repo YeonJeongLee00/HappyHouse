@@ -1,6 +1,27 @@
 <template>
   <div id="aptDetail">
-    <!-- 아파트 정보 start -->
+    <!-- 아파트 이름 (관심 지역 추가) -->
+    <b-row>
+      <b-col class="mt-3 mb-2">
+        <h4 class="green-color">
+          {{ house.apartmentName }}
+          <span class="ml-2" v-if="isLogin">
+            <font-awesome-icon
+              v-if="!isSelected"
+              class="ml-2 non-selected-heart"
+              icon="fa-regular fa-heart"
+              @click="addApt"
+            />
+            <font-awesome-icon
+              v-if="isSelected"
+              class="ml-2 selected-heart"
+              icon="fa-solid fa-heart"
+              @click="deleteApt"
+            />
+          </span>
+        </h4>
+      </b-col>
+    </b-row>
 
     <div class="mr-2">
       <b-button
@@ -157,8 +178,8 @@ import {
   listHouseOneYear,
   listHouseYear,
 } from "@/api/apt/";
-import { mapState } from "vuex";
-import { addLikeApt } from "@/api/like.js";
+import { mapActions, mapState } from "vuex";
+import { addLikeApt, deleteLikeApt } from "@/api/like.js";
 
 const userStore = "userStore";
 const likeStore = "likeStore";
@@ -172,6 +193,9 @@ export default {
       stickyHeader: true,
       dealList: [],
       type: "",
+      isSelected: false,
+      aptCode: null,
+      no: null,
     };
   },
   computed: {
@@ -193,11 +217,30 @@ export default {
       }
     );
     this.aptCode = this.$route.params.aptCode;
+    // 하트 아이콘 상태 처리
+    this.isSelected = false;
     this.likeApt.forEach((element) => {
-      console.log(element);
+      if (element.aptCode == this.aptCode) {
+        this.isSelected = true;
+        this.no = element.no;
+        return false;
+      }
     });
   },
+  watch: {
+    likeApt() {
+      console.log("likeApt 리스트 상태변경");
+      this.isSelected = false;
+      this.likeApt.forEach((element) => {
+        if (element.aptCode == this.aptCode) {
+          this.isSelected = true;
+          return false;
+        }
+      });
+    },
+  },
   methods: {
+    ...mapActions(likeStore, ["getLikeApt"]),
     allList() {
       this.type = "all";
       listHouse(
@@ -235,21 +278,29 @@ export default {
       );
     },
 
-    addApt() {
+    async addApt() {
       const data = {
         user_id: this.userInfo.id,
         houseinfo_aptCode: this.aptCode,
       };
-      addLikeApt(
+      await addLikeApt(
         data,
-        ({ data }) => {
-          console.log(data);
+        () => {
+          this.getLikeApt(this.userInfo.id);
         },
         () => {}
       );
     },
-    deleteApt() {},
-    open() {},
+    async deleteApt() {
+      console.log(this.no);
+      await deleteLikeApt(
+        this.no,
+        () => {
+          this.getLikeApt(this.userInfo.id);
+        },
+        () => {}
+      );
+    },
   },
 };
 </script>

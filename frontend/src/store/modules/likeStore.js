@@ -16,11 +16,15 @@ const likeStore = {
     SET_LIKE_APT: (state, apts) => {
       state.likeApt = apts;
     },
+    CLEAR_LIKE_AREA_APT: (state) => {
+      state.likeArea = null;
+      state.likeApt = null;
+    },
   },
   actions: {
-    getLikeArea: ({ commit }, id) => {
-      console.log(id);
-      getLikeAreaList(
+    async getLikeArea({ commit }, id) {
+      console.log("getlikeArea");
+      await getLikeAreaList(
         id,
         ({ data }) => {
           console.log(data);
@@ -29,8 +33,8 @@ const likeStore = {
         () => {}
       );
     },
-    getLikeApt: ({ commit }, id) => {
-      getLikeAptList(
+    async getLikeApt({ commit }, id) {
+      await getLikeAptList(
         id,
         ({ data }) => {
           console.log(data);
