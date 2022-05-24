@@ -81,6 +81,7 @@ export default {
       let token = sessionStorage.getItem("access-token");
       if (this.isLogin) {
         await this.getUserInfo(token); // token을 사용해서 userInfo를 얻어온다
+        // 정보얻어오기
         this.$router.push({ name: "main" }); // main으로 이동
       }
     },
