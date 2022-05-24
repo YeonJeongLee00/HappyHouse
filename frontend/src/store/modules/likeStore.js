@@ -16,6 +16,10 @@ const likeStore = {
     SET_LIKE_APT: (state, apts) => {
       state.likeApt = apts;
     },
+    CLEAR_LIKE_AREA_APT: (state) => {
+      state.likeArea = null;
+      state.likeApt = null;
+    },
   },
   actions: {
     getLikeArea: ({ commit }, id) => {

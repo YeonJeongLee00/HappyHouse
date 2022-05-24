@@ -69,6 +69,7 @@
 import { mapState, mapMutations } from "vuex";
 
 const userStore = "userStore";
+const likeStroe = "likeStore";
 
 export default {
   computed: {
@@ -80,10 +81,14 @@ export default {
       "SET_USER_INFO",
       "SET_IS_ADMIN",
     ]),
+    ...mapMutations(likeStroe, ["CLEAR_LIKE_AREA_APT"]),
+
+    // 로그아웃 시 데이터 지우기
     logout() {
       this.SET_USER_INFO(null);
       this.SET_IS_LOGIN(false);
       this.SET_IS_ADMIN(false);
+      this.CLEAR_LIKE_AREA_APT(); // like 정보 삭제
       sessionStorage.removeItem("access-token");
     },
   },
