@@ -174,6 +174,12 @@ public class UserController {
 	public ResponseEntity<Boolean> deleteLikeArea(@PathVariable("no") int no) throws Exception{
 		return new ResponseEntity<Boolean>(userService.deleteLikeArea(no), HttpStatus.OK);
 	}
+	
+	@ApiOperation(value = "사용자가 관심있는 아파 ")
+	@DeleteMapping("/like/apt/{no}")
+	public ResponseEntity<Boolean> deleteLikeApt(@PathVariable("no") int no) throws Exception{
+		return new ResponseEntity<Boolean>(userService.deleteAptArea(no), HttpStatus.OK);
+	}
 
 }
 //	public static final Logger logger = LoggerFactory.getLogger(MemberController.class);
