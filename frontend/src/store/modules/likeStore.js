@@ -22,9 +22,9 @@ const likeStore = {
     },
   },
   actions: {
-    getLikeArea: ({ commit }, id) => {
-      console.log(id);
-      getLikeAreaList(
+    async getLikeArea({ commit }, id) {
+      console.log("getlikeArea");
+      await getLikeAreaList(
         id,
         ({ data }) => {
           console.log(data);
@@ -33,8 +33,8 @@ const likeStore = {
         () => {}
       );
     },
-    getLikeApt: ({ commit }, id) => {
-      getLikeAptList(
+    async getLikeApt({ commit }, id) {
+      await getLikeAptList(
         id,
         ({ data }) => {
           console.log(data);

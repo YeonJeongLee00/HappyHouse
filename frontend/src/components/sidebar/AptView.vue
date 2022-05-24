@@ -30,17 +30,17 @@
           <b-list-group-item
             @click="aptDetail(apt.aptCode)"
             class="outline-light list-item"
-            v-for="apt in houses"
+            v-for="(apt, index) in houses"
             :key="apt.aptCode"
           >
             {{ apt.apartmentName }}
             <font-awesome-icon
-              v-if="!isSelected"
+              v-if="!aptSelectedState[index]"
               class="ml-2 non-selected-heart"
               icon="fa-regular fa-heart"
             />
             <font-awesome-icon
-              v-if="isSelected"
+              v-if="aptSelectedState[index]"
               class="ml-2 selected-heart"
               icon="fa-solid fa-heart"
             />
@@ -64,6 +64,8 @@ export default {
     return {
       isSelected: false,
       no: null,
+      title: null,
+      aptSelectedState: [],
     };
   },
   created() {
@@ -76,40 +78,59 @@ export default {
       }
     });
     this.getLikeApt(this.userInfo.id);
+    this.houses.forEach((house) => {
+      let check = false;
+      this.likeApt.forEach((apt) => {
+        if (apt.aptCode == house.aptCode) {
+          check = true;
+          return false;
+        }
+      });
+      this.aptSelectedState.push(check);
+    });
   },
-  mounted() {},
+  watch: {
+    areaName() {
+      this.setIcon();
+    },
+    likeApt() {
+      this.setLikeIcon();
+    },
+  },
   computed: {
     ...mapState(aptStore, ["houses", "areaName", "code"]),
     ...mapState(userStore, ["isLogin", "userInfo"]),
-    ...mapState(likeStore, ["likeArea"]),
+    ...mapState(likeStore, ["likeArea", "likeApt"]),
   },
   methods: {
-    ...mapActions(likeStore, ["getLikeArea, getLikeApt"]),
+    ...mapActions(likeStore, ["getLikeArea", "getLikeApt"]),
     aptDetail(code) {
       this.$router.push({
         name: "aptDetail",
         params: {
-          aptNo: code,
+          aptCode: code,
         },
       });
     },
-    addArea() {
-      console.log("addArea in!");
+    // 관심 지역 추가
+    async addArea() {
       const data = {
         user_id: this.userInfo.id,
         dongCode: this.code,
       };
-      addLikeArea(
+      await addLikeArea(
         data,
         () => {
-          this.getLikeArea(this.userInfo.id);
-          this.setIcon();
+          console.log("addlikeArea");
         },
         () => {}
       );
+      await this.getLikeArea(this.userInfo.id);
+      this.setIcon();
     },
-    removeArea() {
-      deleteLikeArea(
+    // 관심 지역 삭제
+    async removeArea() {
+      await deleteLikeArea(
         this.no,
         () => {
           this.getLikeArea(this.userInfo.id);
@@ -127,6 +148,18 @@ export default {
           this.no = element.no;
           return false;
         }
+      });
+    },
+    setLikeIcon() {
+      this.houses.forEach((house) => {
+        let check = false;
+        this.likeApt.forEach((apt) => {
+          if (apt.aptCode == house.aptCode) {
+            check = true;
+            return false;
+          }
+        });
+        this.aptSelectedState.push(check);
       });
     },
   },
