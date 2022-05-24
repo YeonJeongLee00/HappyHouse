@@ -7,10 +7,11 @@
         <div class="search-bar">
           <div class="full mr-3">
             <b-form-select
-              :options="sido"
+              :options="sidos"
               v-model="selectedSido"
               size="lg"
               class="sido"
+              @change="gugunList"
             >
             </b-form-select>
           </div>
@@ -18,16 +19,18 @@
           <div class="full mr-3">
             <b-form-select
               v-model="selectedGugun"
-              :options="gugun"
+              :options="guguns"
               size="lg"
               class="gugun"
+              @change="dongList"
             ></b-form-select>
           </div>
           <!-- 읍  / 면/ 동 -->
+          <!-- :disabled="isSelected" 설정 -->
           <div class="full">
             <b-form-select
               v-model="selectedDong"
-              :options="dong"
+              :options="dongs"
               size="lg"
               class="dong"
             ></b-form-select>
@@ -41,22 +44,17 @@
         </div>
       </div>
 
-      <div id="like-area" class="mt-3">
-        <b-button-group size="sm" class="mr-2">
-          <b-button class="like-btn">달서구 상인동 </b-button>
-          <b-button class="like-icon"
-            ><font-awesome-icon icon="fa-solid fa-star" class="icon"
-          /></b-button>
-        </b-button-group>
-        <b-button-group size="sm" class="mr-2">
-          <b-button class="like-btn">동작구 사당동</b-button>
-          <b-button class="like-icon"
-            ><font-awesome-icon icon="fa-solid fa-star" class="icon"
-          /></b-button>
-        </b-button-group>
-        <b-button-group size="sm" class="mr-2">
-          <b-button class="like-btn">유성구 궁동 </b-button>
-          <b-button class="like-icon"
+      <div id="like-area" v-if="isLogin">
+        <b-button-group
+          size="sm"
+          class="mr-2 mt-2"
+          v-for="(area, index) in likeArea"
+          :key="index"
+        >
+          <b-button class="like-btn" @click="likeAptList(area.dongCode)"
+            >{{ area.gugunName }} {{ area.dongName }}</b-button
+          >
+          <b-button class="like-icon" @click="deleteArea(area.no)"
             ><font-awesome-icon icon="fa-solid fa-star" class="icon"
           /></b-button>
         </b-button-group>
@@ -68,30 +66,20 @@
 </template>
 
 <script>
+import { mapState, mapActions, mapMutations } from "vuex";
+import { deleteLikeArea } from "@/api/like.js";
+
+const aptStore = "aptStore";
+const userStore = "userStore";
+const likeStore = "likeStore";
+
 export default {
   data() {
     return {
+      // isSelected: false,
       selectedSido: null,
       selectedGugun: null,
       selectedDong: null,
-      sido: [
-        { value: null, text: "시/도", disabled: true },
-        { value: "a", text: "대구광역시" },
-        { value: "b", text: "서울특별시" },
-        { value: "c", text: "부산광역시" },
-      ],
-      gugun: [
-        { value: null, text: "구/군", disabled: true },
-        { value: "d", text: "달서구" },
-        { value: "e", text: "중구" },
-        { value: "f", text: "동구" },
-      ],
-      dong: [
-        { value: null, text: "읍/면/동", disabled: true },
-        { value: "g", text: "월성동" },
-        { value: "h", text: "상인동" },
-        { value: "j", text: "진천동" },
-      ],
     };
   },
   computed: {
@@ -110,10 +98,6 @@ export default {
     }
   },
   methods: {
-    moveMapPoint() {},
-    aptSearch() {
-      this.$router.push("/search");
-    },
     ...mapActions(aptStore, [
       "getSido",
       "getGugun",
