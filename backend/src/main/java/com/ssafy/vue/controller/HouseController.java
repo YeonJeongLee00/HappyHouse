@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ssafy.vue.dto.HouseDealDto;
 import com.ssafy.vue.dto.SelectHouseDto;
+import com.ssafy.vue.dto.YearListHouseDto;
 import com.ssafy.vue.service.HouseService;
 
 @Controller
@@ -45,9 +46,9 @@ public class HouseController {
 
 	// 아파트 거래 정보 ( 리스트 년단위 그룹 )
 	@GetMapping("/list/group/{aptCode}")
-	public ResponseEntity<List<HouseDealDto>> YearlistHouse(@PathVariable("aptCode") String aptCode) throws Exception {
+	public ResponseEntity<List<YearListHouseDto>> YearlistHouse(@PathVariable("aptCode") String aptCode) throws Exception {
 		BigInteger aptCode2 = new BigInteger(aptCode);
-		return new ResponseEntity<List<HouseDealDto>>(houseService.YearlistHouse(aptCode2), HttpStatus.OK);
+		return new ResponseEntity<List<YearListHouseDto>>(houseService.YearlistHouse(aptCode2), HttpStatus.OK);
 	}
 
 }
