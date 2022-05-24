@@ -1,5 +1,8 @@
 <template>
-  <div id="map" class="position-relative"></div>
+  <div>
+    <div id="map" class="position-relative"></div>
+    <!-- <button @click="displayMarker(markerPositions)">버튼!!</button> -->
+  </div>
 </template>
 
 <script>
@@ -12,24 +15,15 @@ export default {
   data() {
     return {
       // 화면에 표시할 지점 설정
-      markerPositions1: [],
-      markerPositions2: [
-        [37.499590490909185, 127.0263723554437],
-        [37.499427948430814, 127.02794423197847],
-        [37.498553760499505, 127.02882598822454],
-        [37.497625593121384, 127.02935713582038],
-        [37.49629291770947, 127.02587362608637],
-        [37.49754540521486, 127.02546694890695],
-        [37.49646391248451, 127.02675574250912],
-      ],
+      markerPositions: [],
       //  화면에 표시된 marker들을 저장
       markers: [],
       infowindow: null,
     };
   },
   created() {
-    this.markerPositions1 = [];
-    this.markerPositions1.push([this.lat, this.lng]);
+    this.markerPositions = [];
+    this.markerPositions.push([this.lat, this.lng]);
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -40,13 +34,23 @@ export default {
       /* global kakao */
       script.onload = () => kakao.maps.load(this.initMap);
       script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=54eb590ff2f217ee89f42f58c253277a";
+        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=54eb590ff2f217ee89f42f58c253277a&libraries=services,clusterer,drawing";
       // document의 head에 script 추가
       document.head.appendChild(script);
     }
   },
   computed: {
     ...mapState(mapStore, ["lng", "lat"]),
+  },
+  watch: {
+    lng() {
+      this.markerPositions = [];
+      this.markerPositions.push([this.lat, this.lng]);
+    },
+    lat() {
+      this.markerPositions = [];
+      this.markerPositions.push([this.lat, this.lng]);
+    },
   },
   methods: {
     initMap() {
@@ -68,14 +72,15 @@ export default {
     },
     // 마커 표시 메소드
     displayMarker(markerPositions) {
+      console.log(markerPositions);
       // 1. 현재 표시되어있는 마커들이 있으면 marker에 등록된 map을 없애준다.
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
       }
       // 마커 이미지 설정
-      const imgSrc = require("@/assets/apt1.png");
-      const imgSize = new kakao.maps.Size(24, 35);
-      const markerImage = new kakao.maps.markerImage(imgSrc, imgSize);
+      // const imgSrc = require("@/assets/apt1.png");
+      // const imgSize = new kakao.maps.Size(24, 35);
+      // const markerImage = new kakao.maps.markerImage(imgSrc, imgSize);
 
       // 2. 마커 표시하기
       const positions = markerPositions.map(
@@ -89,7 +94,7 @@ export default {
               map: this.map,
               position, // 마커 위치
               title: "", // 마우스 오버시 표시할 제목
-              image: markerImage, // 마커 이미지
+              // image: markerImage, // 마커 이미지
             })
         );
         //  3. 지도 이동
@@ -99,7 +104,7 @@ export default {
         );
 
         this.map.setBounds(bounds);
-        this.markers.setMap(this.map);
+        // this.markers.setMap(this.map);
       }
     },
     displayInfoWindow() {
