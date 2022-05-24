@@ -7,7 +7,7 @@ public class BaseaddressDto {
 	String dongName;
 	String dongCode;
 	String lat;
-	String lag;
+	String lng;
 	public int getNo() {
 		return no;
 	}
@@ -44,17 +44,17 @@ public class BaseaddressDto {
 	public void setLat(String lat) {
 		this.lat = lat;
 	}
-	public String getLag() {
-		return lag;
+	public String getLng() {
+		return lng;
 	}
-	public void setLag(String lag) {
-		this.lag = lag;
+	public void setLng(String lng) {
+		this.lng = lng;
 	}
 	
 	@Override
 	public String toString() {
 		return "BaseaddressDto [no=" + no + ", sidoName=" + sidoName + ", gugunName=" + gugunName + ", dongName="
-				+ dongName + ", dongCode=" + dongCode + ", lat=" + lat + ", lag=" + lag + "]";
+				+ dongName + ", dongCode=" + dongCode + ", lat=" + lat + ", lng=" + lng + "]";
 	}
 	
 }
