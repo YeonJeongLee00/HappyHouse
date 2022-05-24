@@ -16,11 +16,23 @@ const aptStore = {
     house: null,
     code: null,
     areaName: null,
+    selectedSido: null,
+    selectedGugun: null,
+    selectedDong: null,
   },
 
   getters: {},
 
   mutations: {
+    SET_SELECTED_SIDO: (state, code) => {
+      state.selectedSido = code;
+    },
+    SET_SELECTED_GUGUN: (state, code) => {
+      state.selectedGugun = code;
+    },
+    SET_SELECTED_DONG: (state, code) => {
+      state.selectedDong = code;
+    },
     SET_SIDO_LIST: (state, sidos) => {
       sidos.forEach((sido) => {
         state.sidos.push({ value: sido.sidoCode, text: sido.sidoName });
@@ -72,11 +84,12 @@ const aptStore = {
         }
       );
     },
-    getGugun: ({ commit }, sidoCode) => {
+    async getGugun({ commit }, sidoCode) {
+      console.log("getGugun!!! " + sidoCode);
       const params = {
         sido: sidoCode,
       };
-      gugunList(
+      await gugunList(
         params,
         ({ data }) => {
           // console.log(commit, response);
@@ -87,12 +100,13 @@ const aptStore = {
         }
       );
     },
-    getDong: ({ commit }, gugunCode) => {
+    async getDong({ commit }, gugunCode) {
+      console.log("getDong" + gugunCode);
       const params = {
         gugun: gugunCode,
       };
 
-      dongList(
+      await dongList(
         params,
         ({ data }) => {
           commit("SET_DONG_LIST", data);
@@ -134,6 +148,11 @@ const aptStore = {
         },
         () => {}
       );
+    },
+    changeSelect: ({ commit }, payload) => {
+      console.log(payload);
+      console.log(commit);
+      // this.getDong(commit, payload.sido);
     },
   },
 };
