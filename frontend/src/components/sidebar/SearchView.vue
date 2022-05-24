@@ -87,6 +87,9 @@ export default {
     ...mapState(userStore, ["isLogin", "userInfo"]),
     ...mapState(likeStore, ["likeArea"]),
   },
+  watch: {
+    likeArea() {},
+  },
   created() {
     this.CLEAR_SIDO_LIST(); // 초기화
     this.CLEAR_GUGUN_LIST();
