@@ -1,23 +1,22 @@
-import api from "@/api/http.js";
+import api from "./http.js";
 
-function sidoList(success, fail) {
-  api.get(`/map/sido`).then(success).catch(fail);
+// Select ( one - detail )
+function selectHouse(aptCode, success, fail) {
+  api.get(`/house/${aptCode}`).then(success).catch(fail);
 }
 
-function gugunList(params, success, fail) {
-  api.get(`/map/gugun`, { params: params }).then(success).catch(fail);
+// Select ( 아파트 거래 정보 )
+function listHouse(aptCode, success, fail) {
+  api.get(`/house/list/${aptCode}`).then(success).catch(fail);
 }
 
-function dongList(params, success, fail) {
-  api.get(`/map/dong`, { params: params }).then(success).catch(fail);
+// Select ( 아파트 거래 일년전꺼 까지만 )
+function listHouseOneYear(aptCode, success, fail) {
+  api.get(`/house/list/year/${aptCode}`).then(success).catch(fail);
 }
 
-function areaName(params, success, fail) {
-  api.get(`/map/area`, { params: params }).then(success).catch(fail);
+// Select ( 아파트 거래 일년을 단위로 그룹 )
+function listHouseYear(aptCode, success, fail) {
+  api.get(`/house/list/group/${aptCode}`).then(success).catch(fail);
 }
-
-function houseList(params, success, fail) {
-  api.get(`/map/list`, { params: params }).then(success).catch(fail);
-}
-
-export { sidoList, gugunList, dongList, houseList, areaName };
+export { selectHouse, listHouse, listHouseOneYear, listHouseYear };

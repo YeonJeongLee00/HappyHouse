@@ -35,7 +35,6 @@
 		from dongCode
 		where dongCode=#{dong}
 	</select>
-	
 	<select id="getPopularArea" resultType="SidoGugunCodeDto">
 		select l.dongCode, d.sidoName, d.gugunName, d.dongName
 		from locallike l
@@ -57,7 +56,5 @@
 		where dongCode = #{dong} 
 		order by aptName
 	</select>
-	
-	
 	
 </mapper>
