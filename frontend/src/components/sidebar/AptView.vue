@@ -98,6 +98,9 @@ export default {
       this.setIcon();
       // this.setLikeIcon();
     },
+    likeArea() {
+      this.setIcon();
+    },
     likeApt() {
       this.setLikeIcon();
     },
