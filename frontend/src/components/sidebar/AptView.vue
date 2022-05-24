@@ -30,17 +30,17 @@
           <b-list-group-item
             @click="aptDetail(apt.aptCode)"
             class="outline-light list-item"
-            v-for="apt in houses"
+            v-for="(apt, index) in houses"
             :key="apt.aptCode"
           >
             {{ apt.apartmentName }}
             <font-awesome-icon
-              v-if="!isSelected"
+              v-if="!aptSelectedState[index] && isLogin"
               class="ml-2 non-selected-heart"
               icon="fa-regular fa-heart"
             />
             <font-awesome-icon
-              v-if="isSelected"
+              v-if="aptSelectedState[index] && isLogin"
               class="ml-2 selected-heart"
               icon="fa-solid fa-heart"
             />
@@ -64,27 +64,57 @@ export default {
     return {
       isSelected: false,
       no: null,
+      title: null,
+      aptSelectedState: [],
     };
   },
   created() {
     this.isSelected = false;
-    this.likeArea.forEach((element) => {
-      if (element.dongCode == this.code) {
-        this.isSelected = true;
-        this.no = element.no;
-        return false;
-      }
-    });
-    this.getLikeApt(this.userInfo.id);
+    if (this.isLogin) {
+      this.likeArea.forEach((element) => {
+        if (element.dongCode == this.code) {
+          this.isSelected = true;
+          this.no = element.no;
+          return false;
+        }
+      });
+      this.getLikeApt(this.userInfo.id);
+      this.aptSelectedState = [];
+      this.houses.forEach((house) => {
+        let check = false;
+        this.likeApt.forEach((apt) => {
+          if (apt.aptCode == house.aptCode) {
+            check = true;
+            return false;
+          }
+        });
+        console.log("insss!!!");
+        this.aptSelectedState.push(check);
+      });
+    }
   },
-  mounted() {},
+  watch: {
+    areaName() {
+      this.setIcon();
+      // this.setLikeIcon();
+    },
+    likeArea() {
+      this.setIcon();
+    },
+    likeApt() {
+      this.setLikeIcon();
+    },
+    houses() {
+      this.setLikeIcon();
+    },
+  },
   computed: {
     ...mapState(aptStore, ["houses", "areaName", "code"]),
     ...mapState(userStore, ["isLogin", "userInfo"]),
-    ...mapState(likeStore, ["likeArea"]),
+    ...mapState(likeStore, ["likeArea", "likeApt"]),
   },
   methods: {
-    ...mapActions(likeStore, ["getLikeArea, getLikeApt"]),
+    ...mapActions(likeStore, ["getLikeArea", "getLikeApt"]),
     aptDetail(code) {
       this.$router.push({
         name: "aptDetail",
@@ -93,41 +123,60 @@ export default {
         },
       });
     },
-    addArea() {
-      console.log("addArea in!");
+    // 관심 지역 추가
+    async addArea() {
       const data = {
         user_id: this.userInfo.id,
         dongCode: this.code,
       };
-      addLikeArea(
+      await addLikeArea(
         data,
         () => {
-          this.getLikeArea(this.userInfo.id);
-          this.setIcon();
+          console.log("addlikeArea");
         },
         () => {}
       );
+      await this.getLikeArea(this.userInfo.id);
+      await this.setIcon();
     },
-    removeArea() {
-      deleteLikeArea(
+    // 관심 지역 삭제
+    async removeArea() {
+      await deleteLikeArea(
         this.no,
-        () => {
-          this.getLikeArea(this.userInfo.id);
-          this.setIcon();
-        },
+        () => {},
         () => {}
       );
+      await this.getLikeArea(this.userInfo.id);
+      await this.setIcon();
     },
     setIcon() {
       console.log("in setIcon");
       this.isSelected = false;
-      this.likeArea.forEach((element) => {
-        if (element.dongCode == this.code) {
-          this.isSelected = true;
-          this.no = element.no;
-          return false;
-        }
+      if (this.isLogin && this.likeArea.length > 0) {
+        this.likeArea.forEach((element) => {
+          if (element.dongCode == this.code) {
+            this.isSelected = true;
+            this.no = element.no;
+            return false;
+          }
+        });
+      }
+    },
+    setLikeIcon() {
+      console.log(this.aptSelectedState);
+      const temp = [];
+      this.houses.forEach((house) => {
+        let check = false;
+        this.likeApt.forEach((apt) => {
+          if (apt.aptCode == house.aptCode) {
+            check = true;
+            return false;
+          }
+        });
+        console.log("in!!!");
+        temp.push(check);
       });
+      this.aptSelectedState = temp;
     },
   },
 };
