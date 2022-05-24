@@ -89,7 +89,7 @@ export default {
       this.$router.push({
         name: "aptDetail",
         params: {
-          aptNo: code,
+          aptCode: code,
         },
       });
     },
