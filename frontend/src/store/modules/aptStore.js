@@ -4,7 +4,7 @@ import {
   houseList,
   dongList,
   areaName,
-} from "@/api/apt.js";
+} from "@/api/map.js";
 
 const aptStore = {
   namespaced: true,
