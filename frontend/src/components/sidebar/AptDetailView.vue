@@ -1,6 +1,23 @@
 <template>
   <div id="aptDetail">
-    <h3 class="mt-4 green-color">{{ aptName }}</h3>
+    <div class="d-flex mt-4">
+      <h3 class="green-color">{{ aptName }}</h3>
+      <h3 class="ml-2">
+        <font-awesome-icon
+          v-if="!isSelected"
+          class="ml-2 non-selected-heart"
+          icon="fa-regular fa-heart"
+          @click="addApt"
+        />
+        <font-awesome-icon
+          v-if="isSelected"
+          class="ml-2 selected-heart"
+          icon="fa-solid fa-heart"
+          @click="deleteApt"
+        />
+      </h3>
+    </div>
+
     <line-chart-view class="mt-4" :dealList="dealList"></line-chart-view>
     <table class="table-style mt-4">
       <thead>
@@ -31,6 +48,11 @@
 
 <script>
 import LineChartView from "@/components/sidebar/LineChartView.vue";
+import { mapState } from "vuex";
+import { addLikeApt } from "@/api/like.js";
+
+const userStore = "userStore";
+const likeStroe = "likeStore";
 
 export default {
   data() {
@@ -44,20 +66,42 @@ export default {
         { dealAmount: 150000, dealYear: 2019, dealMonth: 3, dealDay: 4 },
         { dealAmount: 104800, dealYear: 2019, dealMonth: 3, dealDay: 8 },
       ],
-      aptNo: null,
+      aptCode: null,
     };
+  },
+  computed: {
+    ...mapState(userStore, ["isLogin", "userInfo"]),
+    ...mapState(likeStroe, ["likeApt"]),
   },
   components: {
     LineChartView,
   },
   created() {
-    let aptNo = this.$route.params.aptNo;
-    console.log(aptNo);
+    this.aptCode = this.$route.params.aptCode;
+    this.likeApt.forEach((element) => {
+      console.log(element);
+    });
+  },
+  methods: {
+    addApt() {
+      const data = {
+        user_id: this.userInfo.id,
+        houseinfo_aptCode: this.aptCode,
+      };
+      addLikeApt(
+        data,
+        ({ data }) => {
+          console.log(data);
+        },
+        () => {}
+      );
+    },
+    deleteApt() {},
   },
 };
 </script>
 
-<style>
+<style scoped>
 #aptDetail .icon {
   color: #ffba00;
 }
@@ -90,5 +134,10 @@ export default {
 
 .table-style tbody tr:last-of-type {
   border-bottom: 2px solid #6d9773;
+}
+
+.non-selected-heart,
+.selected-heart {
+  color: #d62042;
 }
 </style>
