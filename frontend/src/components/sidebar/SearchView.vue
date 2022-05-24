@@ -8,7 +8,7 @@
           <div class="full mr-3">
             <b-form-select
               :options="sidos"
-              v-model="selectedSido"
+              v-model="isSelectedSido"
               size="lg"
               class="sido"
               @change="gugunList"
@@ -18,7 +18,7 @@
           <!-- 구/ 군 -->
           <div class="full mr-3">
             <b-form-select
-              v-model="selectedGugun"
+              v-model="isSelectedGugun"
               :options="guguns"
               size="lg"
               class="gugun"
@@ -29,7 +29,7 @@
           <!-- :disabled="isSelected" 설정 -->
           <div class="full">
             <b-form-select
-              v-model="selectedDong"
+              v-model="isSelectedDong"
               :options="dongs"
               size="lg"
               class="dong"
@@ -77,18 +77,35 @@ export default {
   data() {
     return {
       // isSelected: false,
-      selectedSido: null,
-      selectedGugun: null,
-      selectedDong: null,
+      isSelectedSido: null,
+      isSelectedGugun: null,
+      isSelectedDong: null,
     };
   },
   computed: {
-    ...mapState(aptStore, ["sidos", "guguns", "houses", "dongs"]),
+    ...mapState(aptStore, [
+      "sidos",
+      "guguns",
+      "houses",
+      "dongs",
+      "selectedSido",
+      "selectedGugun",
+      "selectedDong",
+    ]),
     ...mapState(userStore, ["isLogin", "userInfo"]),
     ...mapState(likeStore, ["likeArea"]),
   },
   watch: {
     likeArea() {},
+    isSelectedSido() {
+      this.SET_SELECTED_SIDO(this.isSelectedSido);
+    },
+    isSelectedGugun() {
+      this.SET_SELECTED_GUGUN(this.isSelectedGugun);
+    },
+    isSelectedDong() {
+      this.SET_SELECTED_DONG(this.selectedDong);
+    },
   },
   created() {
     this.CLEAR_SIDO_LIST(); // 초기화
@@ -114,14 +131,16 @@ export default {
       "CLEAR_SIDO_LIST",
       "CLEAR_GUGUN_LIST",
       "CLEAR_DONG_LIST",
+      "SET_SELECTED_SIDO",
+      "SET_SELECTED_GUGUN",
+      "SET_SELECTED_DONG",
     ]),
     ...mapActions(likeStore, ["getLikeArea", "getLikeApt"]),
     //  검색 버튼 눌렀을 때
     aptSearch() {
-      console.log(this.selectedDong);
-      if (this.selectedDong) {
-        this.getHouseList(this.selectedDong);
-        this.areaName(this.selectedDong);
+      if (this.isSelectedDong) {
+        this.getHouseList(this.isSelectedDong);
+        this.areaName(this.isSelectedDong);
         console.log(this.$route.path);
         if (this.$route.path !== "/search") {
           this.$router.push({
@@ -131,16 +150,14 @@ export default {
       }
     },
     gugunList() {
-      console.log(this.selectedSido);
       this.CLEAR_GUGUN_LIST();
-      this.selectedGugun = null;
-      if (this.selectedSido) this.getGugun(this.selectedSido);
+      this.isSelectedGugun = null;
+      if (this.isSelectedSido) this.getGugun(this.isSelectedSido);
     },
     dongList() {
-      console.log(this.selectedGugun);
       this.CLEAR_DONG_LIST();
-      this.selectedDong = null;
-      if (this.selectedGugun) this.getDong(this.selectedGugun);
+      this.isSelectedDong = null;
+      if (this.isSelectedGugun) this.getDong(this.isSelectedGugun);
     },
     searchApt() {
       if (this.gugunCode) this.getHouseList(this.gugunCode);

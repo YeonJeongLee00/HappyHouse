@@ -35,12 +35,12 @@
           >
             {{ apt.apartmentName }}
             <font-awesome-icon
-              v-if="!aptSelectedState[index]"
+              v-if="!aptSelectedState[index] && isLogin"
               class="ml-2 non-selected-heart"
               icon="fa-regular fa-heart"
             />
             <font-awesome-icon
-              v-if="aptSelectedState[index]"
+              v-if="aptSelectedState[index] && isLogin"
               class="ml-2 selected-heart"
               icon="fa-solid fa-heart"
             />
@@ -70,30 +70,38 @@ export default {
   },
   created() {
     this.isSelected = false;
-    this.likeArea.forEach((element) => {
-      if (element.dongCode == this.code) {
-        this.isSelected = true;
-        this.no = element.no;
-        return false;
-      }
-    });
-    this.getLikeApt(this.userInfo.id);
-    this.houses.forEach((house) => {
-      let check = false;
-      this.likeApt.forEach((apt) => {
-        if (apt.aptCode == house.aptCode) {
-          check = true;
+    if (this.isLogin) {
+      this.likeArea.forEach((element) => {
+        if (element.dongCode == this.code) {
+          this.isSelected = true;
+          this.no = element.no;
           return false;
         }
       });
-      this.aptSelectedState.push(check);
-    });
+      this.getLikeApt(this.userInfo.id);
+      this.aptSelectedState = [];
+      this.houses.forEach((house) => {
+        let check = false;
+        this.likeApt.forEach((apt) => {
+          if (apt.aptCode == house.aptCode) {
+            check = true;
+            return false;
+          }
+        });
+        console.log("insss!!!");
+        this.aptSelectedState.push(check);
+      });
+    }
   },
   watch: {
     areaName() {
       this.setIcon();
+      // this.setLikeIcon();
     },
     likeApt() {
+      this.setLikeIcon();
+    },
+    houses() {
       this.setLikeIcon();
     },
   },
@@ -126,31 +134,34 @@ export default {
         () => {}
       );
       await this.getLikeArea(this.userInfo.id);
-      this.setIcon();
+      await this.setIcon();
     },
     // 관심 지역 삭제
     async removeArea() {
       await deleteLikeArea(
         this.no,
-        () => {
-          this.getLikeArea(this.userInfo.id);
-          this.setIcon();
-        },
+        () => {},
         () => {}
       );
+      await this.getLikeArea(this.userInfo.id);
+      await this.setIcon();
     },
     setIcon() {
       console.log("in setIcon");
       this.isSelected = false;
-      this.likeArea.forEach((element) => {
-        if (element.dongCode == this.code) {
-          this.isSelected = true;
-          this.no = element.no;
-          return false;
-        }
-      });
+      if (this.isLogin && this.likeArea.length > 0) {
+        this.likeArea.forEach((element) => {
+          if (element.dongCode == this.code) {
+            this.isSelected = true;
+            this.no = element.no;
+            return false;
+          }
+        });
+      }
     },
     setLikeIcon() {
+      console.log(this.aptSelectedState);
+      const temp = [];
       this.houses.forEach((house) => {
         let check = false;
         this.likeApt.forEach((apt) => {
@@ -159,8 +170,10 @@ export default {
             return false;
           }
         });
-        this.aptSelectedState.push(check);
+        console.log("in!!!");
+        temp.push(check);
       });
+      this.aptSelectedState = temp;
     },
   },
 };
