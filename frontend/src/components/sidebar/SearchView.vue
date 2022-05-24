@@ -89,6 +89,8 @@ export default {
   },
   created() {
     this.CLEAR_SIDO_LIST(); // 초기화
+    this.CLEAR_GUGUN_LIST();
+    this.CLEAR_DONG_LIST();
     this.getSido(); // sidolist 가져오기
   },
   mounted() {
