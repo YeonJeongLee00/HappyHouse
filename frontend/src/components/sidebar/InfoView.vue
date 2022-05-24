@@ -64,6 +64,7 @@
             class="outline-light list-item"
             v-for="(area, index) in popularArea"
             :key="index"
+            @click="popularAreaMove(area.dongCode)"
           >
             {{ index + 1 }}. {{ area.gugunName }} {{ area.dongName }}
           </b-list-group-item>
@@ -163,6 +164,11 @@ export default {
     },
     AptToggle() {
       this.likeAptToggle = !this.likeAptToggle;
+    },
+    popularAreaMove(code) {
+      console.log(code);
+      // let sido = code.substr(0, 2);
+      // let gugun = code.substr(0, 6);
     },
   },
 };

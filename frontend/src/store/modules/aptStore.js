@@ -16,11 +16,23 @@ const aptStore = {
     house: null,
     code: null,
     areaName: null,
+    selectedSido: null,
+    selectedGugun: null,
+    selectedDong: null,
   },
 
   getters: {},
 
   mutations: {
+    SET_SELECTED_SIDO: (state, code) => {
+      state.selectedSido = code;
+    },
+    SET_SELECTED_GUGUN: (state, code) => {
+      state.selectedGugun = code;
+    },
+    SET_SELECTED_DONG: (state, code) => {
+      state.selectedDong = code;
+    },
     SET_SIDO_LIST: (state, sidos) => {
       sidos.forEach((sido) => {
         state.sidos.push({ value: sido.sidoCode, text: sido.sidoName });
