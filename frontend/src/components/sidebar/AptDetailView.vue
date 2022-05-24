@@ -142,6 +142,11 @@ import {
   listHouseOneYear,
   listHouseYear,
 } from "@/api/apt/";
+import { mapState } from "vuex";
+import { addLikeApt } from "@/api/like.js";
+
+const userStore = "userStore";
+const likeStore = "likeStore";
 
 export default {
   data() {
@@ -153,6 +158,10 @@ export default {
       dealList: [],
       type: "",
     };
+  },
+  computed: {
+    ...mapState(userStore, ["isLogin", "userInfo"]),
+    ...mapState(likeStore, ["likeApt"]),
   },
   components: {
     LineChartView,
@@ -169,6 +178,10 @@ export default {
         console.log("아파트정보를 가져오지 못했습니다.", error);
       }
     );
+    this.aptCode = this.$route.params.aptCode;
+    this.likeApt.forEach((element) => {
+      console.log(element);
+    });
   },
   methods: {
     allList() {
@@ -205,6 +218,21 @@ export default {
         }
       );
     },
+
+    addApt() {
+      const data = {
+        user_id: this.userInfo.id,
+        houseinfo_aptCode: this.aptCode,
+      };
+      addLikeApt(
+        data,
+        ({ data }) => {
+          console.log(data);
+        },
+        () => {}
+      );
+    },
+    deleteApt() {},
   },
 };
 </script>
@@ -288,5 +316,9 @@ export default {
 
 .b-table-style b-tbody b-tr:last-of-type {
   border-bottom: 2px solid #6d9773;
+}
+.non-selected-heart,
+.selected-heart {
+  color: #d62042;
 }
 </style>

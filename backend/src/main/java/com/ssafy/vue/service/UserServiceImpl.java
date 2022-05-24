@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.vue.dto.AptLikeDto;
+import com.ssafy.vue.dto.AptLikeListDto;
 import com.ssafy.vue.dto.BaseaddressDto;
+import com.ssafy.vue.dto.HouseInfoDto;
 import com.ssafy.vue.dto.LocalLikeDto;
 import com.ssafy.vue.dto.UserDto;
 import com.ssafy.vue.mapper.UserLikeMapper;
@@ -104,7 +106,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<AptLikeDto> getLikeApt(String id) throws Exception {
+	public List<AptLikeListDto> getLikeApt(String id) throws Exception {
 		return userLikeMapper.getLikeApt(id);
 	}
 

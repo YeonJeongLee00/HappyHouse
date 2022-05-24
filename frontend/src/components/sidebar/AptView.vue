@@ -17,7 +17,7 @@
               icon="fa-solid fa-star"
               class="icon-selected"
               v-if="isSelected"
-              @click="removeStar"
+              @click="removeArea"
             />
           </span>
         </h4>
@@ -28,12 +28,22 @@
       <b-row class="ml-2">
         <b-list-group class="mt-3">
           <b-list-group-item
-            @click="aptDetail(apt.no)"
+            @click="aptDetail(apt.aptCode)"
             class="outline-light list-item"
             v-for="apt in houses"
-            :key="apt.no"
+            :key="apt.aptCode"
           >
-            {{ apt.aptName }}
+            {{ apt.apartmentName }}
+            <font-awesome-icon
+              v-if="!isSelected"
+              class="ml-2 non-selected-heart"
+              icon="fa-regular fa-heart"
+            />
+            <font-awesome-icon
+              v-if="isSelected"
+              class="ml-2 selected-heart"
+              icon="fa-solid fa-heart"
+            />
           </b-list-group-item>
         </b-list-group>
       </b-row>
@@ -43,7 +53,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { addLikeArea } from "@/api/like.js";
+import { addLikeArea, deleteLikeArea } from "@/api/like.js";
 
 const aptStore = "aptStore";
 const userStore = "userStore";
@@ -53,15 +63,28 @@ export default {
   data() {
     return {
       isSelected: false,
+      no: null,
     };
   },
-  created() {},
+  created() {
+    this.isSelected = false;
+    this.likeArea.forEach((element) => {
+      if (element.dongCode == this.code) {
+        this.isSelected = true;
+        this.no = element.no;
+        return false;
+      }
+    });
+    this.getLikeApt(this.userInfo.id);
+  },
+  mounted() {},
   computed: {
     ...mapState(aptStore, ["houses", "areaName", "code"]),
     ...mapState(userStore, ["isLogin", "userInfo"]),
+    ...mapState(likeStore, ["likeArea"]),
   },
   methods: {
-    ...mapActions(likeStore, ["getLikeArea"]),
+    ...mapActions(likeStore, ["getLikeArea, getLikeApt"]),
     aptDetail(code) {
       this.$router.push({
         name: "aptDetail",
@@ -69,9 +92,6 @@ export default {
           aptNo: code,
         },
       });
-    },
-    overStar() {
-      this.isSelected = !this.isSelected;
     },
     addArea() {
       console.log("addArea in!");
@@ -83,11 +103,32 @@ export default {
         data,
         () => {
           this.getLikeArea(this.userInfo.id);
+          this.setIcon();
         },
         () => {}
       );
     },
-    removeArea() {},
+    removeArea() {
+      deleteLikeArea(
+        this.no,
+        () => {
+          this.getLikeArea(this.userInfo.id);
+          this.setIcon();
+        },
+        () => {}
+      );
+    },
+    setIcon() {
+      console.log("in setIcon");
+      this.isSelected = false;
+      this.likeArea.forEach((element) => {
+        if (element.dongCode == this.code) {
+          this.isSelected = true;
+          this.no = element.no;
+          return false;
+        }
+      });
+    },
   },
 };
 </script>
@@ -102,5 +143,10 @@ export default {
 .icon-non-selected,
 .icon-selected {
   color: #ffba00;
+}
+
+.non-selected-heart,
+.selected-heart {
+  color: #d62042;
 }
 </style>

@@ -94,10 +94,90 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapState(aptStore, ["sidos", "guguns", "houses", "dongs"]),
+    ...mapState(userStore, ["isLogin", "userInfo"]),
+    ...mapState(likeStore, ["likeArea"]),
+  },
+  created() {
+    this.CLEAR_SIDO_LIST(); // 초기화
+    this.getSido(); // sidolist 가져오기
+  },
+  mounted() {
+    if (this.isLogin) {
+      this.getLikeArea(this.userInfo.id); // 사용자 getLikeArea 가져오기
+      this.getLikeApt(this.userInfo.id);
+    }
+  },
   methods: {
     moveMapPoint() {},
     aptSearch() {
       this.$router.push("/search");
+    },
+    ...mapActions(aptStore, [
+      "getSido",
+      "getGugun",
+      "getDong",
+      "getHouseList",
+      "areaName",
+    ]),
+    ...mapMutations(aptStore, [
+      "CLEAR_SIDO_LIST",
+      "CLEAR_GUGUN_LIST",
+      "CLEAR_DONG_LIST",
+    ]),
+    ...mapActions(likeStore, ["getLikeArea", "getLikeApt"]),
+    //  검색 버튼 눌렀을 때
+    aptSearch() {
+      console.log(this.selectedDong);
+      if (this.selectedDong) {
+        this.getHouseList(this.selectedDong);
+        this.areaName(this.selectedDong);
+        console.log(this.$route.path);
+        if (this.$route.path !== "/search") {
+          this.$router.push({
+            name: "aptView",
+          });
+        }
+      }
+    },
+    gugunList() {
+      console.log(this.selectedSido);
+      this.CLEAR_GUGUN_LIST();
+      this.selectedGugun = null;
+      if (this.selectedSido) this.getGugun(this.selectedSido);
+    },
+    dongList() {
+      console.log(this.selectedGugun);
+      this.CLEAR_DONG_LIST();
+      this.selectedDong = null;
+      if (this.selectedGugun) this.getDong(this.selectedGugun);
+    },
+    searchApt() {
+      if (this.gugunCode) this.getHouseList(this.gugunCode);
+    },
+    deleteArea(no) {
+      deleteLikeArea(
+        no,
+        () => {
+          this.getLikeArea(this.userInfo.id);
+        },
+        () => {}
+      );
+    },
+    // 관심 지역 버튼 눌렀을 때 처리
+    // select box 관심지역 처리
+    // 검색 처리
+    //
+    likeAptList(dongCode) {
+      console.log(dongCode);
+      let sidoCode = dongCode.substr(0, 2);
+      let gugunCode = dongCode.substr(0, 5);
+      this.selectedSido = sidoCode;
+      this.selectedGugun = gugunCode;
+      this.selectedDong = dongCode;
+
+      this.aptSearch();
     },
   },
   components: {},
