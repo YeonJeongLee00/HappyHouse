@@ -7,12 +7,14 @@ Vue.use(Vuex);
 import userStore from "@/store/modules/userStore.js";
 import aptStore from "@/store/modules/aptStore.js";
 import likeStore from "@/store/modules/likeStore";
+import mapStore from "@/store/modules/mapStore";
 
 const store = new Vuex.Store({
   modules: {
     userStore,
     aptStore,
     likeStore,
+    mapStore,
   },
   // plugins: [
   //   createPersistedState({
