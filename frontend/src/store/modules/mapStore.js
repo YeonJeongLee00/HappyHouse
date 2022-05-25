@@ -3,6 +3,7 @@ const mapStore = {
   state: {
     lng: 128.413952,
     lat: 36.1081964,
+    name: "SSAFY",
   },
   getters: {},
   mutations: {
@@ -11,6 +12,9 @@ const mapStore = {
     },
     SET_LAT: (state, lat) => {
       state.lat = lat;
+    },
+    SET_TITLE_INFO: (state, name) => {
+      state.name = name;
     },
   },
   actions: {},

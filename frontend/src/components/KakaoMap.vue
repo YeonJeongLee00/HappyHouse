@@ -18,7 +18,7 @@ export default {
       markerPositions: [],
       //  화면에 표시된 marker들을 저장
       markers: [],
-      infowindow: null,
+      // infowindow: null,
     };
   },
   created() {
@@ -40,17 +40,15 @@ export default {
     }
   },
   computed: {
-    ...mapState(mapStore, ["lng", "lat"]),
+    ...mapState(mapStore, ["lng", "lat", "name"]),
   },
   watch: {
     lng() {
       this.markerPositions = [];
-      this.markerPositions.push([this.lat, this.lng]);
-      this.displayMarker(this.markerPositions);
-    },
-    lat() {
-      this.markerPositions = [];
-      this.markerPositions.push([this.lat, this.lng]);
+      for (let index = 0; index < this.lng.length; index++) {
+        this.markerPositions.push([this.lat[index], this.lng[index]]);
+      }
+      console.log(this.markerPositions);
       this.displayMarker(this.markerPositions);
     },
   },
@@ -80,9 +78,9 @@ export default {
         this.markers.forEach((marker) => marker.setMap(null));
       }
       // 마커 이미지 설정
-      // const imgSrc = require("@/assets/apt1.png");
-      // const imgSize = new kakao.maps.Size(24, 35);
-      // const markerImage = new kakao.maps.markerImage(imgSrc, imgSize);
+      const imgSrc = require("@/assets/apt1.png");
+      const imgSize = new kakao.maps.Size(24, 24);
+      const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
 
       // 2. 마커 표시하기
       const positions = markerPositions.map(
@@ -90,15 +88,36 @@ export default {
       );
 
       if (positions.length > 0) {
-        this.markers = positions.map(
-          (position) =>
+        // this.markers = positions.map(
+        //   (position) =>
+        //     new kakao.maps.Marker({
+        //       map: this.map,
+        //       position, // 마커 위치
+        //       title: "", // 마우스 오버시 표시할 제목
+        //       image: markerImage, // 마커 이미지
+        //     })
+        // );
+        const marker = [];
+        for (let index = 0; index < positions.length; index++) {
+          marker.push(
             new kakao.maps.Marker({
               map: this.map,
-              position, // 마커 위치
-              title: "", // 마우스 오버시 표시할 제목
-              // image: markerImage, // 마커 이미지
+              position: positions[index], // 마커 위치
+              title: this.name[index], // 마우스 오버시 표시할 제목
+              image: markerImage, // 마커 이미지
             })
-        );
+          );
+        }
+
+        // kakao.maps.event.addListener(marker, "mouseover", () => {
+        //   infowindow.open(this.map, marker);
+        // });
+        // kakao.maps.event.addListener(marker, "mouseout", () => {
+        //   infowindow.close(this.map, marker);
+        // });
+
+        this.markers.push(marker);
+
         //  3. 지도 이동
         const bounds = positions.reduce(
           (bounds, latlng) => bounds.extend(latlng),
