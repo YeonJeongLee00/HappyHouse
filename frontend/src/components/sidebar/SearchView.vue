@@ -2,7 +2,8 @@
   <div id="side-bar">
     <b-container class="container make-scroll" right shadow>
       <!-- 시, 구, 동 선택 -->
-      <div id="search">
+
+      <div id="search" class="mt-4">
         <!-- 시/도 -->
         <!-- v-model="selectedSido"  -->
         <div class="search-bar">
@@ -62,9 +63,13 @@
       </div>
       <!-- url에 따라서 변경되는 화면  -->
       <router-view
+        :key="$route.fullPath"
         @area-select-box="AreaSetInfo"
         @apt-select-box="AptSetInfo"
       ></router-view>
+      <h1 id="back">
+        <font-awesome-icon @click="back" icon="fa-solid fa-arrow-left" />
+      </h1>
     </b-container>
   </div>
 </template>
@@ -221,12 +226,26 @@ export default {
         },
       });
     },
+    back() {
+      this.$router.back();
+    },
   },
   components: {},
 };
 </script>
 
 <style scoped>
+#back {
+  position: fixed;
+  /* left: 0; */
+  right: 40px;
+  bottom: 40px;
+  background-color: #0c3b2e;
+  color: #ffba00;
+  border-radius: 50%;
+  padding: 4px 10px 8px 12px;
+  text-align: center;
+}
 .container {
   height: 92vh;
   overflow: auto;
@@ -294,7 +313,7 @@ export default {
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  margin-top: 30px;
+  /* margin-top: 30px; */
 }
 
 #search .search-bar {
