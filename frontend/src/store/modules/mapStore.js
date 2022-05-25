@@ -34,6 +34,10 @@ const mapStore = {
     SET_MAP_INFO: (state, info) => {
       state.mapInfo = info;
     },
+    CLEAR_MAP_INFO: (state) => {
+      let apt = state.mapInfo[0];
+      state.mapInfo = [apt];
+    },
   },
   actions: {},
 };

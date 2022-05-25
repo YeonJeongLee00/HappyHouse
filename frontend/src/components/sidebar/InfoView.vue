@@ -1,26 +1,18 @@
 <template>
   <div>
     <!-- 찜한 아파트 -->
-    <b-card id="popular-area" class="mt-3" v-if="isLogin">
-      <b-row class="ml-2 toggle-set" @click="AptToggle">
-        <div><h3>관심 아파트</h3></div>
-        <div class="mr-3">
-          <h3>
-            <font-awesome-icon
-              v-if="!likeAptToggle"
-              icon="fa-solid fa-angle-down"
-              class="icon"
-            />
-            <font-awesome-icon
-              v-if="likeAptToggle"
-              icon="fa-solid fa-angle-up"
-              class="icon"
-            />
-          </h3>
-        </div>
-      </b-row>
-      <b-row v-show="likeAptToggle">
-        <b-list-group class="mt-3 ml-2">
+    <div class="mr-2">
+      <b-button
+        v-b-toggle
+        href="#likeApt"
+        @click.prevent
+        block
+        class="button mt-3 pt-3 show"
+        >나의 관심 아파트</b-button
+      >
+
+      <b-collapse id="likeApt">
+        <b-card id="apt" class="mr-2">
           <b-list-group-item
             href="#"
             class="outline-light list-item"
@@ -44,72 +36,62 @@
               />
             </span>
           </b-list-group-item>
-        </b-list-group>
-      </b-row>
-    </b-card>
+        </b-card>
+      </b-collapse>
+    </div>
+
     <!-- 실시간 인기지역 -->
-    <b-card id="popular-area" class="mt-3">
-      <b-row class="ml-2 toggle-set">
-        <div><h3>실시간 인기지역</h3></div>
-        <div class="mr-3">
-          <h3 @click="AreaToggle">
-            <font-awesome-icon
-              v-if="!pouplarAreaToggle"
-              icon="fa-solid fa-angle-down"
-              class="icon"
-            />
-            <font-awesome-icon
-              v-if="pouplarAreaToggle"
-              icon="fa-solid fa-angle-up"
-              class="icon"
-            />
-          </h3>
-        </div>
-      </b-row>
-      <b-row v-show="pouplarAreaToggle">
-        <b-list-group class="mt-3">
-          <b-list-group-item
-            href="#"
-            class="outline-light list-item"
-            v-for="(area, index) in popularArea"
-            :key="index"
-            @click="popularAreaMove(area.dongCode)"
-          >
-            {{ index + 1 }}. {{ area.gugunName }} {{ area.dongName }}
-          </b-list-group-item>
-        </b-list-group>
-      </b-row>
-    </b-card>
+
+    <div class="mr-2">
+      <b-button
+        v-b-toggle
+        href="#popularArea"
+        @click.prevent
+        block
+        class="button mt-3 pt-3"
+        >실시간 인기 지역</b-button
+      >
+
+      <b-collapse id="popularArea">
+        <b-card id="area" class="mr-2">
+          <b-list-group class="mt-3">
+            <b-list-group-item
+              href="#"
+              class="outline-light list-item"
+              v-for="(area, index) in popularArea"
+              :key="index"
+              @click="popularAreaMove(area.dongCode)"
+              hover
+            >
+              {{ index + 1 }}. {{ area.gugunName }} {{ area.dongName }}
+            </b-list-group-item>
+          </b-list-group>
+        </b-card>
+      </b-collapse>
+    </div>
+
     <!-- 부동산 관련 뉴스 -->
-    <b-card id="news" class="mt-3">
-      <b-row class="ml-2 toggle-set">
-        <div><h3>오늘의 뉴스</h3></div>
-        <div class="mr-3">
-          <h3 @click="NewsToggle">
-            <font-awesome-icon
-              v-if="!newsToggle"
-              icon="fa-solid fa-angle-down"
-              class="icon"
-            />
-            <font-awesome-icon
-              v-if="newsToggle"
-              icon="fa-solid fa-angle-up"
-              class="icon"
-            />
-          </h3>
-        </div>
-      </b-row>
-      <b-row v-show="newsToggle">
-        <b-list-group class="mt-3">
-          <news-list-item
-            v-for="news in newsList"
-            :key="news.title"
-            v-bind="news"
-          >
-          </news-list-item>
-        </b-list-group>
-      </b-row>
-    </b-card>
+
+    <div class="mr-2">
+      <b-button
+        v-b-toggle
+        href="#newsSide"
+        @click.prevent
+        block
+        class="button mt-3 pt-3"
+        >오늘의 뉴스</b-button
+      >
+    </div>
+    <b-collapse id="newsSide">
+      <b-list-group class="mr-2">
+        <news-list-item
+          v-for="news in newsList"
+          :key="news.title"
+          v-bind="news"
+        >
+        </news-list-item>
+      </b-list-group>
+    </b-collapse>
   </div>
 </template>
 
@@ -229,6 +211,21 @@ export default {
 </script>
 
 <style scoped>
+.b-button {
+  width: 100px;
+  background-color: #ffba00;
+  border: #ffba00;
+  color: white;
+  font-weight: bold;
+}
+
+.button {
+  background-color: #6d9773;
+  border-color: #6d9773;
+  height: 60px;
+  font-size: 20px;
+  font-weight: bold;
+}
 b-col {
   margin: 10px;
 }
