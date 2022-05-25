@@ -18,6 +18,8 @@ export default {
       //  화면에 표시된 marker들을 저장
       markers: [],
       // infowindow: null,
+      // 선택되는 주변 상가
+      curState: ["", "CS2", "CE7", "SC4", "OL7", "HP8", "PM9", "SW8", "BK9"],
     };
   },
   created() {
@@ -47,13 +49,16 @@ export default {
     },
     // 주변 상가 가져오기
     type() {
-      if (this.type != 0) {
+      if (this.type == 9) {
+        this.removeMarker();
+      } else if (this.type != 0) {
+        console.log("10이 아님 " + this.type);
         this.displayType();
       }
     },
   },
   methods: {
-    ...mapMutations(mapStore, ["SET_TYPE"]),
+    ...mapMutations(mapStore, ["SET_TYPE", "CLEAR_MAP_INFO"]),
     initMap() {
       const container = document.getElementById("map");
       const options = {
@@ -74,6 +79,7 @@ export default {
     displayMarker(markerPositions) {
       // 1. 현재 표시되어있는 마커들이 있으면 marker에 등록된 map을 없애준다.
       // console.log(markerPositions);
+      console.log("마카스 !! : " + this.markers);
       if (this.markers.length > 0) {
         console.log("delete marker");
         this.markers.forEach((marker) => marker.setMap(null));
@@ -81,23 +87,44 @@ export default {
       this.markers = [];
       // 마커 이미지 설정
 
-      console.log(markerPositions);
+      console.log("들어온정보 :  " + markerPositions);
       // 2. 마커 표시하기
       const positions = markerPositions.map(
         (position) => new kakao.maps.LatLng(position.lat, position.lng)
       );
 
-      console.log(positions);
+      console.log("마커찍는곳안에 경위도 정보 : " + positions);
       if (positions.length > 0) {
         for (let index = 0; index < positions.length; index++) {
           let imgSrc = "";
-          console.log(this.type);
+          console.log("마커찍는 곳 안에 type:  " + this.type);
           switch (markerPositions[index].type) {
             case 0:
               imgSrc = require("@/assets/home.png");
               break;
             case 1:
               imgSrc = require("@/assets/store.png");
+              break;
+            case 2:
+              imgSrc = require("@/assets/coffee-marker.png");
+              break;
+            case 3:
+              imgSrc = require("@/assets/school.png");
+              break;
+            case 4:
+              imgSrc = require("@/assets/gas-station.png");
+              break;
+            case 5:
+              imgSrc = require("@/assets/hospital.png");
+              break;
+            case 6:
+              imgSrc = require("@/assets/pharmacy.png");
+              break;
+            case 7:
+              imgSrc = require("@/assets/bus-stop.png");
+              break;
+            case 8:
+              imgSrc = require("@/assets/bank.png");
               break;
           }
           const imgSize = new kakao.maps.Size(50, 50);
@@ -135,25 +162,42 @@ export default {
         this.map.setBounds(bounds);
       }
     },
+    // 주변 편의 시설 마커 출력
     displayType() {
       // var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
       var ps = new kakao.maps.services.Places(this.map);
+      // 현재 type를 이용해서 어떤 주변 편의 시설인지 확인
+      var point = this.curState[this.type];
 
-      ps.categorySearch("CS2", this.placesSearchCB, { useMapBounds: true });
+      ps.categorySearch(point, this.placesSearchCB, { useMapBounds: true });
     },
 
     placesSearchCB(data, status) {
+      console.log("현재 타입 :   " + this.type);
       if (status === kakao.maps.services.Status.OK) {
         for (var i = 0; i < data.length; i++) {
           this.markerPositions.push({
             lng: data[i].x,
             lat: data[i].y,
             name: data[i].place_name,
-            type: 1,
+            type: this.type,
           });
         }
+        console.log("지금 markers  " + this.markerPositions);
         this.displayMarker(this.markerPositions);
+      } else {
+        alert("정보가 없습니다 !! ");
       }
+    },
+
+    // 마커 초기화
+    removeMarker() {
+      console.log("삭제할 markers " + this.markers);
+      for (var i = 1; i < this.markers.length; i++) {
+        this.markers[i].setMap(null);
+      }
+      this.markers = [];
+      this.CLEAR_MAP_INFO();
     },
   },
 };

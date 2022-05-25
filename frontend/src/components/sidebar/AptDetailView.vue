@@ -29,11 +29,11 @@
         @click.prevent
         block
         class="button mt-3 pt-3"
-        >{{ house.apartmentName }}</b-button
+        >아파트 정보</b-button
       >
     </div>
     <b-collapse id="apartDetail">
-      <b-card
+      <b-card class="mr-2"
         ><b-table-simple striped class="mt-3 b-table-style">
           <b-thead>
             <b-tr>
@@ -83,7 +83,7 @@
     </div>
 
     <b-collapse id="apartGraph">
-      <b-card
+      <b-card class="mr-2"
         ><div align="center">
           <b-button class="b-button ml-2 mr-2" @click="allList">5년</b-button>
           <b-button class="b-button ml-2 mr-2" @click="oneYearList"
@@ -157,12 +157,30 @@
       >
     </div>
     <b-collapse id="apartSide">
-      <b-card>
-        <h5 class="green-color">
+      <b-card class="mr-2">
+        <h5 class="green-color mt-3">
           편의 시설
           <font-awesome-icon icon="fa-solid fa-map-location-dot" class="icon" />
+          <b-button class="b-button-one ml-5" @click="open(9)">초기화</b-button>
         </h5>
-        <b-button class="b-button" @click="open(1)">편의점</b-button>
+        <div>
+          <b-button class="b-button mr-1 mt-3" @click="open(1)"
+            >편의점</b-button
+          >
+          <b-button class="b-button mr-1 mt-3" @click="open(2)">카페</b-button>
+          <b-button class="b-button mr-1 mt-3" @click="open(3)">학교</b-button>
+          <b-button class="b-button mr-1 mt-3" @click="open(4)"
+            >주유소</b-button
+          >
+        </div>
+        <div>
+          <b-button class="b-button mr-1 mt-3" @click="open(5)">병원</b-button>
+          <b-button class="b-button mr-1 mt-3" @click="open(6)">약국</b-button>
+          <b-button class="b-button mr-1 mt-3" @click="open(7)"
+            >지하철</b-button
+          >
+          <b-button class="b-button mr-1 mt-3" @click="open(8)">은행</b-button>
+        </div>
       </b-card>
     </b-collapse>
     <!-- 주변 편의 시설 end -->
@@ -317,6 +335,15 @@ export default {
   border: #ffba00;
   color: white;
   font-weight: bold;
+}
+.b-button-one {
+  width: 100px;
+  border: #ffba00;
+  border-style: solid;
+  border-width: 5px;
+  color: black;
+  font-weight: bold;
+  background-color: white;
 }
 
 .button {
