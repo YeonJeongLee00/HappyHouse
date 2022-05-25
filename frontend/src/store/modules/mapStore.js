@@ -3,6 +3,7 @@ const mapStore = {
   state: {
     lng: 128.413952,
     lat: 36.1081964,
+    type: 0,
   },
   getters: {},
   mutations: {
@@ -11,6 +12,9 @@ const mapStore = {
     },
     SET_LAT: (state, lat) => {
       state.lat = lat;
+    },
+    SET_TYPE: (state, type) => {
+      state.type = type;
     },
   },
   actions: {},
