@@ -2,7 +2,6 @@
   <div id="side-bar">
     <b-container class="container make-scroll" right shadow>
       <!-- 시, 구, 동 선택 -->
-
       <div id="search" class="mt-4">
         <!-- 시/도 -->
         <!-- v-model="selectedSido"  -->
@@ -247,7 +246,7 @@ export default {
   text-align: center;
 }
 .container {
-  height: 92vh;
+  height: 100vh;
   overflow: auto;
 }
 .container::-webkit-scrollbar {

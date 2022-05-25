@@ -22,6 +22,7 @@ export default {
 
 * {
   font-family: "Noto Sans KR", sans-serif;
+  /* overflow-x: hidden; */
 }
 
 /* 폰트 굵기 변경 */

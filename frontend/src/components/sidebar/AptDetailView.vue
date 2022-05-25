@@ -32,7 +32,7 @@
         >아파트 정보</b-button
       >
     </div>
-    <b-collapse id="apartDetail">
+    <b-collapse id="apartDetail" visible>
       <b-card class="mr-2"
         ><b-table-simple striped class="mt-3 b-table-style">
           <b-thead>
@@ -82,7 +82,7 @@
       >
     </div>
 
-    <b-collapse id="apartGraph">
+    <b-collapse id="apartGraph" visible>
       <b-card class="mr-2"
         ><div align="center">
           <b-button class="b-button ml-2 mr-2" @click="allList">5년</b-button>
@@ -118,26 +118,28 @@
         <div v-else>
           <line-chart-view class="mt-4" :dealList="dealList" :type="this.type">
           </line-chart-view>
-          <table class="table-style mt-4">
-            <thead>
-              <th>거래가격<br />( 만원 )</th>
-              <th>층</th>
-              <th>전용면적<br />( m² )</th>
-              <th>년</th>
-              <th>월</th>
-              <th>일</th>
-            </thead>
-            <tbody>
-              <tr v-for="(deal, index) in dealList" :key="index">
-                <td>{{ deal.dealAmount }}</td>
-                <td>{{ deal.floor }}</td>
-                <td>{{ deal.area }}</td>
-                <td>{{ deal.dealYear }}</td>
-                <td>{{ deal.dealMonth }}</td>
-                <td>{{ deal.dealDay }}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="chartAreaWrapper">
+            <table class="table-style mt-4">
+              <thead>
+                <th>거래가격<br />( 만원 )</th>
+                <th>층</th>
+                <th>전용면적<br />( m² )</th>
+                <th>년</th>
+                <th>월</th>
+                <th>일</th>
+              </thead>
+              <tbody>
+                <tr v-for="(deal, index) in dealList" :key="index">
+                  <td>{{ deal.dealAmount }}</td>
+                  <td>{{ deal.floor }}</td>
+                  <td>{{ deal.area }}</td>
+                  <td>{{ deal.dealYear }}</td>
+                  <td>{{ deal.dealMonth }}</td>
+                  <td>{{ deal.dealDay }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </b-card>
     </b-collapse>
@@ -156,7 +158,7 @@
         >주변 편의 시설</b-button
       >
     </div>
-    <b-collapse id="apartSide">
+    <b-collapse id="apartSide" visible align="center">
       <b-card class="mr-2">
         <h5 class="green-color mt-3">
           편의 시설
@@ -224,7 +226,7 @@ export default {
     LineChartView,
   },
   created() {
-    console.log(this.$route.params.aptCode);
+    this.allList();
     selectHouse(
       this.$route.params.aptCode,
       (response) => {
@@ -363,6 +365,10 @@ export default {
   width: 100%;
   text-align: center;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+.chartAreaWrapper {
+  height: 500px;
+  overflow-y: scroll;
 }
 
 .table-style thead {

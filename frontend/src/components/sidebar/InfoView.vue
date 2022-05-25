@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 찜한 아파트 -->
-    <div class="mr-2">
+    <div class="mr-2" v-if="isLogin">
       <b-button
         v-b-toggle
         href="#likeApt"
@@ -11,7 +11,7 @@
         >나의 관심 아파트</b-button
       >
 
-      <b-collapse id="likeApt">
+      <b-collapse id="likeApt" visible>
         <b-card id="apt" class="mr-2">
           <b-list-group-item
             href="#"
@@ -52,7 +52,7 @@
         >실시간 인기 지역</b-button
       >
 
-      <b-collapse id="popularArea">
+      <b-collapse id="popularArea" visible>
         <b-card id="area" class="mr-2">
           <b-list-group class="mt-3">
             <b-list-group-item
@@ -82,7 +82,7 @@
         >오늘의 뉴스</b-button
       >
     </div>
-    <b-collapse id="newsSide">
+    <b-collapse id="newsSide" visible>
       <b-list-group class="mr-2">
         <news-list-item
           v-for="news in newsList"
@@ -220,7 +220,7 @@ export default {
 }
 
 .button {
-  background-color: #6d9773;
+  background-color: rgb(109, 151, 115);
   border-color: #6d9773;
   height: 60px;
   font-size: 20px;
