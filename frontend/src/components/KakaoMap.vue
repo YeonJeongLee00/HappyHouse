@@ -99,7 +99,7 @@ export default {
           }
           const imgSize = new kakao.maps.Size(50, 50);
           const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
-          console.log(markerPositions[index]);
+          // console.log(markerPositions[index]);
           const marker = new kakao.maps.Marker({
             map: this.map,
             position: positions[index], // 마커 위치
