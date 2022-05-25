@@ -118,21 +118,43 @@ export default {
     },
     houses() {
       this.setLikeIcon();
+      console.log();
+      for (let index = 0; index < this.dongs.length; index++) {
+        if (this.dongs[index].value == this.code) {
+          console.log(this.dongsPoint[index - 1].name);
+          console.log(
+            this.dongsPoint[index - 1].lng +
+              "   " +
+              this.dongsPoint[index - 1].lat
+          );
+          this.SET_LNG(this.dongsPoint[index - 1].lng);
+          this.SET_LAT(this.dongsPoint[index - 1].lat);
+          break;
+        }
+      }
     },
   },
   computed: {
-    ...mapState(aptStore, ["houses", "areaName", "code"]),
+    ...mapState(aptStore, [
+      "houses",
+      "areaName",
+      "code",
+      "dongs",
+      "dongsPoint",
+    ]),
     ...mapState(userStore, ["isLogin", "userInfo"]),
     ...mapState(likeStore, ["likeArea", "likeApt"]),
   },
   methods: {
     ...mapActions(likeStore, ["getLikeArea", "getLikeApt"]),
     ...mapMutations(mapStore, ["SET_LNG", "SET_LAT"]),
+
     aptDetail(code, index, houses) {
       // 위도, 경도 넘겨주기 -> 클릭해서 detail 들어가면 지도 표시
       console.log(houses[index].lng + " " + houses[index].lat);
       this.SET_LNG(houses[index].lng);
       this.SET_LAT(houses[index].lat);
+
       this.$router.push({
         name: "aptDetail",
         params: {
@@ -182,17 +204,19 @@ export default {
     setLikeIcon() {
       console.log(this.aptSelectedState);
       const temp = [];
-      this.houses.forEach((house) => {
-        let check = false;
-        this.likeApt.forEach((apt) => {
-          if (apt.aptCode == house.aptCode) {
-            check = true;
-            return false;
-          }
+      if (this.isLogin && this.likeApt.length > 0) {
+        this.houses.forEach((house) => {
+          let check = false;
+          this.likeApt.forEach((apt) => {
+            if (apt.aptCode == house.aptCode) {
+              check = true;
+              return false;
+            }
+          });
+          console.log("in!!!");
+          temp.push(check);
         });
-        console.log("in!!!");
-        temp.push(check);
-      });
+      }
       this.aptSelectedState = temp;
     },
   },

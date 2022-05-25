@@ -61,7 +61,10 @@
         </b-button-group>
       </div>
       <!-- url에 따라서 변경되는 화면  -->
-      <router-view @abc-ssafy="m1"></router-view>
+      <router-view
+        @area-select-box="AreaSetInfo"
+        @apt-select-box="AptSetInfo"
+      ></router-view>
     </b-container>
   </div>
 </template>
@@ -73,6 +76,7 @@ import { deleteLikeArea } from "@/api/like.js";
 const aptStore = "aptStore";
 const userStore = "userStore";
 const likeStore = "likeStore";
+const mapStore = "mapStore";
 
 export default {
   data() {
@@ -89,6 +93,7 @@ export default {
       "guguns",
       "houses",
       "dongs",
+      "dongsPoint",
       "selectedSido",
       "selectedGugun",
       "selectedDong",
@@ -136,13 +141,14 @@ export default {
       "SET_SELECTED_GUGUN",
       "SET_SELECTED_DONG",
     ]),
+    ...mapMutations(mapStore, ["SET_LNG", "SET_LAT"]),
     ...mapActions(likeStore, ["getLikeArea", "getLikeApt"]),
     //  검색 버튼 눌렀을 때
-    aptSearch() {
+    async aptSearch() {
       if (this.isSelectedDong) {
         this.getHouseList(this.isSelectedDong);
         this.areaName(this.isSelectedDong);
-        console.log(this.$route.path);
+        // 현재 컴포넌트가 search 컴포넌트면 이동하지 않는다.
         if (this.$route.path !== "/search") {
           this.$router.push({
             name: "aptView",
@@ -179,28 +185,41 @@ export default {
     // 검색 처리
     //
     likeAptList(dongCode) {
-      console.log(dongCode);
-      let sidoCode = dongCode.substr(0, 2);
-      let gugunCode = dongCode.substr(0, 5);
-      this.selectedSido = sidoCode;
-      this.selectedGugun = gugunCode;
-      this.selectedDong = dongCode;
-
-      this.aptSearch();
+      let payload = {
+        sido: dongCode.substr(0, 2),
+        gugun: dongCode.substr(0, 5),
+        dong: dongCode,
+      };
+      this.AreaSetInfo(payload);
     },
-
-    async m1(payload) {
-      console.log("m1");
-      console.log(payload);
-      // this.CLEAR_SIDO_LIST();
+    // 관심 지역 이벤트 듣는 것
+    async AreaSetInfo(payload) {
       this.CLEAR_GUGUN_LIST();
       this.CLEAR_DONG_LIST();
       this.isSelectedSido = payload.sido;
       await this.getGugun(payload.sido);
-      console.log(payload.gugun);
       this.isSelectedGugun = payload.gugun;
       await this.getDong(payload.gugun);
       this.isSelectedDong = payload.dong;
+      // 검색 버튼 누를때 부르는 메소드 호출
+      await this.aptSearch();
+    },
+    // 관심 아파트 이벤트 들음
+    async AptSetInfo(payload) {
+      this.CLEAR_GUGUN_LIST();
+      this.CLEAR_DONG_LIST();
+      this.isSelectedSido = payload.sido;
+      await this.getGugun(payload.sido);
+      this.isSelectedGugun = payload.gugun;
+      await this.getDong(payload.gugun);
+      this.isSelectedDong = payload.dong;
+      // 아파트 검색 메소드 호출
+      this.$router.push({
+        name: "aptDetail",
+        params: {
+          aptCode: payload.aptCode,
+        },
+      });
     },
   },
   components: {},
