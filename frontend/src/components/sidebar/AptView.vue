@@ -28,7 +28,7 @@
       <b-row class="ml-2">
         <b-list-group class="mt-3">
           <b-list-group-item
-            @click="aptDetail(apt.aptCode)"
+            @click="aptDetail(apt.aptCode, index, houses)"
             class="outline-light list-item"
             v-for="(apt, index) in houses"
             :key="apt.aptCode"
@@ -52,12 +52,13 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 import { addLikeArea, deleteLikeArea } from "@/api/like.js";
 
 const aptStore = "aptStore";
 const userStore = "userStore";
 const likeStore = "likeStore";
+const mapStore = "mapStore";
 
 export default {
   data() {
@@ -69,6 +70,17 @@ export default {
     };
   },
   created() {
+    // console.log(this.$route.params.aptCode);
+    // selectHouse(
+    //   this.$route.params.aptCode,
+    //   (response) => {
+    //     this.house = response.data[0];
+    //     console.log(this.house);
+    //   },
+    //   (error) => {
+    //     console.log("아파트정보를 가져오지 못했습니다.", error);
+    //   }
+    // );
     this.isSelected = false;
     if (this.isLogin) {
       this.likeArea.forEach((element) => {
@@ -115,7 +127,12 @@ export default {
   },
   methods: {
     ...mapActions(likeStore, ["getLikeArea", "getLikeApt"]),
-    aptDetail(code) {
+    ...mapMutations(mapStore, ["SET_LNG", "SET_LAT"]),
+    aptDetail(code, index, houses) {
+      // 위도, 경도 넘겨주기 -> 클릭해서 detail 들어가면 지도 표시
+      console.log(houses[index].lng + " " + houses[index].lat);
+      this.SET_LNG(houses[index].lng);
+      this.SET_LAT(houses[index].lat);
       this.$router.push({
         name: "aptDetail",
         params: {

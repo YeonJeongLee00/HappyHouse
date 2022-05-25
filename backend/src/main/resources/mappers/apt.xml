@@ -21,7 +21,7 @@
 	
 	<!-- 아파트 거래 정보 리스트 년도별-->
 	<select id="YearlistHouse" parameterType="BigInteger" resultType="YearListHouseDto">
-	<![CDATA[select avg(dealAmount) avgAmount, count(*) count,dealYear, dealMonth, dealDay, area, floor from housedeal where aptCode = #{aptCode} and dealYear >= Year(now())-5 group by dealYear]]>
+	<![CDATA[select avg(dealAmount) dealAmount, count(*) count, dealYear, dealMonth, dealDay, area, floor from housedeal where aptCode = #{aptCode} and dealYear >= Year(now())-5 group by dealYear]]>
 	</select>
 	
 	
