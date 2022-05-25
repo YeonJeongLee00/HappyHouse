@@ -101,7 +101,6 @@ export default {
             return false;
           }
         });
-        console.log("insss!!!");
         this.aptSelectedState.push(check);
       });
     }
@@ -126,6 +125,7 @@ export default {
           lng: element.lng,
           name: element.apartmentName,
           type: 0,
+          aptCode: element.aptCode,
         });
       });
       this.SET_MAP_INFO(info);
@@ -154,6 +154,7 @@ export default {
           lng: houses[index].lng,
           name: houses[index].apartmentName,
           type: 0,
+          aptCode: houses[index].aptCode,
         },
       ];
       this.SET_TYPE(0);
