@@ -107,7 +107,7 @@
             </thead>
             <tbody>
               <tr v-for="(deal, index) in dealList" :key="index">
-                <td>{{ deal.avgAmount }},000</td>
+                <td>{{ deal.dealAmount }},000</td>
                 <td>{{ deal.dealYear }}</td>
                 <td>{{ deal.count }}</td>
               </tr>
