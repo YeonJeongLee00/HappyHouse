@@ -1,4 +1,5 @@
 const mapStore = {
+  namespaced: true,
   state: {
     lng: null,
     lat: null,

@@ -1,9 +1,7 @@
 package com.ssafy.vue.dto;
 
-import java.math.BigInteger;
-
 public class YearListHouseDto {
-	private int avgAmount;
+	private int dealAmount;
 	private int count;
 	private int dealYear;
 	private int dealMonth;
@@ -11,12 +9,12 @@ public class YearListHouseDto {
 	private String area;
 	private String floor;
 
-	public int getAvgAmount() {
-		return avgAmount;
+	public int getdealAmount() {
+		return dealAmount;
 	}
 
-	public void setAvgAmount(int avgAmount) {
-		this.avgAmount = avgAmount;
+	public void setdealAmount(int dealAmount) {
+		this.dealAmount = dealAmount;
 	}
 
 	public int getCount() {
@@ -69,7 +67,7 @@ public class YearListHouseDto {
 
 	@Override
 	public String toString() {
-		return "YearListHouseDto [avgAmount=" + avgAmount + ", count=" + count + ", dealYear=" + dealYear
+		return "YearListHouseDto [dealAmount=" + dealAmount + ", count=" + count + ", dealYear=" + dealYear
 				+ ", dealMonth=" + dealMonth + ", dealDay=" + dealDay + ", area=" + area + ", floor=" + floor + "]";
 	}
 
