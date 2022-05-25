@@ -4,6 +4,7 @@ const mapStore = {
     lng: 128.413952,
     lat: 36.1081964,
     type: 0,
+    name: "SSAFY",
   },
   getters: {},
   mutations: {
@@ -16,8 +17,11 @@ const mapStore = {
     SET_TYPE: (state, type) => {
       state.type = type;
     },
+    SET_TITLE_INFO: (state, name) => {
+      state.name = name;
+    },
+    actions: {},
   },
-  actions: {},
 };
 
 export default mapStore;
