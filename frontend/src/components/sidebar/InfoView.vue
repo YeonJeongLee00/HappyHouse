@@ -217,6 +217,7 @@ export default {
           lng: lng,
           name: name,
           type: 0,
+          aptCode: aptCode,
         },
       ];
       this.SET_TYPE(0);
