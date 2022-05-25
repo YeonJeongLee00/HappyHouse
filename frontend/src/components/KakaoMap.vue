@@ -75,13 +75,11 @@ export default {
       // 1. 현재 표시되어있는 마커들이 있으면 marker에 등록된 map을 없애준다.
       // console.log(markerPositions);
       if (this.markers.length > 0) {
-        console.log("delete marker");
         this.markers.forEach((marker) => marker.setMap(null));
       }
       this.markers = [];
       // 마커 이미지 설정
 
-      console.log(markerPositions);
       // 2. 마커 표시하기
       const positions = markerPositions.map(
         (position) => new kakao.maps.LatLng(position.lat, position.lng)
@@ -91,7 +89,6 @@ export default {
       if (positions.length > 0) {
         for (let index = 0; index < positions.length; index++) {
           let imgSrc = "";
-          console.log(this.type);
           switch (markerPositions[index].type) {
             case 0:
               imgSrc = require("@/assets/home.png");
@@ -102,7 +99,7 @@ export default {
           }
           const imgSize = new kakao.maps.Size(50, 50);
           const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
-
+          console.log(markerPositions[index]);
           const marker = new kakao.maps.Marker({
             map: this.map,
             position: positions[index], // 마커 위치
@@ -110,17 +107,39 @@ export default {
             image: markerImage, // 마커 이미지
           });
 
-          const infowindow = new kakao.maps.InfoWindow({
-            // removable: true,
-            content: `<div style="padding:10px;
-          background-color: #ffba00;
-          text-align: center;">${markerPositions[index].name}</div>`,
+          let content = `
+            <div class="customoverlay">
+              <a href="https://map.kakao.com/link/map/11394059" target="_blank">
+               <span class="title">
+            ${this.markerPositions[index].name}
+            </span> 
+              </a> 
+            </div>`;
+
+          const customoverlay = new kakao.maps.CustomOverlay({
+            position: positions[index],
+            content: content,
+            yAnchor: 1,
           });
+
           kakao.maps.event.addListener(marker, "mouseover", () => {
-            infowindow.open(this.map, marker);
+            // console.log("이벤트 발생");
+            customoverlay.setMap(this.map);
           });
+
           kakao.maps.event.addListener(marker, "mouseout", () => {
-            infowindow.close(this.map, marker);
+            customoverlay.setMap(null);
+          });
+
+          kakao.maps.event.addListener(marker, "click", () => {
+            if (markerPositions[index].type == 0) {
+              this.$router.push({
+                name: "aptDetail",
+                params: {
+                  aptCode: markerPositions[index].aptCode,
+                },
+              });
+            }
           });
 
           this.markers.push(marker);
@@ -160,10 +179,55 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 #map {
   width: 100%;
   height: 92vh;
   z-index: 1;
+}
+.customoverlay {
+  position: relative;
+  bottom: 85px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  border-bottom: 2px solid #ddd;
+  float: left;
+}
+.customoverlay:nth-of-type(n) {
+  border: 0;
+  box-shadow: 0px 1px 2px #888;
+}
+.customoverlay a {
+  display: block;
+  text-decoration: none;
+  color: #000;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  overflow: hidden;
+  background: #ffba00;
+  background: #ffba00
+    url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
+    no-repeat right 14px center;
+}
+.customoverlay .title {
+  display: block;
+  text-align: center;
+  background: #fff;
+  margin-right: 35px;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.customoverlay:after {
+  content: "";
+  position: absolute;
+  margin-left: -12px;
+  left: 50%;
+  bottom: -12px;
+  width: 22px;
+  height: 12px;
+  background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png");
 }
 </style>

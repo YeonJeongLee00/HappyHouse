@@ -62,6 +62,7 @@
       </div>
       <!-- url에 따라서 변경되는 화면  -->
       <router-view
+        :key="$route.fullPath"
         @area-select-box="AreaSetInfo"
         @apt-select-box="AptSetInfo"
       ></router-view>
