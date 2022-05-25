@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 const mapStore = "mapStore";
 
@@ -21,8 +21,7 @@ export default {
     };
   },
   created() {
-    this.markerPositions = [];
-    this.markerPositions.push([this.lat, this.lng]);
+    this.markerPositions = this.mapInfo;
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -39,35 +38,31 @@ export default {
     }
   },
   computed: {
-    ...mapState(mapStore, ["lng", "lat", "type", "name"]),
+    ...mapState(mapStore, ["mapInfo", "type"]),
   },
   watch: {
-    lng() {
-      this.markerPositions = [];
-      this.markerPositions.push([this.lat, this.lng]);
-      this.displayMarker(this.markerPositions);
-      for (let index = 0; index < this.lng.length; index++) {
-        this.markerPositions.push([this.lat[index], this.lng[index]]);
-      }
-      console.log(this.markerPositions);
+    mapInfo() {
+      this.markerPositions = this.mapInfo;
       this.displayMarker(this.markerPositions);
     },
     // 주변 상가 가져오기
     type() {
-      this.displayType();
+      if (this.type != 0) {
+        this.displayType();
+      }
     },
   },
   methods: {
+    ...mapMutations(mapStore, ["SET_TYPE"]),
     initMap() {
       const container = document.getElementById("map");
       const options = {
-        center: new kakao.maps.LatLng(this.lat, this.lng),
+        center: new kakao.maps.LatLng(36.1081964, 128.413952),
         level: 5,
       };
       //지도 객체를 등록합니다.
       //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
       this.map = new kakao.maps.Map(container, options);
-      // this.markers.setMap(this.map);
     },
     changeSize(size) {
       const container = document.getElementById("map");
@@ -77,45 +72,49 @@ export default {
     },
     // 마커 표시 메소드
     displayMarker(markerPositions) {
-      console.log("mark : " + markerPositions);
-
       // 1. 현재 표시되어있는 마커들이 있으면 marker에 등록된 map을 없애준다.
+      // console.log(markerPositions);
       if (this.markers.length > 0) {
+        console.log("delete marker");
         this.markers.forEach((marker) => marker.setMap(null));
       }
+      this.markers = [];
       // 마커 이미지 설정
-      const imgSrc = require("@/assets/apt.png");
-      const imgSize = new kakao.maps.Size(24, 24);
-      const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
 
+      console.log(markerPositions);
       // 2. 마커 표시하기
       const positions = markerPositions.map(
-        (position) => new kakao.maps.LatLng(...position)
+        (position) => new kakao.maps.LatLng(position.lat, position.lng)
       );
 
+      console.log(positions);
       if (positions.length > 0) {
-        // this.markers = positions.map(
-        //   (position) =>
-        //     new kakao.maps.Marker({
-        //       map: this.map,
-        //       position, // 마커 위치
-        //       title: "", // 마우스 오버시 표시할 제목
-        //       image: markerImage, // 마커 이미지
-        //     })
-        // );
         for (let index = 0; index < positions.length; index++) {
+          let imgSrc = "";
+          console.log(this.type);
+          switch (markerPositions[index].type) {
+            case 0:
+              imgSrc = require("@/assets/home.png");
+              break;
+            case 1:
+              imgSrc = require("@/assets/store.png");
+              break;
+          }
+          const imgSize = new kakao.maps.Size(50, 50);
+          const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
+
           const marker = new kakao.maps.Marker({
             map: this.map,
             position: positions[index], // 마커 위치
-            title: this.name[index], // 마우스 오버시 표시할 제목
+            title: markerPositions[index].name, // 마우스 오버시 표시할 제목
             image: markerImage, // 마커 이미지
           });
 
           const infowindow = new kakao.maps.InfoWindow({
             // removable: true,
             content: `<div style="padding:10px;
-            background-color: #ffba00;
-            text-align: center;">${this.name[index]}</div>`,
+          background-color: #ffba00;
+          text-align: center;">${markerPositions[index].name}</div>`,
           });
           kakao.maps.event.addListener(marker, "mouseover", () => {
             infowindow.open(this.map, marker);
@@ -134,7 +133,6 @@ export default {
         );
 
         this.map.setBounds(bounds);
-        // this.markers.setMap(this.map);
       }
     },
     displayType() {
@@ -143,10 +141,16 @@ export default {
 
       ps.categorySearch("CS2", this.placesSearchCB, { useMapBounds: true });
     },
+
     placesSearchCB(data, status) {
       if (status === kakao.maps.services.Status.OK) {
         for (var i = 0; i < data.length; i++) {
-          this.markerPositions.push([data[i].y, data[i].x]);
+          this.markerPositions.push({
+            lng: data[i].x,
+            lat: data[i].y,
+            name: data[i].place_name,
+            type: 1,
+          });
         }
         this.displayMarker(this.markerPositions);
       }

@@ -5,23 +5,37 @@ const mapStore = {
     lat: 36.1081964,
     type: 0,
     name: "SSAFY",
+    mapInfo: [
+      {
+        lng: 128.413952,
+        lat: 36.1081964,
+        name: "SSAFY",
+      },
+    ],
   },
   getters: {},
   mutations: {
     SET_LNG: (state, lng) => {
-      state.lng = lng;
+      state.lng = [];
+      for (let index = 0; index < lng.length; index++) {
+        state.lng.push(lng[index]);
+      }
     },
     SET_LAT: (state, lat) => {
-      state.lat = lat;
+      state.lat = [];
+      // console.log(lat);
+      for (let index = 0; index < lat.length; index++) {
+        state.lat.push(lat[index]);
+      }
     },
     SET_TYPE: (state, type) => {
       state.type = type;
     },
-    SET_TITLE_INFO: (state, name) => {
-      state.name = name;
+    SET_MAP_INFO: (state, info) => {
+      state.mapInfo = info;
     },
-    actions: {},
   },
+  actions: {},
 };
 
 export default mapStore;

@@ -119,17 +119,16 @@ export default {
     },
     houses() {
       this.setLikeIcon();
-      let lngData = [];
-      let latData = [];
-      let nameData = [];
+      let info = [];
       this.houses.forEach((element) => {
-        latData.push(element.lat);
-        lngData.push(element.lng);
-        nameData.push(element.apartmentName);
+        info.push({
+          lat: element.lat,
+          lng: element.lng,
+          name: element.apartmentName,
+          type: 0,
+        });
       });
-      this.SET_LAT(latData);
-      this.SET_LNG(lngData);
-      this.SET_TITLE_INFO(nameData);
+      this.SET_MAP_INFO(info);
     },
   },
   computed: {
@@ -145,14 +144,20 @@ export default {
   },
   methods: {
     ...mapActions(likeStore, ["getLikeArea", "getLikeApt"]),
-    ...mapMutations(mapStore, ["SET_LNG", "SET_LAT", "SET_TITLE_INFO"]),
-
+    ...mapMutations(mapStore, ["SET_MAP_INFO", "SET_TYPE"]),
     aptDetail(code, index, houses) {
       // 위도, 경도 넘겨주기 -> 클릭해서 detail 들어가면 지도 표시
-      console.log(houses[index].lng + " " + houses[index].lat);
-      this.SET_LNG(houses[index].lng);
-      this.SET_LAT(houses[index].lat);
-
+      // console.log(houses[index].lng + " " + houses[index].lat);
+      let info = [
+        {
+          lat: houses[index].lat,
+          lng: houses[index].lng,
+          name: houses[index].apartmentName,
+          type: 0,
+        },
+      ];
+      this.SET_TYPE(0);
+      this.SET_MAP_INFO(info);
       this.$router.push({
         name: "aptDetail",
         params: {

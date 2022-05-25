@@ -22,7 +22,6 @@
         </h4>
       </b-col>
     </b-row>
-
     <div class="mr-2">
       <b-button
         v-b-toggle
