@@ -1,7 +1,6 @@
 <template>
   <div>
     <div id="map" class="position-relative"></div>
-    <!-- <button @click="displayMarker(markerPositions)">버튼!!</button> -->
   </div>
 </template>
 
@@ -78,7 +77,7 @@ export default {
         this.markers.forEach((marker) => marker.setMap(null));
       }
       // 마커 이미지 설정
-      const imgSrc = require("@/assets/apt1.png");
+      const imgSrc = require("@/assets/apt.png");
       const imgSize = new kakao.maps.Size(24, 24);
       const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
 
@@ -97,26 +96,29 @@ export default {
         //       image: markerImage, // 마커 이미지
         //     })
         // );
-        const marker = [];
         for (let index = 0; index < positions.length; index++) {
-          marker.push(
-            new kakao.maps.Marker({
-              map: this.map,
-              position: positions[index], // 마커 위치
-              title: this.name[index], // 마우스 오버시 표시할 제목
-              image: markerImage, // 마커 이미지
-            })
-          );
+          const marker = new kakao.maps.Marker({
+            map: this.map,
+            position: positions[index], // 마커 위치
+            title: this.name[index], // 마우스 오버시 표시할 제목
+            image: markerImage, // 마커 이미지
+          });
+
+          const infowindow = new kakao.maps.InfoWindow({
+            // removable: true,
+            content: `<div style="padding:10px;
+            background-color: #ffba00;
+            text-align: center;">${this.name[index]}</div>`,
+          });
+          kakao.maps.event.addListener(marker, "mouseover", () => {
+            infowindow.open(this.map, marker);
+          });
+          kakao.maps.event.addListener(marker, "mouseout", () => {
+            infowindow.close(this.map, marker);
+          });
+
+          this.markers.push(marker);
         }
-
-        // kakao.maps.event.addListener(marker, "mouseover", () => {
-        //   infowindow.open(this.map, marker);
-        // });
-        // kakao.maps.event.addListener(marker, "mouseout", () => {
-        //   infowindow.close(this.map, marker);
-        // });
-
-        this.markers.push(marker);
 
         //  3. 지도 이동
         const bounds = positions.reduce(

@@ -5,3 +5,4 @@
 [2m2022-05-25 09:32:52.555[0;39m [32m INFO[0;39m [35m1773[0;39m [2m---[0;39m [2m[  restartedMain][0;39m [36m.ConditionEvaluationDeltaLoggingListener[0;39m [2m:[0;39m Condition evaluation unchanged
 [2m2022-05-25 09:33:16.872[0;39m [32m INFO[0;39m [35m1773[0;39m [2m---[0;39m [2m[nio-9999-exec-1][0;39m [36mo.s.web.servlet.DispatcherServlet       [0;39m [2m:[0;39m Initializing Servlet 'dispatcherServlet'
 [2m2022-05-25 09:33:16.877[0;39m [32m INFO[0;39m [35m1773[0;39m [2m---[0;39m [2m[nio-9999-exec-1][0;39m [36mo.s.web.servlet.DispatcherServlet       [0;39m [2m:[0;39m Completed initialization in 3 ms
+[2m2022-05-25 11:28:34.773[0;39m [32m INFO[0;39m [35m1773[0;39m [2m---[0;39m [2m[(161)-127.0.0.1][0;39m [36minMXBeanRegistrar$SpringApplicationAdmin[0;39m [2m:[0;39m Application shutdown requested.
