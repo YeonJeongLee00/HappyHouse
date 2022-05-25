@@ -73,6 +73,9 @@ export default {
     dealList: {
       type: Array,
     },
+    type: {
+      type: String,
+    },
   },
   data() {
     return {
@@ -80,7 +83,7 @@ export default {
         labels: [],
         datasets: [
           {
-            label: "가격",
+            label: "거래가격",
             backgroundColor: "#6d9773",
             borderColor: "#6d9773",
             data: [],
@@ -93,18 +96,21 @@ export default {
       },
     };
   },
-  created() {},
-  mounted() {},
   watch: {
     dealList() {
       this.chartData.labels = this.dealList.map((deal) => {
         return `${deal.dealYear}/${deal.dealMonth}/${deal.dealDay}`;
       });
-      console.log("label : " + this.chartData.labels);
-      this.chartData.datasets.data = this.dealList.map((deal) => {
-        return `${deal.dealAmount}`;
+
+      this.chartData.datasets[0].data = this.dealList.map((deal) => {
+        const str = `${deal.dealAmount}`;
+        if (this.type === `group`) {
+          return str;
+        } else {
+          const amount = str.slice(0, str.length - 4);
+          return amount;
+        }
       });
-      console.log("data : " + this.chartData.datasets.data);
     },
   },
 };
