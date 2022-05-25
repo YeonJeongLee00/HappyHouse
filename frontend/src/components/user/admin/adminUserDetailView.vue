@@ -107,9 +107,9 @@ export default {
       deleteUser(
         this.user.id,
         () => {
-          this.SET_USER_INFO(null);
-          this.SET_IS_LOGIN(false);
-          sessionStorage.removeItem("access-token");
+          // this.SET_USER_INFO(null);
+          // this.SET_IS_LOGIN(false);
+          // sessionStorage.removeItem("access-token");
           alert("삭제 완료");
           this.$router.push({ name: "admin" });
         },
