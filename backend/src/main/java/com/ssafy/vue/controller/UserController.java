@@ -66,6 +66,7 @@ public class UserController {
 	@ApiOperation(value = "회원 삭제")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Boolean> deleteUser(@PathVariable("id") String id)throws Exception{
+		System.out.println("삭제 in");
 		return new ResponseEntity<Boolean>(userService.deleteUser(id), HttpStatus.OK);
 	}
 	
