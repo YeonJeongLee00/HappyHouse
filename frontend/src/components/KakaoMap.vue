@@ -46,10 +46,12 @@ export default {
     lng() {
       this.markerPositions = [];
       this.markerPositions.push([this.lat, this.lng]);
+      this.displayMarker(this.markerPositions);
     },
     lat() {
       this.markerPositions = [];
       this.markerPositions.push([this.lat, this.lng]);
+      this.displayMarker(this.markerPositions);
     },
   },
   methods: {
