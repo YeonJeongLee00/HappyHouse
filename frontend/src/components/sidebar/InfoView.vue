@@ -26,7 +26,15 @@
             class="outline-light list-item"
             v-for="(apt, index) in likeApt"
             :key="index"
-            @click="moveLikeApt(apt.aptCode, apt.dongCode, apt.lat, apt.lng)"
+            @click="
+              moveLikeApt(
+                apt.aptCode,
+                apt.dongCode,
+                apt.lat,
+                apt.lng,
+                apt.apartmentName
+              )
+            "
           >
             {{ apt.apartmentName }}
             <span>
@@ -164,7 +172,12 @@ export default {
       "CLEAR_GUGUN_LIST",
       "CLEAR_DONG_LIST",
     ]),
-    ...mapMutations(mapStore, ["SET_LNG", "SET_LAT"]),
+    ...mapMutations(mapStore, [
+      "SET_LNG",
+      "SET_LAT",
+      "SET_MAP_INFO",
+      "SET_TYPE",
+    ]),
     AreaToggle() {
       console.log("areaToggle");
       this.pouplarAreaToggle = !this.pouplarAreaToggle;
@@ -191,15 +204,23 @@ export default {
       this.$emit("area-select-box", payload);
     },
     // 관심 아파트 누르면 검색 이벤트 발생시키는 메소드
-    moveLikeApt(aptCode, dongCode, lat, lng) {
+    moveLikeApt(aptCode, dongCode, lat, lng, name) {
       let payload = {
         sido: dongCode.substr(0, 2),
         gugun: dongCode.substr(0, 5),
         dong: dongCode,
         aptCode: aptCode,
       };
-      this.SET_LNG(lng);
-      this.SET_LAT(lat);
+      let info = [
+        {
+          lat: lat,
+          lng: lng,
+          name: name,
+          type: 0,
+        },
+      ];
+      this.SET_TYPE(0);
+      this.SET_MAP_INFO(info);
       this.$emit("apt-select-box", payload);
     },
   },
