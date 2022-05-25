@@ -163,7 +163,7 @@
           편의 시설
           <font-awesome-icon icon="fa-solid fa-map-location-dot" class="icon" />
         </h5>
-        <b-button class="b-button" @click="open">편의점</b-button>
+        <b-button class="b-button" @click="open(1)">편의점</b-button>
       </b-card>
     </b-collapse>
     <!-- 주변 편의 시설 end -->
@@ -178,11 +178,12 @@ import {
   listHouseOneYear,
   listHouseYear,
 } from "@/api/apt/";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 import { addLikeApt, deleteLikeApt } from "@/api/like.js";
 
 const userStore = "userStore";
 const likeStore = "likeStore";
+const mapStore = "mapStore";
 
 export default {
   data() {
@@ -241,6 +242,7 @@ export default {
   },
   methods: {
     ...mapActions(likeStore, ["getLikeApt"]),
+    ...mapMutations(mapStore, ["SET_TYPE"]),
     allList() {
       this.type = "all";
       listHouse(
@@ -276,6 +278,10 @@ export default {
           console.log("아파트정보를 가져오지 못했습니다.", error);
         }
       );
+    },
+    open(type) {
+      console.log("type을 선택했씁니다 : " + type);
+      this.SET_TYPE(type);
     },
 
     async addApt() {
