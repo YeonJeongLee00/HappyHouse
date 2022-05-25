@@ -81,6 +81,7 @@ export default {
     //     console.log("아파트정보를 가져오지 못했습니다.", error);
     //   }
     // );
+
     this.isSelected = false;
     if (this.isLogin) {
       this.likeArea.forEach((element) => {
@@ -118,20 +119,30 @@ export default {
     },
     houses() {
       this.setLikeIcon();
-      console.log();
-      for (let index = 0; index < this.dongs.length; index++) {
-        if (this.dongs[index].value == this.code) {
-          console.log(this.dongsPoint[index - 1].name);
-          console.log(
-            this.dongsPoint[index - 1].lng +
-              "   " +
-              this.dongsPoint[index - 1].lat
-          );
-          this.SET_LNG(this.dongsPoint[index - 1].lng);
-          this.SET_LAT(this.dongsPoint[index - 1].lat);
-          break;
-        }
-      }
+      let lngData = [];
+      let latData = [];
+      let nameData = [];
+      this.houses.forEach((element) => {
+        latData.push(element.lat);
+        lngData.push(element.lng);
+        nameData.push(element.apartmentName);
+      });
+      this.SET_LAT(latData);
+      this.SET_LNG(lngData);
+      this.SET_TITLE_INFO(nameData);
+      // for (let index = 0; index < this.dongs.length; index++) {
+      //   if (this.dongs[index].value == this.code) {
+      //     console.log(this.dongsPoint[index - 1].name);
+      //     console.log(
+      //       this.dongsPoint[index - 1].lng +
+      //         "   " +
+      //         this.dongsPoint[index - 1].lat
+      //     );
+      //     this.SET_LNG(this.dongsPoint[index - 1].lng);
+      //     this.SET_LAT(this.dongsPoint[index - 1].lat);
+      //     break;
+      //   }
+      // }
     },
   },
   computed: {
@@ -147,7 +158,7 @@ export default {
   },
   methods: {
     ...mapActions(likeStore, ["getLikeArea", "getLikeApt"]),
-    ...mapMutations(mapStore, ["SET_LNG", "SET_LAT"]),
+    ...mapMutations(mapStore, ["SET_LNG", "SET_LAT", "SET_TITLE_INFO"]),
 
     aptDetail(code, index, houses) {
       // 위도, 경도 넘겨주기 -> 클릭해서 detail 들어가면 지도 표시
