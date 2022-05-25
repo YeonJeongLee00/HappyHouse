@@ -22,7 +22,7 @@ public class SwaggerConfig {
 	@Bean
 	public Docket postsApi() {
 		return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).groupName("ssafyVueJS").select()
-				.apis(RequestHandlerSelectors.basePackage("com.ssafy.vue.controller")).paths(regex("/vue/.*")).build();
+				.apis(RequestHandlerSelectors.basePackage("com.ssafy.vue.controller")).paths(regex("/.*")).build();
 	}
 
 	private ApiInfo apiInfo() {

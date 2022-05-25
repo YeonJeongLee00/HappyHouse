@@ -15,17 +15,34 @@
           <b-form-select
             id="tag_no"
             v-model="board.tag_no"
-            :options="options"
+            :options="options_a"
             class="mt-1"
+            v-if="board.user_id == 'admin'"
+          ></b-form-select>
+          <b-form-select
+            id="tag_no"
+            v-model="board.tag_no"
+            :options="options_u"
+            class="mt-1"
+            v-else
           ></b-form-select>
         </b-form-group>
 
         <!-- 글 수정 - 태그 -->
         <b-form-group id="tag-group" label="태그" label-for="tag" v-else>
           <b-form-select
+            id="tag_no"
             v-model="board.tag_no"
-            :options="options"
+            :options="options_a"
             class="mt-1"
+            v-if="board.user_id == 'admin'"
+          ></b-form-select>
+          <b-form-select
+            id="tag_no"
+            v-model="board.tag_no"
+            :options="options_u"
+            class="mt-1"
+            v-else
           ></b-form-select>
         </b-form-group>
 
@@ -148,9 +165,15 @@ export default {
         tag_no: "",
       },
       tag_no: null,
-      options: [
+      options_a: [
         { value: null, text: "태그를 선택해 주세요" },
         { value: 1, text: "공지사항" },
+        { value: 2, text: "잡담" },
+        { value: 3, text: "꿀팁" },
+      ],
+      options_u: [
+        { value: null, text: "태그를 선택해 주세요" },
+        { value: 1, text: "공지사항", disabled: "disabled" },
         { value: 2, text: "잡담" },
         { value: 3, text: "꿀팁" },
       ],
