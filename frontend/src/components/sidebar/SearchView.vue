@@ -2,6 +2,7 @@
   <div id="side-bar">
     <b-container class="container make-scroll" right shadow>
       <!-- 시, 구, 동 선택 -->
+
       <div id="search" class="mt-4">
         <!-- 시/도 -->
         <!-- v-model="selectedSido"  -->
@@ -237,7 +238,7 @@ export default {
 #back {
   position: fixed;
   /* left: 0; */
-  /* right: 0; */
+  right: 40px;
   bottom: 40px;
   background-color: #0c3b2e;
   color: #ffba00;
