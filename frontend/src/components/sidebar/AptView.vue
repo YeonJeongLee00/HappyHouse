@@ -130,19 +130,6 @@ export default {
       this.SET_LAT(latData);
       this.SET_LNG(lngData);
       this.SET_TITLE_INFO(nameData);
-      // for (let index = 0; index < this.dongs.length; index++) {
-      //   if (this.dongs[index].value == this.code) {
-      //     console.log(this.dongsPoint[index - 1].name);
-      //     console.log(
-      //       this.dongsPoint[index - 1].lng +
-      //         "   " +
-      //         this.dongsPoint[index - 1].lat
-      //     );
-      //     this.SET_LNG(this.dongsPoint[index - 1].lng);
-      //     this.SET_LAT(this.dongsPoint[index - 1].lat);
-      //     break;
-      //   }
-      // }
     },
   },
   computed: {
