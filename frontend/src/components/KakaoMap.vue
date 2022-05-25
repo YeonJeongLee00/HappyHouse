@@ -40,7 +40,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(mapStore, ["lng", "lat"]),
+    ...mapState(mapStore, ["lng", "lat", "type"]),
   },
   watch: {
     lng() {
@@ -48,10 +48,9 @@ export default {
       this.markerPositions.push([this.lat, this.lng]);
       this.displayMarker(this.markerPositions);
     },
-    lat() {
-      this.markerPositions = [];
-      this.markerPositions.push([this.lat, this.lng]);
-      this.displayMarker(this.markerPositions);
+    // 주변 상가 가져오기
+    type() {
+      this.displayType();
     },
   },
   methods: {
@@ -74,7 +73,8 @@ export default {
     },
     // 마커 표시 메소드
     displayMarker(markerPositions) {
-      console.log(markerPositions);
+      console.log("mark : " + markerPositions);
+
       // 1. 현재 표시되어있는 마커들이 있으면 marker에 등록된 map을 없애준다.
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
@@ -109,25 +109,19 @@ export default {
         // this.markers.setMap(this.map);
       }
     },
-    displayInfoWindow() {
-      if (this.infowindow && this.infowindow.getMap()) {
-        //이미 생성한 인포윈도우가 있기 때문에 지도 중심좌표를 인포윈도우 좌표로 이동시킨다.
-        this.map.setCenter(this.infowindow.getPosition());
-        return;
+    displayType() {
+      // var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+      var ps = new kakao.maps.services.Places(this.map);
+
+      ps.categorySearch("CS2", this.placesSearchCB, { useMapBounds: true });
+    },
+    placesSearchCB(data, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        for (var i = 0; i < data.length; i++) {
+          this.markerPositions.push([data[i].y, data[i].x]);
+        }
+        this.displayMarker(this.markerPositions);
       }
-
-      var iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-        iwPosition = new kakao.maps.LatLng(33.450701, 126.570667), //인포윈도우 표시 위치입니다
-        iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-
-      this.infowindow = new kakao.maps.InfoWindow({
-        map: this.map, // 인포윈도우가 표시될 지도
-        position: iwPosition,
-        content: iwContent,
-        removable: iwRemoveable,
-      });
-
-      this.map.setCenter(iwPosition);
     },
   },
 };
