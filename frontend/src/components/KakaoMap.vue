@@ -226,7 +226,7 @@ export default {
 <style>
 #map {
   width: 100%;
-  height: 92vh;
+  height: 100vh;
   z-index: 1;
 }
 .customoverlay {
