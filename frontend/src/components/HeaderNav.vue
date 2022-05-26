@@ -23,7 +23,7 @@
         <ul class="navbar-nav">
           <li class="nav-item">
             <router-link to="/board" class="nav-link text-white"
-              >공지사항</router-link
+              >커뮤니티</router-link
             >
           </li>
           <li class="nav-item">
