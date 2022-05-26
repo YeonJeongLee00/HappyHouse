@@ -58,7 +58,7 @@
         class="mr-5 ml-5 mb-3"
         variant="outline-secondary"
         @click="deleteUser"
-        >삭제</b-button
+        >탈퇴</b-button
       >
     </div>
   </div>
@@ -117,7 +117,7 @@ export default {
           this.SET_USER_INFO(null);
           this.SET_IS_LOGIN(false);
           sessionStorage.removeItem("access-token");
-          alert("삭제 완료");
+          alert("탈퇴 완료");
           this.$router.push({ name: "main" });
         },
         () => {}
