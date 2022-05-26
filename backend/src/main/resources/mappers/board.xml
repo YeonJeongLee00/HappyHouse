@@ -16,7 +16,7 @@
 	
 	<!-- 게시글 작성 -->
 	<insert id="insertBoard" parameterType="boardDto">
-		insert into board(no, title, content, user_id, registDate, view, tag_no) values (0,#{title},#{content},#{user_id},now(),#{view},#{tag_no})
+		insert into board(no, title, content, user_id, registDate, view, tag_no) values (0,#{title},#{content},#{user_id}, now(),#{view},#{tag_no})
 	</insert>
 	
 	<!-- 게시글 수정 -->
