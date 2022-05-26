@@ -6,7 +6,10 @@
       <router-link
         :to="{ name: 'boardDetail', params: { no: no } }"
         class="router"
-        >{{ board.title }}</router-link
+        >{{ board.title }}
+        <b-badge class="ml-3 badge-style align-items-center">{{
+          board.registDate | dateFormat | newArticle
+        }}</b-badge></router-link
       >
     </b-th>
     <b-td class="td">{{ board.user_id }}</b-td>
@@ -59,7 +62,16 @@ export default {
     dateFormat(registDate) {
       return moment(new Date(registDate)).format("YY.MM.DD");
     },
+    newArticle(format) {
+      let today = moment(new Date()).format("YY.MM.DD");
+      if (format == today) {
+        return "new";
+      } else {
+        return null;
+      }
+    },
   },
+  methods: {},
 };
 </script>
 
@@ -70,5 +82,8 @@ export default {
 .router {
   font-size: 17px;
   color: #6d9773;
+}
+.badge-style {
+  background-color: #ffba00;
 }
 </style>
