@@ -1,6 +1,6 @@
 <template>
   <b-container class="container bv-example-row mt-3">
-    <b-row>
+    <b-row id="community">
       <b-form-select
         class="select"
         v-model="selected"
@@ -12,7 +12,7 @@
       <b-table
         hover
         responsive
-        class="mt-3"
+        class="mt-3 text-center"
         id="my-table-all"
         :fields="fields"
         :items="items"
@@ -25,7 +25,7 @@
       <b-table
         hover
         responsive
-        class="mt-3"
+        class="mt-3 text-center"
         id="my-table"
         :items="tagitems"
         :current-page="currentPage"
@@ -42,6 +42,8 @@
       :per-page="perPage"
       aria-controls="my-table"
       align="center"
+      class="mt-3"
+      id="page-navi"
     ></b-pagination>
   </b-container>
 </template>
@@ -62,12 +64,63 @@ export default {
   data() {
     return {
       fields: [
-        { key: "no", label: "번호", sortable: true, thClass: "w20" },
-        { key: "tag_name", label: "글종류", thClass: "w20" },
-        { key: "title", label: "제목", thClass: "w10" },
-        { key: "user_id", label: "작성자", thClass: "w20" },
-        { key: "registDate", label: "날짜", sortable: true, thClass: "w20" },
-        { key: "view", label: "조회수", sortable: true, thClass: "w10" },
+        {
+          key: "no",
+          label: "번호",
+          sortable: true,
+          thStyle: {
+            width: "10%",
+            "background-color": "#6d9773",
+            color: "white",
+          },
+        },
+        {
+          key: "tag_name",
+          label: "글종류",
+          thStyle: {
+            width: "10%",
+            "background-color": "#6d9773",
+            color: "white",
+          },
+        },
+        {
+          key: "title",
+          label: "제목",
+          thStyle: {
+            width: "50%",
+            "background-color": "#6d9773",
+            color: "white",
+          },
+        },
+        {
+          key: "user_id",
+          label: "작성자",
+          thStyle: {
+            width: "10%",
+            "background-color": "#6d9773",
+            color: "white",
+          },
+        },
+        {
+          key: "registDate",
+          label: "날짜",
+          sortable: true,
+          thStyle: {
+            width: "10%",
+            "background-color": "#6d9773",
+            color: "white",
+          },
+        },
+        {
+          key: "view",
+          label: "조회수",
+          sortable: true,
+          thStyle: {
+            width: "10%",
+            "background-color": "#6d9773",
+            color: "white",
+          },
+        },
       ],
       items: [],
       tagitems: [],
@@ -168,6 +221,11 @@ export default {
 </script>
 
 <style scoped>
+/* #page-nav {
+  position: fixed;
+  bottom: 30px;
+} */
+
 .select {
   width: 120px;
   background-color: #6d9773;
