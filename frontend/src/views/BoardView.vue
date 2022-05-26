@@ -1,6 +1,6 @@
 <template>
   <b-container class="container">
-    <h1>공지사항</h1>
+    <h1>커뮤니티</h1>
     <router-view></router-view>
   </b-container>
 </template>
