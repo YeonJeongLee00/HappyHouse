@@ -9,45 +9,32 @@
       ></b-form-select>
       <b-button class="button ml-2" @click="moveWrite()">글 쓰기</b-button>
 
-      <b-table-simple
+      <b-table
+        hover
+        responsive
+        class="mt-3"
+        id="my-table-all"
+        :fields="fields"
+        :items="items"
+        :current-page="currentPage"
+        :per-page="perPage"
+        @row-clicked="click"
+        v-if="selected == 0"
+      >
+      </b-table>
+      <b-table
         hover
         responsive
         class="mt-3"
         id="my-table"
-        :items="items"
+        :items="tagitems"
         :current-page="currentPage"
         :per-page="perPage"
+        :fields="fields"
+        @row-clicked="click"
+        v-else
       >
-        <b-thead>
-          <b-tr class="title" align="center">
-            <b-th class="col-md-1 head">번호</b-th>
-            <b-th class="col-md-1 head">글 종류</b-th>
-            <b-th class="col-md-5 head">제목</b-th>
-            <b-th class="col-md-2 head">작성자</b-th>
-            <b-th class="col-md-1 head">조회수</b-th>
-            <b-th class="col-md-1 head">날짜</b-th>
-          </b-tr>
-        </b-thead>
-        <!-- 모든 리스트 출력 start -->
-        <tbody v-if="tagBoards.length == 0 && selected == null">
-          <board-list-item
-            v-for="board in boards"
-            :key="board.no"
-            v-bind="board"
-          />
-        </tbody>
-        <!-- 모든 리스트 출력 end -->
-
-        <!-- Tag 리스트 출력 -->
-        <tbody v-else>
-          <board-list-item
-            v-for="board in tagBoards"
-            :key="board.no"
-            v-bind="board"
-          />
-        </tbody>
-        <!-- Tag 리스트 출력 end -->
-      </b-table-simple>
+      </b-table>
     </b-row>
     <b-pagination
       v-model="currentPage"
@@ -60,24 +47,33 @@
 </template>
 
 <script>
-import { listBoard } from "@/api/board.js";
-import BoardListItem from "@/components/board/item/BoardListItem.vue";
+import { listBoard, selectTag } from "@/api/board.js";
+//import BoardListItem from "@/components/board/item/BoardListItem.vue";
 import { mapState } from "vuex";
+import moment from "moment";
 
 const userStore = "userStore";
 
 export default {
   name: "BoardList",
   components: {
-    BoardListItem,
+    //BoardListItem,
   },
   data() {
     return {
-      boards: [],
-      tagBoards: [],
-      selected: null,
+      fields: [
+        { key: "no", label: "번호", sortable: true, thClass: "w20" },
+        { key: "tag_name", label: "글종류", thClass: "w20" },
+        { key: "title", label: "제목", thClass: "w10" },
+        { key: "user_id", label: "작성자", thClass: "w20" },
+        { key: "registDate", label: "날짜", sortable: true, thClass: "w20" },
+        { key: "view", label: "조회수", sortable: true, thClass: "w10" },
+      ],
+      items: [],
+      tagitems: [],
+      selected: 0,
       options: [
-        { value: null, text: "글 종류" },
+        { value: 0, text: "글 종류" },
         { value: 1, text: "공지사항" },
         { value: 2, text: "잡담" },
         { value: 3, text: "꿀팁" },
@@ -96,7 +92,30 @@ export default {
     listBoard(
       param,
       (response) => {
-        this.boards = response.data;
+        response.data.forEach((element) => {
+          let tag_name = "";
+
+          selectTag(
+            element.no,
+            (response) => {
+              tag_name = response.data;
+              let item = {
+                no: element.no,
+                tag_name: tag_name,
+                title: element.title,
+                user_id: element.user_id,
+                registDate: moment(new Date(element.registDate)).format(
+                  "YY.MM.DD"
+                ),
+                view: element.view,
+              };
+              this.items.push(item);
+            },
+            (error) => {
+              console.log("에러발생", error);
+            }
+          );
+        });
       },
       (error) => {
         console.log(error);
@@ -106,7 +125,7 @@ export default {
   computed: {
     ...mapState(userStore, ["userInfo"]),
     rows() {
-      return this.boards.length;
+      return this.items.length;
     },
   },
   methods: {
@@ -120,13 +139,29 @@ export default {
     },
     // 원하는 글 종류만 출력
     onChange(event) {
-      let list = this.boards.filter((board) => {
-        if (board.tag_no.includes(event)) {
+      let list = this.items.filter((item) => {
+        let str = item.tag_name;
+        if (str.includes(this.options[event].text)) {
           return true;
         }
       });
-      console.log(list);
-      this.tagBoards = list;
+      this.tagitems = list;
+    },
+    click(record) {
+      this.$router.push({ name: "boardDetail", params: { no: record.no } });
+    },
+  },
+  filters: {
+    dateFormat(registDate) {
+      return moment(new Date(registDate)).format("YY.MM.DD");
+    },
+    newArticle(format) {
+      let today = moment(new Date()).format("YY.MM.DD");
+      if (format == today) {
+        return "new";
+      } else {
+        return null;
+      }
     },
   },
 };
@@ -139,9 +174,6 @@ export default {
   border-color: white;
   border-radius: 12px;
   color: white;
-}
-.table {
-  margin-top: 20px;
 }
 .title {
   background-color: #6d9773;

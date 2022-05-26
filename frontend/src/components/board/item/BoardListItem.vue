@@ -1,21 +1,5 @@
 <template>
-  <b-tr>
-    <b-td class="td">{{ board.no }}</b-td>
-    <b-td class="td">{{ board.tag_name }}</b-td>
-    <b-th class="text-left">
-      <router-link
-        :to="{ name: 'boardDetail', params: { no: no } }"
-        class="router"
-        >{{ board.title }}
-        <b-badge class="ml-3 badge-style align-items-center">{{
-          board.registDate | dateFormat | newArticle
-        }}</b-badge></router-link
-      >
-    </b-th>
-    <b-td class="td">{{ board.user_id }}</b-td>
-    <b-td class="td">{{ board.view }}</b-td>
-    <b-td class="td">{{ board.registDate | dateFormat }}</b-td>
-  </b-tr>
+  <b-table :items="this.boards" :fields="fields"></b-table>
 </template>
 
 <script>

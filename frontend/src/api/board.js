@@ -1,8 +1,8 @@
 import api from "./http.js";
 
 // Read ( List )
-function listBoard(param, success, fail) {
-  api.get(`/board`, { params: param }).then(success).catch(fail);
+async function listBoard(param, success, fail) {
+  await api.get(`/board`, { params: param }).then(success).catch(fail);
 }
 
 // Read ( One )
@@ -29,8 +29,8 @@ function deleteBoard(no, success, fail) {
 }
 
 // Read ( Tag )
-function selectTag(no, success, fail) {
-  api.get(`/board/tag/${no}`).then(success).catch(fail);
+async function selectTag(no, success, fail) {
+  await api.get(`/board/tag/${no}`).then(success).catch(fail);
 }
 
 // 조회수 update
