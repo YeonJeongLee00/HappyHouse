@@ -100,13 +100,13 @@
           </line-chart-view>
           <table class="table-style mt-4">
             <thead>
-              <th>평균거래가격 ( 만원 )</th>
+              <th>평균거래가격</th>
               <th>년</th>
               <th>거래량</th>
             </thead>
             <tbody>
               <tr v-for="(deal, index) in dealList" :key="index">
-                <td>{{ deal.dealAmount }},000</td>
+                <td>{{ deal.dealAmount | houseAmount }}</td>
                 <td>{{ deal.dealYear }}</td>
                 <td>{{ deal.count }}</td>
               </tr>
@@ -121,18 +121,18 @@
           <div class="chartAreaWrapper">
             <table class="table-style mt-4">
               <thead>
-                <th>거래가격<br />( 만원 )</th>
+                <th>거래가격</th>
                 <th>층</th>
-                <th>전용면적<br />( m² )</th>
+                <th>전용면적</th>
                 <th>년</th>
                 <th>월</th>
                 <th>일</th>
               </thead>
               <tbody>
                 <tr v-for="(deal, index) in dealList" :key="index">
-                  <td>{{ deal.dealAmount }}</td>
+                  <td>{{ deal.dealAmount | houseAmount }}</td>
                   <td>{{ deal.floor }}</td>
-                  <td>{{ deal.area }}</td>
+                  <td>{{ deal.area | housesize }} 평</td>
                   <td>{{ deal.dealYear }}</td>
                   <td>{{ deal.dealMonth }}</td>
                   <td>{{ deal.dealDay }}</td>
@@ -257,6 +257,26 @@ export default {
           return false;
         }
       });
+    },
+  },
+  filters: {
+    housesize(value) {
+      return Math.round((value / 3.305785) * 100) / 100;
+    },
+    houseAmount(value) {
+      let a = parseInt(value);
+      let a1 = Math.floor(a / 10);
+      let a2 = a % 10;
+
+      if (a < 10) {
+        return a + "천만원";
+      } else {
+        if (a2 == 0) {
+          return a1 + "억";
+        } else {
+          return a1 + "억 " + a2 + "천만원";
+        }
+      }
     },
   },
   methods: {
