@@ -24,20 +24,27 @@ public class NewsServiceImpl implements NewsService {
 	@PostConstruct // 즉시 실행
 	public List<NewsDto> getNewsDatas() throws IOException {
 
+		// 리턴해줄 list 생성
 		List<NewsDto> NewsDtoList = new ArrayList<NewsDto>();
+		
+		// 네이버 뉴스 가져오기
 		Document doc = Jsoup.connect(NEWS_DATAS_URL).get();
 
+		// HTMl 받아오기
 		Elements contents = doc.select("ul.headline_list > li > dl > dt > a");
 
+		// 기사 제목, 링크 반환
 		for (Element element : contents) {
 			
 			NewsDto newsDto = new NewsDto();
 			
 
-			String link_naver = "https://land.naver.com/";
-			String link = link_naver.concat(element.attr("href"));
+			// 링크 만들어서 저장 ( 클릭해서 링크로 이동 )
+			String link = "https://land.naver.com/" + element.attr("href");
+			// 기사 제목 받아오기
 			String title = element.ownText();
 
+			// 기사 제목 없으면 통과
 			if(title.length() > 5) {
 				newsDto.setNewsTitle(title);
 				newsDto.setNewsLink(link);
@@ -46,29 +53,32 @@ public class NewsServiceImpl implements NewsService {
 
 		}
 
+		// HTMl 받아오기
 		Elements contents2 = doc.select("ul.headline_list > li > dl > dd");
 
-		int i = 0;
+		// 기사 본문, 작성자, 날짜 반환
+		int idx = 0;
 		for (Element element : contents2) {
 			
-			NewsDto newsDto = NewsDtoList.get(i);
+			NewsDto newsDto = NewsDtoList.get(idx);
 			
-			// 기사 본문
-			String content = element.ownText();
-			
-			// 작성자
+			// 작성자 구문 전체 받아오기
 			String str = element.getElementsByClass("writing").toString();
+			// 작성자 데이터 만들기 ( 필요없는 구문 자르기 )
 			String writing = str.substring(22, str.length()-7);
 			
-			// 날짜
+			// 날짜 구문 전체 받아오기
 			String str_date = element.getElementsByClass("date").toString();
+			// 날짜 데이터 만들기 
 			String date = str_date.substring(19, str_date.length()-7);
 
-			newsDto.setNewsContent(content);
+			// 데이터 입력
+			// 기사 본문 입력
+			newsDto.setNewsContent(element.ownText());
 			newsDto.setNewsWriting(writing);
 			newsDto.setNewsDate(date);
 			
-			i++;
+			idx++;
 		}
 		
 		return NewsDtoList;
